@@ -1,50 +1,54 @@
-import pandas as pd
-import numpy as np
+def generate_risk_alerts(trades, daily_loss_limit, max_drawdown_limit):
+    alerts = []
 
-def add_equity_curve(trades, starting_balance):
-    df = trades.copy()
-    df["equity"] = starting_balance + df["net_pnl"].cumsum()
-    df["equity_peak"] = df["equity"].cummax()
-    df["drawdown"] = df["equity"] - df["equity_peak"]
-    return df
+    if trades.empty:
+        return alerts
 
-def _max_streak(values, condition):
-    max_streak = 0
-    current = 0
+    daily = trades.groupby(trades["date"].dt.date)["net_pnl"].sum()
+    worst_day = daily.min()
 
-    for value in values:
-        if condition(value):
-            current += 1
-            max_streak = max(max_streak, current)
+    max_drawdown = abs(trades["drawdown"].min())
+
+    if daily_loss_limit > 0 and abs(worst_day) >= daily_loss_limit:
+        alerts.append(
+            f"⚠️ Pior dia foi ${worst_day:,.2f}, atingindo ou ultrapassando o limite diário configurado."
+        )
+
+    if max_drawdown_limit > 0 and max_drawdown >= max_drawdown_limit:
+        alerts.append(
+            f"⚠️ Drawdown máximo de ${max_drawdown:,.2f} atingiu ou ultrapassou o limite configurado."
+        )
+
+    pnl = trades["net_pnl"].tolist()
+
+    loss_streak = 0
+    max_loss_streak = 0
+    for value in pnl:
+        if value < 0:
+            loss_streak += 1
+            max_loss_streak = max(max_loss_streak, loss_streak)
         else:
-            current = 0
+            loss_streak = 0
 
-    return max_streak
+    if max_loss_streak >= 4:
+        alerts.append(
+            f"⚠️ Sequência de {max_loss_streak} perdas consecutivas detectada. Isso pode indicar tilt, revenge trade ou setup ruim."
+        )
 
-def calculate_metrics(trades, starting_balance):
-    pnl = trades["net_pnl"]
+    if "quantity" in trades.columns:
+        qty_after_loss_alert = False
 
-    wins = pnl[pnl > 0]
-    losses = pnl[pnl < 0]
+        for i in range(1, len(trades)):
+            previous_loss = trades.loc[i - 1, "net_pnl"] < 0
+            increased_size = trades.loc[i, "quantity"] > trades.loc[i - 1, "quantity"]
 
-    gross_profit = wins.sum()
-    gross_loss = abs(losses.sum())
+            if previous_loss and increased_size:
+                qty_after_loss_alert = True
+                break
 
-    total_trades = len(trades)
-    winrate = (len(wins) / total_trades * 100) if total_trades > 0 else 0
-    profit_factor = (gross_profit / gross_loss) if gross_loss > 0 else float("inf")
+        if qty_after_loss_alert:
+            alerts.append(
+                "⚠️ Foi detectado aumento de lote/quantidade após uma operação perdedora. Isso pode indicar revenge trading."
+            )
 
-    max_drawdown = abs(trades["drawdown"].min()) if "drawdown" in trades else 0
-
-    return {
-        "net_pnl": pnl.sum(),
-        "total_trades": total_trades,
-        "winrate": winrate,
-        "profit_factor": profit_factor,
-        "max_drawdown": max_drawdown,
-        "average_win": wins.mean() if len(wins) else 0,
-        "average_loss": losses.mean() if len(losses) else 0,
-        "max_win_streak": _max_streak(pnl, lambda x: x > 0),
-        "max_loss_streak": _max_streak(pnl, lambda x: x < 0),
-        "ending_balance": starting_balance + pnl.sum(),
-    }
+    return alerts
