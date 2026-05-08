@@ -1,5 +1,5 @@
 import os
-import json
+from io import StringIO
 import pandas as pd
 from sqlalchemy import create_engine, text
 
@@ -7,11 +7,9 @@ from sqlalchemy import create_engine, text
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
-    # Render às vezes fornece postgres://, mas SQLAlchemy prefere postgresql://
     if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 else:
-    # fallback local caso rode sem banco externo
     DATABASE_URL = "sqlite:///riskpilot.db"
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
@@ -36,13 +34,7 @@ def init_db():
         """))
 
 
-def save_upload(
-    account_name,
-    platform,
-    file_name,
-    trades_df,
-    metrics
-):
+def save_upload(account_name, platform, file_name, trades_df, metrics):
     init_db()
 
     data_json = trades_df.to_json(orient="records", date_format="iso")
@@ -124,9 +116,14 @@ def load_upload_by_id(upload_id):
     """)
 
     with engine.begin() as conn:
-        row = conn.execute(query, {"upload_id": upload_id}).fetchone()
+        row = conn.execute(query, {"upload_id": int(upload_id)}).fetchone()
 
     if not row:
         return pd.DataFrame()
 
-    return pd.read_json(row[0])
+    raw_json = row[0]
+
+    if not raw_json:
+        return pd.DataFrame()
+
+    return pd.read_json(StringIO(raw_json))
