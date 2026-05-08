@@ -81,17 +81,9 @@ st.markdown(
         margin-top: 8px;
     }
 
-    .positive {
-        color: #22c55e;
-    }
-
-    .negative {
-        color: #ef4444;
-    }
-
-    .neutral {
-        color: #38bdf8;
-    }
+    .positive { color: #22c55e; }
+    .negative { color: #ef4444; }
+    .neutral { color: #38bdf8; }
 
     .prop-card {
         background: linear-gradient(135deg, #082f49 0%, #111827 100%);
@@ -110,18 +102,20 @@ st.markdown(
         margin-bottom: 12px;
     }
 
+    .insight-box {
+        background: linear-gradient(135deg, #111827 0%, #172554 100%);
+        border: 1px solid rgba(96,165,250,0.25);
+        border-radius: 16px;
+        padding: 18px;
+        color: #f9fafb;
+        min-height: 105px;
+    }
+
     .footer-note {
         color: #6b7280;
         font-size: 0.85rem;
         margin-top: 40px;
         text-align: center;
-    }
-
-    div[data-testid="stMetric"] {
-        background: #111827;
-        padding: 18px;
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.08);
     }
     </style>
     """,
@@ -152,6 +146,16 @@ def metric_card(label, value, help_text="", status="neutral"):
 
 def section(title):
     st.markdown(f'<div class="section-title">{title}</div>', unsafe_allow_html=True)
+
+
+def safe_idx_value(series, mode="max"):
+    if series.empty:
+        return None, 0
+    if mode == "max":
+        idx = series.idxmax()
+        return idx, series.max()
+    idx = series.idxmin()
+    return idx, series.min()
 
 # =========================
 # SIDEBAR
@@ -219,11 +223,70 @@ if uploaded_file:
         normalized_df["day"] = normalized_df["date"].dt.date
         normalized_df["weekday"] = normalized_df["date"].dt.day_name()
 
-        normalized_df["equity"] = normalized_df["net_pnl"].cumsum() + initial_capital
-        normalized_df["equity_peak"] = normalized_df["equity"].cummax()
-        normalized_df["drawdown"] = normalized_df["equity"] - normalized_df["equity_peak"]
+        # =========================
+        # FILTERS
+        # =========================
 
-        metrics = calculate_metrics(normalized_df, initial_capital)
+        section("2. Filtros")
+
+        f1, f2, f3 = st.columns(3)
+
+        min_date = normalized_df["date"].dt.date.min()
+        max_date = normalized_df["date"].dt.date.max()
+
+        with f1:
+            date_range = st.date_input(
+                "Período",
+                value=(min_date, max_date),
+                min_value=min_date,
+                max_value=max_date
+            )
+
+        assets = sorted(normalized_df["asset"].dropna().astype(str).unique().tolist())
+        sides = sorted(normalized_df["side"].dropna().astype(str).unique().tolist())
+
+        with f2:
+            selected_assets = st.multiselect(
+                "Ativos",
+                options=assets,
+                default=assets
+            )
+
+        with f3:
+            selected_sides = st.multiselect(
+                "Lado",
+                options=sides,
+                default=sides
+            )
+
+        filtered_df = normalized_df.copy()
+
+        if isinstance(date_range, tuple) and len(date_range) == 2:
+            start_date, end_date = date_range
+            filtered_df = filtered_df[
+                (filtered_df["date"].dt.date >= start_date) &
+                (filtered_df["date"].dt.date <= end_date)
+            ]
+
+        filtered_df = filtered_df[
+            filtered_df["asset"].astype(str).isin(selected_assets)
+        ]
+
+        filtered_df = filtered_df[
+            filtered_df["side"].astype(str).isin(selected_sides)
+        ]
+
+        if filtered_df.empty:
+            st.warning("Nenhum trade encontrado com os filtros selecionados.")
+            st.stop()
+
+        filtered_df = filtered_df.sort_values("date").reset_index(drop=True)
+
+        filtered_df["equity"] = filtered_df["net_pnl"].cumsum() + initial_capital
+        filtered_df["equity_peak"] = filtered_df["equity"].cummax()
+        filtered_df["drawdown"] = filtered_df["equity"] - filtered_df["equity_peak"]
+
+        metrics = calculate_metrics(filtered_df, initial_capital)
 
         expectancy = metrics.get("expectancy", 0)
         recovery_factor = metrics.get("recovery_factor", 0)
@@ -237,65 +300,27 @@ if uploaded_file:
         # SUMMARY
         # =========================
 
-        section("2. Resumo Geral")
+        section("3. Resumo Geral")
 
         c1, c2, c3, c4 = st.columns(4)
 
         with c1:
-            st.markdown(
-                metric_card(
-                    "💰 Net P&L",
-                    money(metrics["net_pnl"]),
-                    "Resultado líquido total",
-                    net_status
-                ),
-                unsafe_allow_html=True
-            )
-
+            st.markdown(metric_card("💰 Net P&L", money(metrics["net_pnl"]), "Resultado líquido total", net_status), unsafe_allow_html=True)
         with c2:
-            st.markdown(
-                metric_card(
-                    "🎯 Winrate",
-                    percent(metrics["winrate"]),
-                    "Percentual de trades vencedores",
-                    "neutral"
-                ),
-                unsafe_allow_html=True
-            )
-
+            st.markdown(metric_card("🎯 Winrate", percent(metrics["winrate"]), "Percentual de trades vencedores", "neutral"), unsafe_allow_html=True)
         with c3:
-            st.markdown(
-                metric_card(
-                    "📈 Profit Factor",
-                    f"{metrics['profit_factor']:.2f}",
-                    "Acima de 1 é positivo",
-                    pf_status
-                ),
-                unsafe_allow_html=True
-            )
-
+            st.markdown(metric_card("📈 Profit Factor", f"{metrics['profit_factor']:.2f}", "Acima de 1 é positivo", pf_status), unsafe_allow_html=True)
         with c4:
-            st.markdown(
-                metric_card(
-                    "⚠️ Max Drawdown",
-                    money(metrics["max_drawdown"]),
-                    "Maior queda da curva",
-                    dd_status
-                ),
-                unsafe_allow_html=True
-            )
+            st.markdown(metric_card("⚠️ Max Drawdown", money(metrics["max_drawdown"]), "Maior queda da curva", dd_status), unsafe_allow_html=True)
 
         c5, c6, c7, c8 = st.columns(4)
 
         with c5:
             st.markdown(metric_card("🏆 Avg Win", money(metrics["average_win"]), "Média dos ganhos", "positive"), unsafe_allow_html=True)
-
         with c6:
             st.markdown(metric_card("❌ Avg Loss", money(metrics["average_loss"]), "Média das perdas", "negative"), unsafe_allow_html=True)
-
         with c7:
             st.markdown(metric_card("🔥 Win Streak", metrics["max_win_streak"], "Maior sequência vencedora", "positive"), unsafe_allow_html=True)
-
         with c8:
             st.markdown(metric_card("🥶 Loss Streak", metrics["max_loss_streak"], "Maior sequência perdedora", "negative"), unsafe_allow_html=True)
 
@@ -303,24 +328,85 @@ if uploaded_file:
 
         with c9:
             st.markdown(metric_card("🧠 Expectancy", money(expectancy), "Resultado esperado por trade", "neutral"), unsafe_allow_html=True)
-
         with c10:
             st.markdown(metric_card("🛡 Recovery", f"{recovery_factor:.2f}", "Recuperação vs drawdown", "neutral"), unsafe_allow_html=True)
-
         with c11:
             st.markdown(metric_card("⚖️ Payoff", f"{payoff_ratio:.2f}", "Avg win / Avg loss", "neutral"), unsafe_allow_html=True)
-
         with c12:
             st.markdown(metric_card("📊 Trades", metrics["total_trades"], "Total analisado", "neutral"), unsafe_allow_html=True)
+
+        # =========================
+        # SMART INSIGHTS
+        # =========================
+
+        section("4. Insights Automáticos")
+
+        hourly_sum = filtered_df.groupby("hour")["net_pnl"].sum()
+        best_hour, best_hour_pnl = safe_idx_value(hourly_sum, "max")
+        worst_hour, worst_hour_pnl = safe_idx_value(hourly_sum, "min")
+
+        weekday_sum = filtered_df.groupby("weekday")["net_pnl"].sum()
+        best_day, best_day_pnl = safe_idx_value(weekday_sum, "max")
+        worst_day, worst_day_pnl = safe_idx_value(weekday_sum, "min")
+
+        i1, i2, i3, i4 = st.columns(4)
+
+        with i1:
+            st.markdown(
+                f"""
+                <div class="insight-box">
+                    <div class="metric-label">Melhor horário</div>
+                    <div class="metric-value positive">{best_hour}h</div>
+                    <div class="metric-help">Resultado: {money(best_hour_pnl)}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with i2:
+            st.markdown(
+                f"""
+                <div class="insight-box">
+                    <div class="metric-label">Pior horário</div>
+                    <div class="metric-value negative">{worst_hour}h</div>
+                    <div class="metric-help">Resultado: {money(worst_hour_pnl)}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with i3:
+            st.markdown(
+                f"""
+                <div class="insight-box">
+                    <div class="metric-label">Melhor dia</div>
+                    <div class="metric-value positive">{best_day}</div>
+                    <div class="metric-help">Resultado: {money(best_day_pnl)}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with i4:
+            st.markdown(
+                f"""
+                <div class="insight-box">
+                    <div class="metric-label">Pior dia</div>
+                    <div class="metric-value negative">{worst_day}</div>
+                    <div class="metric-help">Resultado: {money(worst_day_pnl)}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
         # =========================
         # PROP FIRM PANEL
         # =========================
 
-        section("3. Painel Prop Firm")
+        section("5. Painel Prop Firm")
 
         remaining_target = profit_target - metrics["net_pnl"]
-        daily_worst = normalized_df.groupby("day")["net_pnl"].sum().min()
+        daily_worst = filtered_df.groupby("day")["net_pnl"].sum().min()
         daily_remaining = max_daily_loss - abs(daily_worst)
         max_dd_remaining = max_drawdown_limit - abs(metrics["max_drawdown"])
 
@@ -366,39 +452,39 @@ if uploaded_file:
         # CHARTS
         # =========================
 
-        section("4. Curva de Capital")
-        fig_equity = px.line(normalized_df, x="date", y="equity", title="Equity Curve")
+        section("6. Curva de Capital")
+        fig_equity = px.line(filtered_df, x="date", y="equity", title="Equity Curve")
         fig_equity.update_layout(template="plotly_dark", height=450)
         st.plotly_chart(fig_equity, use_container_width=True)
 
-        section("5. Drawdown")
-        fig_dd = px.area(normalized_df, x="date", y="drawdown", title="Drawdown")
+        section("7. Drawdown")
+        fig_dd = px.area(filtered_df, x="date", y="drawdown", title="Drawdown")
         fig_dd.update_layout(template="plotly_dark", height=450)
         st.plotly_chart(fig_dd, use_container_width=True)
 
-        section("6. Resultado por Dia")
-        daily_pnl = normalized_df.groupby("day")["net_pnl"].sum().reset_index()
+        section("8. Resultado por Dia")
+        daily_pnl = filtered_df.groupby("day")["net_pnl"].sum().reset_index()
         fig_daily = px.bar(daily_pnl, x="day", y="net_pnl", title="Daily P&L")
         fig_daily.update_layout(template="plotly_dark", height=430)
         st.plotly_chart(fig_daily, use_container_width=True)
 
-        section("7. Resultado por Hora")
-        hourly = normalized_df.groupby("hour")["net_pnl"].sum().reset_index()
+        section("9. Resultado por Hora")
+        hourly = filtered_df.groupby("hour")["net_pnl"].sum().reset_index()
         fig_hour = px.bar(hourly, x="hour", y="net_pnl", title="Resultado por Hora")
         fig_hour.update_layout(template="plotly_dark", height=430)
         st.plotly_chart(fig_hour, use_container_width=True)
 
-        section("8. Resultado por Dia da Semana")
+        section("10. Resultado por Dia da Semana")
         weekday_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-        weekday = normalized_df.groupby("weekday")["net_pnl"].sum().reset_index()
+        weekday = filtered_df.groupby("weekday")["net_pnl"].sum().reset_index()
         weekday["weekday"] = pd.Categorical(weekday["weekday"], categories=weekday_order, ordered=True)
         weekday = weekday.sort_values("weekday")
         fig_weekday = px.bar(weekday, x="weekday", y="net_pnl", title="Resultado por Dia da Semana")
         fig_weekday.update_layout(template="plotly_dark", height=430)
         st.plotly_chart(fig_weekday, use_container_width=True)
 
-        section("9. Resultado por Ativo")
-        asset = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
+        section("11. Resultado por Ativo")
+        asset = filtered_df.groupby("asset")["net_pnl"].sum().reset_index()
         fig_asset = px.bar(asset, x="asset", y="net_pnl", title="P&L por Ativo")
         fig_asset.update_layout(template="plotly_dark", height=430)
         st.plotly_chart(fig_asset, use_container_width=True)
@@ -407,15 +493,12 @@ if uploaded_file:
         # ALERTS
         # =========================
 
-        section("10. Alertas de Risco")
+        section("12. Alertas de Risco")
 
-        alerts = generate_risk_alerts(normalized_df, max_daily_loss, max_drawdown_limit)
+        alerts = generate_risk_alerts(filtered_df, max_daily_loss, max_drawdown_limit)
 
         for alert in alerts:
-            st.markdown(
-                f'<div class="alert-box">⚠️ {alert}</div>',
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
 
         if metrics["profit_factor"] < 1:
             st.error("Profit Factor abaixo de 1. Você está perdendo mais do que ganha.")
@@ -427,14 +510,14 @@ if uploaded_file:
         # NORMALIZED DATA
         # =========================
 
-        section("11. Dados Normalizados")
-        st.dataframe(normalized_df, use_container_width=True)
+        section("13. Dados Normalizados")
+        st.dataframe(filtered_df, use_container_width=True)
 
-        csv = normalized_df.to_csv(index=False).encode("utf-8")
+        csv = filtered_df.to_csv(index=False).encode("utf-8")
         st.download_button(
-            "⬇️ Baixar dados normalizados",
+            "⬇️ Baixar dados filtrados normalizados",
             csv,
-            "riskpilot_normalized_trades.csv",
+            "riskpilot_filtered_trades.csv",
             "text/csv"
         )
 
