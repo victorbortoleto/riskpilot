@@ -75,20 +75,59 @@ alerts = generate_risk_alerts(
     max_drawdown_limit=max_drawdown_limit
 )
 
-st.subheader("2. Resumo Geral")
+st.header("2. Resumo Geral")
 
-col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("Net P&L", f"${metrics['net_pnl']:,.2f}")
-col2.metric("Winrate", f"{metrics['winrate']:.2f}%")
-col3.metric("Profit Factor", f"{metrics['profit_factor']:.2f}")
-col4.metric("Max Drawdown", f"${metrics['max_drawdown']:,.2f}")
-col5.metric("Trades", f"{metrics['total_trades']}")
+col1, col2, col3, col4 = st.columns(4)
 
-col6, col7, col8, col9 = st.columns(4)
-col6.metric("Average Win", f"${metrics['average_win']:,.2f}")
-col7.metric("Average Loss", f"${metrics['average_loss']:,.2f}")
-col8.metric("Max Win Streak", f"{metrics['max_win_streak']}")
-col9.metric("Max Loss Streak", f"{metrics['max_loss_streak']}")
+with col1:
+    st.metric(
+        label="💰 Net P&L",
+        value=f"${metrics['net_pnl']:.2f}"
+    )
+
+with col2:
+    st.metric(
+        label="🎯 Winrate",
+        value=f"{metrics['winrate']:.2f}%"
+    )
+
+with col3:
+    st.metric(
+        label="📈 Profit Factor",
+        value=f"{metrics['profit_factor']:.2f}"
+    )
+
+with col4:
+    st.metric(
+        label="⚠️ Max Drawdown",
+        value=f"${metrics['max_drawdown']:.2f}"
+    )
+
+col5, col6, col7, col8 = st.columns(4)
+
+with col5:
+    st.metric(
+        label="🏆 Avg Win",
+        value=f"${metrics['average_win']:.2f}"
+    )
+
+with col6:
+    st.metric(
+        label="❌ Avg Loss",
+        value=f"${metrics['average_loss']:.2f}"
+    )
+
+with col7:
+    st.metric(
+        label="🔥 Max Win Streak",
+        value=f"{metrics['max_win_streak']}"
+    )
+
+with col8:
+    st.metric(
+        label="🥶 Max Loss Streak",
+        value=f"{metrics['max_loss_streak']}"
+    )
 
 st.subheader("3. Curva de Capital")
 fig_equity = px.line(
