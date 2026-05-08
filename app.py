@@ -331,9 +331,3 @@ if uploaded_file:
 else:
     st.info("Envie um arquivo CSV ou XLSX para começar.")
 ```
-
-Depois:
-
-1. Commit changes
-2. Render → Manual Deploy → Deploy latest commit
-3. Teste novamente.
