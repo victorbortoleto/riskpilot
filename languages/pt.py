@@ -1,12 +1,10 @@
 translations = {
-    "dashboard": "Dashboard",
-    "history": "Histórico",
     "sidebar_info": "Suba um relatório CSV ou XLSX da sua plataforma.",
     "subtitle": "Trading Risk Dashboard — gerenciamento de risco, performance e consistência operacional.",
     "upload_report": "Upload do relatório de trades",
     "raw_data": "1. Dados Originais",
     "upload_info": "2. Informações do Upload",
-    "account_name": "Nome da conta",
+    "account_name": "Nome da Conta",
     "platform": "Plataforma",
     "save_analysis": "💾 Salvar análise no histórico",
     "filters": "3. Filtros",
