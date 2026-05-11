@@ -373,7 +373,7 @@ if uploaded_file:
         st.plotly_chart(fig_asset, use_container_width=True)
 
         section(t["risk_alerts"])
-        alerts = generate_risk_alerts(filtered_df, max_daily_loss, max_drawdown_limit)
+       alerts = generate_risk_alerts(filtered_df,max_daily_loss,max_drawdown_limit,language=language)
         for alert in alerts:
             st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
 
