@@ -18,8 +18,6 @@ from core.db import (
     get_user_by_email
 )
 
-from core.i18n import get_translations
-
 
 # =========================
 # INIT
@@ -36,7 +34,314 @@ st.set_page_config(
 
 
 # =========================
-# CSS — INSTITUTIONAL TERMINAL
+# TRANSLATIONS
+# =========================
+
+def ui_text(language):
+    texts = {
+        "English": {
+            "language": "Language",
+            "hero_title": "Institutional trading analytics",
+            "hero_subtitle": "Professional-grade trading analytics platform focused on risk, consistency, performance and prop firm approval.",
+            "hero_badge": "Risk infrastructure for serious traders",
+            "start_free": "🚀 Start free",
+            "login": "🔐 Login",
+            "view_demo": "📊 View demo",
+            "why": "Why RiskPilot?",
+            "feature_1_title": "📉 Risk Intelligence",
+            "feature_1_text": "Detect dangerous drawdowns, overtrading, revenge trading and losing streaks automatically.",
+            "feature_2_title": "🏆 Prop Firm Ready",
+            "feature_2_text": "Track daily loss, maximum drawdown, consistency and target distance.",
+            "feature_3_title": "🤖 Operational Insights",
+            "feature_3_text": "Discover your best hours, worst patterns and operational weaknesses.",
+            "choose": "Choose",
+            "register": "Register",
+            "name": "Name",
+            "email": "Email",
+            "password": "Password",
+            "create_account": "Create Account",
+            "user_exists": "User already exists.",
+            "account_created": "Account created successfully. You can now login.",
+            "invalid_credentials": "Invalid credentials.",
+            "back_home": "← Back to homepage",
+            "professional_analytics": "Professional Trading Analytics",
+            "authenticated_user": "Authenticated user",
+            "current_mode": "Current mode",
+            "demo_mode": "Demo Mode",
+            "create_free_account": "Create free account",
+            "initial_capital": "Initial Capital",
+            "daily_loss_limit": "Daily Loss Limit",
+            "max_drawdown_limit": "Max Drawdown Limit",
+            "navigation": "Navigation",
+            "dashboard": "Dashboard",
+            "history": "History",
+            "logout": "Logout",
+            "account_status": "Account Status",
+            "active": "Active",
+            "risk_mode": "Risk Mode",
+            "prop_firm": "Prop Firm",
+            "analytics": "Analytics",
+            "enabled": "Enabled",
+            "sidebar_note": "RiskPilot monitors performance, drawdown, behavior and operational consistency.",
+            "history_title": "Upload History",
+            "history_account_required": "History is available after creating a free account.",
+            "no_uploads": "No uploads yet.",
+            "terminal_title": "RiskPilot Terminal",
+            "terminal_subtitle": "Institutional-grade trading risk intelligence and performance analytics.",
+            "live_engine": "LIVE ANALYTICS ENGINE",
+            "demo_info": "Demo mode: sample data loaded. Create a free account to upload and save your own trading reports.",
+            "upload_report": "Upload trading report",
+            "upload_to_begin": "Upload a CSV or XLSX report to begin.",
+            "file_error": "Error reading file",
+            "performance": "Performance Overview",
+            "net_pnl": "Net P&L",
+            "total_net_result": "Total net result",
+            "winrate": "Winrate",
+            "winning_trades": "Winning trades",
+            "profit_factor": "Profit Factor",
+            "gross_ratio": "Gross profit / gross loss",
+            "max_drawdown": "Max Drawdown",
+            "largest_decline": "Largest equity decline",
+            "risk_score": "Risk Score",
+            "risk_score_sub": "Operational risk quality",
+            "consistency_score": "Consistency Score",
+            "consistency_score_sub": "Day-to-day stability",
+            "account_health": "Account Health",
+            "account_health_sub": "Prop firm readiness",
+            "behavior_score": "Behavior Score",
+            "behavior_score_sub": "Tilt and discipline proxy",
+            "automatic_insights": "Automatic Insights",
+            "best_hour": "Best Hour",
+            "worst_hour": "Worst Hour",
+            "best_day": "Best Day",
+            "worst_day": "Worst Day",
+            "best_weekday": "Best Weekday",
+            "worst_weekday": "Worst Weekday",
+            "positive_days": "Positive Days",
+            "negative_days": "Negative Days",
+            "days_above_zero": "Days above zero",
+            "days_below_zero": "Days below zero",
+            "ai_diagnosis": "Operational Diagnosis",
+            "equity_curve": "Equity Curve",
+            "drawdown": "Drawdown",
+            "daily_pnl": "Daily P&L",
+            "pnl_by_hour": "P&L by Hour",
+            "pnl_by_weekday": "P&L by Weekday",
+            "pnl_by_asset": "P&L by Asset",
+            "risk_alerts": "Risk Alerts",
+            "save_analysis": "💾 Save Analysis",
+            "analysis_saved": "Analysis saved.",
+            "save_warning": "Create a free account to save your analysis history.",
+            "trades": "Trades",
+            "excellent": "Excellent",
+            "healthy": "Healthy",
+            "attention": "Attention",
+            "critical": "Critical",
+        },
+        "Português": {
+            "language": "Idioma",
+            "hero_title": "Analytics institucional para traders",
+            "hero_subtitle": "Plataforma profissional de análise operacional focada em risco, consistência, performance e aprovação em prop firms.",
+            "hero_badge": "Infraestrutura de risco para traders sérios",
+            "start_free": "🚀 Criar conta grátis",
+            "login": "🔐 Entrar",
+            "view_demo": "📊 Ver demo",
+            "why": "Por que RiskPilot?",
+            "feature_1_title": "📉 Inteligência de Risco",
+            "feature_1_text": "Detecte drawdowns perigosos, overtrading, revenge trading e sequências ruins automaticamente.",
+            "feature_2_title": "🏆 Pronto para Prop Firms",
+            "feature_2_text": "Acompanhe perda diária, drawdown máximo, consistência e distância até a meta.",
+            "feature_3_title": "🤖 Insights Operacionais",
+            "feature_3_text": "Descubra seus melhores horários, piores padrões e fraquezas operacionais.",
+            "choose": "Escolha",
+            "register": "Cadastrar",
+            "name": "Nome",
+            "email": "E-mail",
+            "password": "Senha",
+            "create_account": "Criar conta",
+            "user_exists": "Usuário já existe.",
+            "account_created": "Conta criada com sucesso. Agora você já pode entrar.",
+            "invalid_credentials": "Credenciais inválidas.",
+            "back_home": "← Voltar para a página inicial",
+            "professional_analytics": "Analytics Profissional de Trading",
+            "authenticated_user": "Usuário autenticado",
+            "current_mode": "Modo atual",
+            "demo_mode": "Modo Demo",
+            "create_free_account": "Criar conta grátis",
+            "initial_capital": "Capital Inicial",
+            "daily_loss_limit": "Limite de Perda Diária",
+            "max_drawdown_limit": "Limite Máximo de Drawdown",
+            "navigation": "Navegação",
+            "dashboard": "Dashboard",
+            "history": "Histórico",
+            "logout": "Sair",
+            "account_status": "Status da Conta",
+            "active": "Ativa",
+            "risk_mode": "Modo de Risco",
+            "prop_firm": "Prop Firm",
+            "analytics": "Analytics",
+            "enabled": "Ativado",
+            "sidebar_note": "O RiskPilot monitora performance, drawdown, comportamento e consistência operacional.",
+            "history_title": "Histórico de Uploads",
+            "history_account_required": "O histórico fica disponível após criar uma conta grátis.",
+            "no_uploads": "Ainda não há uploads salvos.",
+            "terminal_title": "Terminal RiskPilot",
+            "terminal_subtitle": "Inteligência institucional de risco e performance para traders.",
+            "live_engine": "MOTOR DE ANÁLISE ATIVO",
+            "demo_info": "Modo demo: dados de exemplo carregados. Crie uma conta grátis para enviar e salvar seus próprios relatórios.",
+            "upload_report": "Upload do relatório de trades",
+            "upload_to_begin": "Envie um arquivo CSV ou XLSX para começar.",
+            "file_error": "Erro ao ler o arquivo",
+            "performance": "Resumo de Performance",
+            "net_pnl": "Resultado Líquido",
+            "total_net_result": "Resultado líquido total",
+            "winrate": "Taxa de Acerto",
+            "winning_trades": "Trades vencedores",
+            "profit_factor": "Fator de Lucro",
+            "gross_ratio": "Lucro bruto / perda bruta",
+            "max_drawdown": "Drawdown Máximo",
+            "largest_decline": "Maior queda da curva",
+            "risk_score": "Score de Risco",
+            "risk_score_sub": "Qualidade do risco operacional",
+            "consistency_score": "Score de Consistência",
+            "consistency_score_sub": "Estabilidade dia a dia",
+            "account_health": "Saúde da Conta",
+            "account_health_sub": "Prontidão para prop firm",
+            "behavior_score": "Score Comportamental",
+            "behavior_score_sub": "Proxy de tilt e disciplina",
+            "automatic_insights": "Insights Automáticos",
+            "best_hour": "Melhor Horário",
+            "worst_hour": "Pior Horário",
+            "best_day": "Melhor Dia",
+            "worst_day": "Pior Dia",
+            "best_weekday": "Melhor Dia da Semana",
+            "worst_weekday": "Pior Dia da Semana",
+            "positive_days": "Dias Positivos",
+            "negative_days": "Dias Negativos",
+            "days_above_zero": "Dias acima de zero",
+            "days_below_zero": "Dias abaixo de zero",
+            "ai_diagnosis": "Diagnóstico Operacional",
+            "equity_curve": "Curva de Capital",
+            "drawdown": "Drawdown",
+            "daily_pnl": "Resultado por Dia",
+            "pnl_by_hour": "Resultado por Horário",
+            "pnl_by_weekday": "Resultado por Dia da Semana",
+            "pnl_by_asset": "Resultado por Ativo",
+            "risk_alerts": "Alertas de Risco",
+            "save_analysis": "💾 Salvar Análise",
+            "analysis_saved": "Análise salva.",
+            "save_warning": "Crie uma conta grátis para salvar seu histórico de análises.",
+            "trades": "Trades",
+            "excellent": "Excelente",
+            "healthy": "Saudável",
+            "attention": "Atenção",
+            "critical": "Crítico",
+        },
+        "Español": {
+            "language": "Idioma",
+            "hero_title": "Analytics institucional para traders",
+            "hero_subtitle": "Plataforma profesional de análisis operativo enfocada en riesgo, consistencia, rendimiento y aprobación en prop firms.",
+            "hero_badge": "Infraestructura de riesgo para traders serios",
+            "start_free": "🚀 Crear cuenta gratis",
+            "login": "🔐 Entrar",
+            "view_demo": "📊 Ver demo",
+            "why": "¿Por qué RiskPilot?",
+            "feature_1_title": "📉 Inteligencia de Riesgo",
+            "feature_1_text": "Detecta drawdowns peligrosos, overtrading, revenge trading y secuencias negativas automáticamente.",
+            "feature_2_title": "🏆 Listo para Prop Firms",
+            "feature_2_text": "Monitorea pérdida diaria, drawdown máximo, consistencia y distancia a la meta.",
+            "feature_3_title": "🤖 Insights Operativos",
+            "feature_3_text": "Descubre tus mejores horarios, peores patrones y debilidades operativas.",
+            "choose": "Elige",
+            "register": "Registrar",
+            "name": "Nombre",
+            "email": "Email",
+            "password": "Contraseña",
+            "create_account": "Crear cuenta",
+            "user_exists": "El usuario ya existe.",
+            "account_created": "Cuenta creada con éxito. Ahora puedes entrar.",
+            "invalid_credentials": "Credenciales inválidas.",
+            "back_home": "← Volver al inicio",
+            "professional_analytics": "Analytics Profesional de Trading",
+            "authenticated_user": "Usuario autenticado",
+            "current_mode": "Modo actual",
+            "demo_mode": "Modo Demo",
+            "create_free_account": "Crear cuenta gratis",
+            "initial_capital": "Capital Inicial",
+            "daily_loss_limit": "Límite de Pérdida Diaria",
+            "max_drawdown_limit": "Límite Máximo de Drawdown",
+            "navigation": "Navegación",
+            "dashboard": "Dashboard",
+            "history": "Historial",
+            "logout": "Salir",
+            "account_status": "Estado de la Cuenta",
+            "active": "Activa",
+            "risk_mode": "Modo de Riesgo",
+            "prop_firm": "Prop Firm",
+            "analytics": "Analytics",
+            "enabled": "Activado",
+            "sidebar_note": "RiskPilot monitorea rendimiento, drawdown, comportamiento y consistencia operativa.",
+            "history_title": "Historial de Uploads",
+            "history_account_required": "El historial está disponible después de crear una cuenta gratis.",
+            "no_uploads": "Aún no hay uploads guardados.",
+            "terminal_title": "Terminal RiskPilot",
+            "terminal_subtitle": "Inteligencia institucional de riesgo y rendimiento para traders.",
+            "live_engine": "MOTOR DE ANÁLISIS ACTIVO",
+            "demo_info": "Modo demo: datos de ejemplo cargados. Crea una cuenta gratis para subir y guardar tus propios reportes.",
+            "upload_report": "Subir reporte de trading",
+            "upload_to_begin": "Sube un archivo CSV o XLSX para comenzar.",
+            "file_error": "Error al leer el archivo",
+            "performance": "Resumen de Rendimiento",
+            "net_pnl": "Resultado Neto",
+            "total_net_result": "Resultado neto total",
+            "winrate": "Tasa de Acierto",
+            "winning_trades": "Trades ganadores",
+            "profit_factor": "Factor de Lucro",
+            "gross_ratio": "Lucro bruto / pérdida bruta",
+            "max_drawdown": "Drawdown Máximo",
+            "largest_decline": "Mayor caída de la curva",
+            "risk_score": "Score de Riesgo",
+            "risk_score_sub": "Calidad del riesgo operativo",
+            "consistency_score": "Score de Consistencia",
+            "consistency_score_sub": "Estabilidad día a día",
+            "account_health": "Salud de la Cuenta",
+            "account_health_sub": "Preparación para prop firm",
+            "behavior_score": "Score Conductual",
+            "behavior_score_sub": "Proxy de tilt y disciplina",
+            "automatic_insights": "Insights Automáticos",
+            "best_hour": "Mejor Horario",
+            "worst_hour": "Peor Horario",
+            "best_day": "Mejor Día",
+            "worst_day": "Peor Día",
+            "best_weekday": "Mejor Día de la Semana",
+            "worst_weekday": "Peor Día de la Semana",
+            "positive_days": "Días Positivos",
+            "negative_days": "Días Negativos",
+            "days_above_zero": "Días sobre cero",
+            "days_below_zero": "Días bajo cero",
+            "ai_diagnosis": "Diagnóstico Operativo",
+            "equity_curve": "Curva de Capital",
+            "drawdown": "Drawdown",
+            "daily_pnl": "Resultado Diario",
+            "pnl_by_hour": "Resultado por Horario",
+            "pnl_by_weekday": "Resultado por Día de la Semana",
+            "pnl_by_asset": "Resultado por Activo",
+            "risk_alerts": "Alertas de Riesgo",
+            "save_analysis": "💾 Guardar Análisis",
+            "analysis_saved": "Análisis guardado.",
+            "save_warning": "Crea una cuenta gratis para guardar tu historial de análisis.",
+            "trades": "Trades",
+            "excellent": "Excelente",
+            "healthy": "Saludable",
+            "attention": "Atención",
+            "critical": "Crítico",
+        }
+    }
+    return texts.get(language, texts["English"])
+
+
+# =========================
+# CSS — PREMIUM TERMINAL
 # =========================
 
 st.markdown("""
@@ -76,7 +381,6 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     color: inherit;
 }
 
-/* Sidebar premium cards */
 .sidebar-brand {
     background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(15,23,42,0.9));
     border: 1px solid rgba(56,189,248,0.30);
@@ -153,7 +457,6 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     margin-top: 12px;
 }
 
-/* Homepage */
 .hero-wrap {
     padding-top: 25px;
     padding-bottom: 30px;
@@ -221,7 +524,6 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     line-height: 1.65;
 }
 
-/* App components */
 .metric-card {
     background: linear-gradient(135deg,#111827 0%,#1f2937 100%);
     border: 1px solid rgba(255,255,255,0.08);
@@ -238,7 +540,6 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
 }
 
 .metric-value {
-    color: #ffffff !important;
     font-size: 2rem;
     font-weight: 850;
     margin-top: 6px;
@@ -249,6 +550,11 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     font-size: 0.82rem;
     margin-top: 6px;
 }
+
+.value-positive { color: #22c55e !important; }
+.value-negative { color: #fb7185 !important; }
+.value-neutral { color: #38bdf8 !important; }
+.value-warning { color: #f59e0b !important; }
 
 .section-title {
     font-size: 2rem;
@@ -266,6 +572,29 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     border-radius: 12px;
     margin-bottom: 12px;
     color: #ffffff !important;
+}
+
+.diagnosis-box {
+    background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(30,41,59,0.78));
+    border: 1px solid rgba(56,189,248,0.18);
+    border-radius: 22px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+}
+
+.diagnosis-title {
+    color: #7dd3fc !important;
+    font-size: 0.85rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.diagnosis-text {
+    color: #e5e7eb !important;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-top: 8px;
 }
 
 .insight-card {
@@ -397,22 +726,49 @@ def percent(v):
         return "0.00%"
 
 
-def metric_card(title, value, sub=""):
+def value_class(value, higher_is_better=True, warning_threshold=None):
+    try:
+        value = float(value)
+    except Exception:
+        return "value-neutral"
+
+    if warning_threshold is not None:
+        if value >= warning_threshold:
+            return "value-positive" if higher_is_better else "value-negative"
+        return "value-warning"
+
+    if value > 0:
+        return "value-positive" if higher_is_better else "value-negative"
+    if value < 0:
+        return "value-negative" if higher_is_better else "value-positive"
+    return "value-neutral"
+
+
+def metric_card(title, value, sub="", css_class="value-neutral"):
     return f"""
     <div class="metric-card">
         <div class="metric-title">{title}</div>
-        <div class="metric-value">{value}</div>
+        <div class="metric-value {css_class}">{value}</div>
         <div class="metric-sub">{sub}</div>
     </div>
     """
 
 
-def insight_card(title, value, sub=""):
+def insight_card(title, value, sub="", css_class="value-neutral"):
     return f"""
     <div class="insight-card">
         <div class="insight-title">{title}</div>
-        <div class="insight-value">{value}</div>
+        <div class="insight-value {css_class}">{value}</div>
         <div class="insight-sub">{sub}</div>
+    </div>
+    """
+
+
+def diagnosis_box(title, text):
+    return f"""
+    <div class="diagnosis-box">
+        <div class="diagnosis-title">{title}</div>
+        <div class="diagnosis-text">{text}</div>
     </div>
     """
 
@@ -431,14 +787,6 @@ def section(title):
         f'<div class="section-title">{title}</div>',
         unsafe_allow_html=True
     )
-
-
-def chart_wrap_start():
-    st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-
-
-def chart_wrap_end():
-    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def prepare_dataframe(df, initial_capital):
@@ -491,7 +839,7 @@ def base_chart_layout(fig, height=380):
     return fig
 
 
-def make_equity_chart(df):
+def make_equity_chart(df, t):
     chart_df = df.copy()
     chart_df["equity_smooth"] = smooth_series(chart_df["equity"], window=6)
 
@@ -502,7 +850,7 @@ def make_equity_chart(df):
             x=chart_df["date"],
             y=chart_df["equity"],
             mode="lines",
-            name="Equity",
+            name=t["equity_curve"],
             line=dict(width=1.4, color="rgba(56,189,248,0.28)"),
             hovertemplate="%{y:.2f}<extra>Equity</extra>"
         )
@@ -513,16 +861,16 @@ def make_equity_chart(df):
             x=chart_df["date"],
             y=chart_df["equity_smooth"],
             mode="lines",
-            name="Smoothed Equity",
+            name="Smooth",
             line=dict(width=3.2, color="#38bdf8", shape="spline", smoothing=1.2),
-            hovertemplate="%{y:.2f}<extra>Smoothed</extra>"
+            hovertemplate="%{y:.2f}<extra>Smooth</extra>"
         )
     )
 
     return base_chart_layout(fig, height=430)
 
 
-def make_drawdown_chart(df):
+def make_drawdown_chart(df, t):
     chart_df = df.copy()
     chart_df["drawdown_smooth"] = smooth_series(chart_df["drawdown"], window=6)
 
@@ -533,7 +881,7 @@ def make_drawdown_chart(df):
             x=chart_df["date"],
             y=chart_df["drawdown_smooth"],
             mode="lines",
-            name="Drawdown",
+            name=t["drawdown"],
             line=dict(width=3, color="#fb7185", shape="spline", smoothing=1.1),
             fill="tozeroy",
             fillcolor="rgba(251,113,133,0.18)",
@@ -546,8 +894,129 @@ def make_drawdown_chart(df):
 
 def make_bar_chart(df, x, y, title):
     fig = px.bar(df, x=x, y=y, title=title)
-    fig.update_traces(marker_color="#38bdf8", marker_line_width=0)
+    colors = ["#22c55e" if value >= 0 else "#fb7185" for value in df[y]]
+    fig.update_traces(marker_color=colors, marker_line_width=0)
     return base_chart_layout(fig, height=340)
+
+
+def calculate_scores(metrics, daily, max_daily_loss, max_drawdown_limit):
+    net_pnl = float(metrics.get("net_pnl", 0))
+    profit_factor = float(metrics.get("profit_factor", 0))
+    max_drawdown = float(metrics.get("max_drawdown", 0))
+    winrate = float(metrics.get("winrate", 0))
+    loss_streak = float(metrics.get("max_loss_streak", 0))
+
+    pf_score = min(max(profit_factor / 2.0, 0), 1) * 25
+    dd_score = max(0, 1 - (max_drawdown / max(max_drawdown_limit, 1))) * 25
+    win_score = min(max(winrate / 70, 0), 1) * 20
+    pnl_score = 15 if net_pnl > 0 else 5
+    streak_score = max(0, 1 - (loss_streak / 8)) * 15
+
+    risk_score = round(pf_score + dd_score + win_score + pnl_score + streak_score)
+
+    if daily.empty or len(daily) <= 1:
+        consistency_score = 50
+    else:
+        daily_std = daily.std()
+        avg_abs = max(abs(daily).mean(), 1)
+        consistency_score = round(max(0, 100 - (daily_std / avg_abs * 35)))
+        consistency_score = min(100, max(0, consistency_score))
+
+    account_health = round((risk_score * 0.65) + (consistency_score * 0.35))
+
+    behavior_score = 100
+    behavior_score -= min(loss_streak * 8, 40)
+    if not daily.empty and daily.min() < -abs(max_daily_loss):
+        behavior_score -= 25
+    if profit_factor < 1:
+        behavior_score -= 20
+    behavior_score = round(max(0, min(100, behavior_score)))
+
+    return risk_score, consistency_score, account_health, behavior_score
+
+
+def score_class(score):
+    if score >= 75:
+        return "value-positive"
+    if score >= 50:
+        return "value-warning"
+    return "value-negative"
+
+
+def score_label(score, t):
+    if score >= 80:
+        return t["excellent"]
+    if score >= 65:
+        return t["healthy"]
+    if score >= 45:
+        return t["attention"]
+    return t["critical"]
+
+
+def generate_diagnosis(language, metrics, daily, hourly, weekday, risk_score, consistency_score, behavior_score):
+    net_pnl = float(metrics.get("net_pnl", 0))
+    profit_factor = float(metrics.get("profit_factor", 0))
+    max_drawdown = float(metrics.get("max_drawdown", 0))
+    loss_streak = int(metrics.get("max_loss_streak", 0))
+
+    worst_hour = hourly.idxmin() if not hourly.empty else "N/A"
+    worst_hour_value = hourly.min() if not hourly.empty else 0
+    best_hour = hourly.idxmax() if not hourly.empty else "N/A"
+    best_hour_value = hourly.max() if not hourly.empty else 0
+    negative_days = int((daily < 0).sum()) if not daily.empty else 0
+
+    if language == "Português":
+        items = []
+        if profit_factor < 1:
+            items.append("O Profit Factor está abaixo de 1, indicando que o operacional ainda perde mais do que ganha.")
+        else:
+            items.append("O Profit Factor está acima de 1, o que indica vantagem operacional inicial.")
+        if net_pnl < 0:
+            items.append("O resultado líquido está negativo. A prioridade agora é reduzir drawdown e filtrar horários ruins.")
+        if worst_hour != "N/A":
+            items.append(f"O pior horário foi {worst_hour}h, com resultado de {money(worst_hour_value)}. Esse período merece bloqueio, redução de lote ou revisão de setup.")
+        if best_hour != "N/A":
+            items.append(f"O melhor horário foi {best_hour}h, com resultado de {money(best_hour_value)}. Esse pode ser seu principal período operacional.")
+        if loss_streak >= 4:
+            items.append(f"Foi detectada sequência de {loss_streak} perdas. Isso pode indicar tilt, insistência ou condição ruim de mercado.")
+        items.append(f"Score de risco: {risk_score}/100. Score de consistência: {consistency_score}/100. Score comportamental: {behavior_score}/100.")
+        items.append(f"Foram encontrados {negative_days} dias negativos. A consistência diária ainda precisa ser melhorada.")
+        return items
+
+    if language == "Español":
+        items = []
+        if profit_factor < 1:
+            items.append("El Profit Factor está por debajo de 1, indicando que el sistema aún pierde más de lo que gana.")
+        else:
+            items.append("El Profit Factor está por encima de 1, lo que indica una ventaja operativa inicial.")
+        if net_pnl < 0:
+            items.append("El resultado neto está negativo. La prioridad ahora es reducir drawdown y filtrar horarios débiles.")
+        if worst_hour != "N/A":
+            items.append(f"El peor horario fue {worst_hour}h, con resultado de {money(worst_hour_value)}. Ese periodo merece bloqueo, reducción de lote o revisión de setup.")
+        if best_hour != "N/A":
+            items.append(f"El mejor horario fue {best_hour}h, con resultado de {money(best_hour_value)}. Puede ser tu principal ventana operativa.")
+        if loss_streak >= 4:
+            items.append(f"Se detectó una secuencia de {loss_streak} pérdidas. Esto puede indicar tilt, insistencia o malas condiciones de mercado.")
+        items.append(f"Score de riesgo: {risk_score}/100. Score de consistencia: {consistency_score}/100. Score conductual: {behavior_score}/100.")
+        items.append(f"Se encontraron {negative_days} días negativos. La consistencia diaria aún debe mejorar.")
+        return items
+
+    items = []
+    if profit_factor < 1:
+        items.append("Profit Factor is below 1, which means the system is still losing more than it wins.")
+    else:
+        items.append("Profit Factor is above 1, indicating an initial operational edge.")
+    if net_pnl < 0:
+        items.append("Net result is negative. The priority now is to reduce drawdown and filter weak trading windows.")
+    if worst_hour != "N/A":
+        items.append(f"Worst hour was {worst_hour}h, with a result of {money(worst_hour_value)}. This window should be blocked, reduced or reviewed.")
+    if best_hour != "N/A":
+        items.append(f"Best hour was {best_hour}h, with a result of {money(best_hour_value)}. This may be your main trading window.")
+    if loss_streak >= 4:
+        items.append(f"A sequence of {loss_streak} losses was detected. This may indicate tilt, overtrading or poor market conditions.")
+    items.append(f"Risk Score: {risk_score}/100. Consistency Score: {consistency_score}/100. Behavior Score: {behavior_score}/100.")
+    items.append(f"There were {negative_days} negative days. Daily consistency still needs improvement.")
+    return items
 
 
 def make_demo_dataframe():
@@ -604,80 +1073,39 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
 
     with top1:
         selected_language = st.selectbox(
-            "Language",
+            "Language / Idioma",
             ["English", "Português", "Español"],
             index=["English", "Português", "Español"].index(st.session_state.landing_language)
         )
         st.session_state.landing_language = selected_language
 
-    if st.session_state.landing_language == "Português":
-        hero_title = "Analytics institucional para traders"
-        hero_subtitle = "Plataforma profissional de análise operacional focada em risco, consistência, performance e aprovação em prop firms."
-        badge = "Infraestrutura de risco para traders sérios"
-        start_text = "🚀 Criar conta grátis"
-        login_text = "🔐 Entrar"
-        demo_text = "📊 Ver demo"
-        why_title = "Por que RiskPilot?"
-        f1_title = "📉 Inteligência de Risco"
-        f1_text = "Detecte drawdowns perigosos, overtrading, revenge trading e sequências ruins automaticamente."
-        f2_title = "🏆 Pronto para Prop Firms"
-        f2_text = "Acompanhe perda diária, drawdown máximo, consistência e distância até a meta."
-        f3_title = "🤖 Insights Operacionais"
-        f3_text = "Descubra seus melhores horários, piores padrões e fraquezas operacionais."
-    elif st.session_state.landing_language == "Español":
-        hero_title = "Analytics institucional para traders"
-        hero_subtitle = "Plataforma profesional de análisis operativo enfocada en riesgo, consistencia, rendimiento y aprobación en prop firms."
-        badge = "Infraestructura de riesgo para traders serios"
-        start_text = "🚀 Crear cuenta gratis"
-        login_text = "🔐 Entrar"
-        demo_text = "📊 Ver demo"
-        why_title = "¿Por qué RiskPilot?"
-        f1_title = "📉 Inteligencia de Riesgo"
-        f1_text = "Detecta drawdowns peligrosos, overtrading, revenge trading y secuencias negativas automáticamente."
-        f2_title = "🏆 Listo para Prop Firms"
-        f2_text = "Monitorea pérdida diaria, drawdown máximo, consistencia y distancia a la meta."
-        f3_title = "🤖 Insights Operativos"
-        f3_text = "Descubre tus mejores horarios, peores patrones y debilidades operativas."
-    else:
-        hero_title = "Institutional trading analytics"
-        hero_subtitle = "Professional-grade trading analytics platform focused on risk, consistency, performance and prop firm approval."
-        badge = "Risk infrastructure for serious traders"
-        start_text = "🚀 Start free"
-        login_text = "🔐 Login"
-        demo_text = "📊 View demo"
-        why_title = "Why RiskPilot?"
-        f1_title = "📉 Risk Intelligence"
-        f1_text = "Detect dangerous drawdowns, overtrading, revenge trading and losing streaks automatically."
-        f2_title = "🏆 Prop Firm Ready"
-        f2_text = "Track daily loss, max drawdown, consistency and target distance."
-        f3_title = "🤖 Operational Insights"
-        f3_text = "Discover your best hours, worst patterns and operational weaknesses."
+    t = ui_text(st.session_state.landing_language)
 
     st.markdown('<div class="hero-wrap">', unsafe_allow_html=True)
 
     col1, col2 = st.columns([1.25, 1])
 
     with col1:
-        st.markdown(f'<div class="hero-badge">⚡ {badge}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="hero-title">{hero_title}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="hero-subtitle">{hero_subtitle}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="hero-badge">⚡ {t["hero_badge"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="hero-title">{t["hero_title"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="hero-subtitle">{t["hero_subtitle"]}</div>', unsafe_allow_html=True)
 
         b1, b2, b3 = st.columns([1, 1, 1])
 
         with b1:
-            if st.button(start_text):
+            if st.button(t["start_free"]):
                 st.session_state.auth_mode = "Register"
                 st.session_state.show_login = True
                 st.rerun()
 
         with b2:
-            if st.button(login_text):
+            if st.button(t["login"]):
                 st.session_state.auth_mode = "Login"
                 st.session_state.show_login = True
                 st.rerun()
 
         with b3:
-            if st.button(demo_text):
+            if st.button(t["view_demo"]):
                 st.session_state.demo_mode = True
                 st.rerun()
 
@@ -691,7 +1119,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown(f'<div class="section-title">{why_title}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">{t["why"]}</div>', unsafe_allow_html=True)
 
     f1, f2, f3 = st.columns(3)
 
@@ -699,8 +1127,8 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         st.markdown(
             f"""
             <div class="feature-card">
-                <h3>{f1_title}</h3>
-                <p>{f1_text}</p>
+                <h3>{t["feature_1_title"]}</h3>
+                <p>{t["feature_1_text"]}</p>
             </div>
             """,
             unsafe_allow_html=True
@@ -710,8 +1138,8 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         st.markdown(
             f"""
             <div class="feature-card">
-                <h3>{f2_title}</h3>
-                <p>{f2_text}</p>
+                <h3>{t["feature_2_title"]}</h3>
+                <p>{t["feature_2_text"]}</p>
             </div>
             """,
             unsafe_allow_html=True
@@ -721,8 +1149,8 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         st.markdown(
             f"""
             <div class="feature-card">
-                <h3>{f3_title}</h3>
-                <p>{f3_text}</p>
+                <h3>{t["feature_3_title"]}</h3>
+                <p>{t["feature_3_text"]}</p>
             </div>
             """,
             unsafe_allow_html=True
@@ -736,39 +1164,41 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
 # =========================
 
 if not st.session_state.authenticated and st.session_state.show_login:
+    t = ui_text(st.session_state.landing_language)
+
     st.markdown('<div class="auth-box">', unsafe_allow_html=True)
     st.title("🔐 RiskPilot")
 
     auth_mode = st.radio(
-        "Choose",
-        ["Login", "Register"],
+        t["choose"],
+        [t["login"].replace("🔐 ", ""), t["register"]],
         index=0 if st.session_state.auth_mode == "Login" else 1
     )
 
-    if auth_mode == "Register":
-        name = st.text_input("Name")
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
+    if auth_mode == t["register"]:
+        name = st.text_input(t["name"])
+        email = st.text_input(t["email"])
+        password = st.text_input(t["password"], type="password")
 
-        if st.button("Create Account"):
+        if st.button(t["create_account"]):
             existing = get_user_by_email(email)
 
             if existing:
-                st.error("User already exists.")
+                st.error(t["user_exists"])
             else:
                 hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
                 create_user(name, email, hashed)
-                st.success("Account created successfully. You can now login.")
+                st.success(t["account_created"])
 
     else:
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
+        email = st.text_input(t["email"])
+        password = st.text_input(t["password"], type="password")
 
-        if st.button("Login"):
+        if st.button(t["login"]):
             user = get_user_by_email(email)
 
             if not user:
-                st.error("Invalid credentials.")
+                st.error(t["invalid_credentials"])
             else:
                 valid = bcrypt.checkpw(password.encode(), user["password"].encode())
 
@@ -779,9 +1209,9 @@ if not st.session_state.authenticated and st.session_state.show_login:
                     st.session_state.demo_mode = False
                     st.rerun()
                 else:
-                    st.error("Invalid credentials.")
+                    st.error(t["invalid_credentials"])
 
-    if st.button("← Back to homepage"):
+    if st.button(t["back_home"]):
         st.session_state.show_login = False
         st.rerun()
 
@@ -800,13 +1230,13 @@ language = st.sidebar.selectbox(
 )
 
 st.session_state.landing_language = language
-t = get_translations(language)
+t = ui_text(language)
 
 st.sidebar.markdown(
-    """
+    f"""
     <div class="sidebar-brand">
         <div class="sidebar-logo">📊 RiskPilot</div>
-        <div class="sidebar-subtitle">Professional Trading Analytics</div>
+        <div class="sidebar-subtitle">{t["professional_analytics"]}</div>
     </div>
     """,
     unsafe_allow_html=True
@@ -816,14 +1246,14 @@ if st.session_state.authenticated:
     st.sidebar.markdown(
         f"""
         <div class="sidebar-user-card">
-            <div class="sidebar-user-label">Authenticated user</div>
+            <div class="sidebar-user-label">{t["authenticated_user"]}</div>
             <div class="sidebar-user-value">{st.session_state.user_email}</div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    if st.sidebar.button("Logout"):
+    if st.sidebar.button(t["logout"]):
         st.session_state.authenticated = False
         st.session_state.show_login = False
         st.session_state.demo_mode = False
@@ -831,66 +1261,52 @@ if st.session_state.authenticated:
         st.rerun()
 else:
     st.sidebar.markdown(
-        """
+        f"""
         <div class="sidebar-user-card">
-            <div class="sidebar-user-label">Current mode</div>
-            <div class="sidebar-user-value">Demo Mode</div>
+            <div class="sidebar-user-label">{t["current_mode"]}</div>
+            <div class="sidebar-user-value">{t["demo_mode"]}</div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    if st.sidebar.button("Create free account"):
+    if st.sidebar.button(t["create_free_account"]):
         st.session_state.demo_mode = False
         st.session_state.auth_mode = "Register"
         st.session_state.show_login = True
         st.rerun()
 
-initial_capital = st.sidebar.number_input(
-    t.get("initial_capital", "Initial Capital"),
-    value=1000.0
-)
-
-max_daily_loss = st.sidebar.number_input(
-    t.get("daily_loss_limit", "Daily Loss Limit"),
-    value=500.0
-)
-
-max_drawdown_limit = st.sidebar.number_input(
-    t.get("max_drawdown_limit", "Max Drawdown"),
-    value=2000.0
-)
+initial_capital = st.sidebar.number_input(t["initial_capital"], value=1000.0)
+max_daily_loss = st.sidebar.number_input(t["daily_loss_limit"], value=500.0)
+max_drawdown_limit = st.sidebar.number_input(t["max_drawdown_limit"], value=2000.0)
 
 page = st.sidebar.radio(
-    t.get("navigation", "Navigation"),
-    [t.get("dashboard", "Dashboard"), t.get("history", "History")]
+    t["navigation"],
+    [t["dashboard"], t["history"]]
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown(sidebar_kpi("Account status", "Active"), unsafe_allow_html=True)
-st.sidebar.markdown(sidebar_kpi("Risk mode", "Prop firm"), unsafe_allow_html=True)
-st.sidebar.markdown(sidebar_kpi("Analytics", "Enabled"), unsafe_allow_html=True)
-st.sidebar.markdown(
-    '<div class="sidebar-note">RiskPilot monitors performance, drawdown, behavior and operational consistency.</div>',
-    unsafe_allow_html=True
-)
+st.sidebar.markdown(sidebar_kpi(t["account_status"], t["active"]), unsafe_allow_html=True)
+st.sidebar.markdown(sidebar_kpi(t["risk_mode"], t["prop_firm"]), unsafe_allow_html=True)
+st.sidebar.markdown(sidebar_kpi(t["analytics"], t["enabled"]), unsafe_allow_html=True)
+st.sidebar.markdown(f'<div class="sidebar-note">{t["sidebar_note"]}</div>', unsafe_allow_html=True)
 
 
 # =========================
 # HISTORY
 # =========================
 
-if page == t.get("history", "History"):
-    st.title("📚 " + t.get("history_uploads", "Upload History"))
+if page == t["history"]:
+    st.title("📚 " + t["history_title"])
 
     if not st.session_state.authenticated:
-        st.info("History is available after creating a free account.")
+        st.info(t["history_account_required"])
         st.stop()
 
     history = load_upload_history(st.session_state.user_email)
 
     if history.empty:
-        st.info(t.get("no_saved_uploads", "No uploads yet."))
+        st.info(t["no_uploads"])
         st.stop()
 
     st.dataframe(history, use_container_width=True)
@@ -902,28 +1318,25 @@ if page == t.get("history", "History"):
 # =========================
 
 st.markdown(
-    """
+    f"""
     <div class="terminal-header">
-        <div class="terminal-title">RiskPilot Terminal</div>
-        <div class="terminal-subtitle">Institutional-grade trading risk intelligence and performance analytics.</div>
-        <div class="terminal-pill">LIVE ANALYTICS ENGINE</div>
+        <div class="terminal-title">{t["terminal_title"]}</div>
+        <div class="terminal-subtitle">{t["terminal_subtitle"]}</div>
+        <div class="terminal-pill">{t["live_engine"]}</div>
     </div>
     """,
     unsafe_allow_html=True
 )
 
 if st.session_state.demo_mode and not st.session_state.authenticated:
-    st.info("Demo mode: sample data loaded. Create a free account to upload and save your own trading reports.")
+    st.info(t["demo_info"])
     normalized_df = prepare_dataframe(make_demo_dataframe(), initial_capital)
     uploaded_file_name = "demo_data.csv"
 else:
-    uploaded_file = st.file_uploader(
-        t.get("upload_report", "Upload trading report"),
-        type=["csv", "xlsx"]
-    )
+    uploaded_file = st.file_uploader(t["upload_report"], type=["csv", "xlsx"])
 
     if not uploaded_file:
-        st.info(t.get("send_file_to_start", "Upload a CSV or XLSX report to begin."))
+        st.info(t["upload_to_begin"])
         st.stop()
 
     try:
@@ -932,40 +1345,93 @@ else:
         normalized_df = prepare_dataframe(normalized_df, initial_capital)
         uploaded_file_name = uploaded_file.name
     except Exception as e:
-        st.error(f'{t.get("file_error", "Error reading file")}: {e}')
+        st.error(f'{t["file_error"]}: {e}')
         st.stop()
 
 metrics = calculate_metrics(normalized_df, initial_capital)
+
+hourly = normalized_df.groupby("hour")["net_pnl"].sum()
+daily = normalized_df.groupby("day")["net_pnl"].sum()
+weekday = normalized_df.groupby("weekday")["net_pnl"].sum()
+
+risk_score, consistency_score, account_health, behavior_score = calculate_scores(
+    metrics,
+    daily,
+    max_daily_loss,
+    max_drawdown_limit
+)
 
 # =========================
 # PERFORMANCE OVERVIEW
 # =========================
 
-section("Performance Overview")
+section(t["performance"])
 
 c1, c2, c3, c4 = st.columns(4)
 
 with c1:
-    st.markdown(metric_card("Net P&L", money(metrics["net_pnl"]), "Total net result"), unsafe_allow_html=True)
+    st.markdown(
+        metric_card(
+            t["net_pnl"],
+            money(metrics["net_pnl"]),
+            t["total_net_result"],
+            value_class(metrics["net_pnl"])
+        ),
+        unsafe_allow_html=True
+    )
 
 with c2:
-    st.markdown(metric_card("Winrate", percent(metrics["winrate"]), "Winning trades"), unsafe_allow_html=True)
+    st.markdown(
+        metric_card(
+            t["winrate"],
+            percent(metrics["winrate"]),
+            t["winning_trades"],
+            value_class(metrics["winrate"], warning_threshold=50)
+        ),
+        unsafe_allow_html=True
+    )
 
 with c3:
-    st.markdown(metric_card("Profit Factor", f"{metrics['profit_factor']:.2f}", "Gross profit / gross loss"), unsafe_allow_html=True)
+    st.markdown(
+        metric_card(
+            t["profit_factor"],
+            f"{metrics['profit_factor']:.2f}",
+            t["gross_ratio"],
+            value_class(metrics["profit_factor"], warning_threshold=1)
+        ),
+        unsafe_allow_html=True
+    )
 
 with c4:
-    st.markdown(metric_card("Max Drawdown", money(metrics["max_drawdown"]), "Largest equity decline"), unsafe_allow_html=True)
+    st.markdown(
+        metric_card(
+            t["max_drawdown"],
+            money(metrics["max_drawdown"]),
+            t["largest_decline"],
+            value_class(metrics["max_drawdown"], higher_is_better=False)
+        ),
+        unsafe_allow_html=True
+    )
+
+s1, s2, s3, s4 = st.columns(4)
+
+with s1:
+    st.markdown(metric_card(t["risk_score"], f"{risk_score}/100", t["risk_score_sub"], score_class(risk_score)), unsafe_allow_html=True)
+
+with s2:
+    st.markdown(metric_card(t["consistency_score"], f"{consistency_score}/100", t["consistency_score_sub"], score_class(consistency_score)), unsafe_allow_html=True)
+
+with s3:
+    st.markdown(metric_card(t["account_health"], score_label(account_health, t), t["account_health_sub"], score_class(account_health)), unsafe_allow_html=True)
+
+with s4:
+    st.markdown(metric_card(t["behavior_score"], f"{behavior_score}/100", t["behavior_score_sub"], score_class(behavior_score)), unsafe_allow_html=True)
 
 # =========================
 # ADVANCED INSIGHTS
 # =========================
 
-section("Automatic Insights")
-
-hourly = normalized_df.groupby("hour")["net_pnl"].sum()
-daily = normalized_df.groupby("day")["net_pnl"].sum()
-weekday = normalized_df.groupby("weekday")["net_pnl"].sum()
+section(t["automatic_insights"])
 
 best_hour = hourly.idxmax() if not hourly.empty else "N/A"
 best_hour_pnl = hourly.max() if not hourly.empty else 0
@@ -985,87 +1451,84 @@ worst_weekday_pnl = weekday.min() if not weekday.empty else 0
 ic1, ic2, ic3, ic4 = st.columns(4)
 
 with ic1:
-    st.markdown(insight_card("Best Hour", f"{best_hour}h", money(best_hour_pnl)), unsafe_allow_html=True)
+    st.markdown(insight_card(t["best_hour"], f"{best_hour}h", money(best_hour_pnl), value_class(best_hour_pnl)), unsafe_allow_html=True)
 
 with ic2:
-    st.markdown(insight_card("Worst Hour", f"{worst_hour}h", money(worst_hour_pnl)), unsafe_allow_html=True)
+    st.markdown(insight_card(t["worst_hour"], f"{worst_hour}h", money(worst_hour_pnl), value_class(worst_hour_pnl)), unsafe_allow_html=True)
 
 with ic3:
-    st.markdown(insight_card("Best Day", str(best_day), money(best_day_pnl)), unsafe_allow_html=True)
+    st.markdown(insight_card(t["best_day"], str(best_day), money(best_day_pnl), value_class(best_day_pnl)), unsafe_allow_html=True)
 
 with ic4:
-    st.markdown(insight_card("Worst Day", str(worst_day), money(worst_day_pnl)), unsafe_allow_html=True)
+    st.markdown(insight_card(t["worst_day"], str(worst_day), money(worst_day_pnl), value_class(worst_day_pnl)), unsafe_allow_html=True)
 
 ic5, ic6, ic7, ic8 = st.columns(4)
 
 with ic5:
-    st.markdown(insight_card("Best Weekday", str(best_weekday), money(best_weekday_pnl)), unsafe_allow_html=True)
+    st.markdown(insight_card(t["best_weekday"], str(best_weekday), money(best_weekday_pnl), value_class(best_weekday_pnl)), unsafe_allow_html=True)
 
 with ic6:
-    st.markdown(insight_card("Worst Weekday", str(worst_weekday), money(worst_weekday_pnl)), unsafe_allow_html=True)
+    st.markdown(insight_card(t["worst_weekday"], str(worst_weekday), money(worst_weekday_pnl), value_class(worst_weekday_pnl)), unsafe_allow_html=True)
 
 with ic7:
     positive_days = int((daily > 0).sum()) if not daily.empty else 0
-    st.markdown(insight_card("Positive Days", positive_days, "Days above zero"), unsafe_allow_html=True)
+    st.markdown(insight_card(t["positive_days"], positive_days, t["days_above_zero"], "value-positive"), unsafe_allow_html=True)
 
 with ic8:
     negative_days = int((daily < 0).sum()) if not daily.empty else 0
-    st.markdown(insight_card("Negative Days", negative_days, "Days below zero"), unsafe_allow_html=True)
+    st.markdown(insight_card(t["negative_days"], negative_days, t["days_below_zero"], "value-negative"), unsafe_allow_html=True)
+
+# =========================
+# OPERATIONAL DIAGNOSIS
+# =========================
+
+section(t["ai_diagnosis"])
+
+for item in generate_diagnosis(language, metrics, daily, hourly, weekday, risk_score, consistency_score, behavior_score):
+    st.markdown(diagnosis_box(t["ai_diagnosis"], item), unsafe_allow_html=True)
 
 # =========================
 # CHARTS
 # =========================
 
-section("Equity Curve")
-chart_wrap_start()
-st.plotly_chart(make_equity_chart(normalized_df), use_container_width=True)
-chart_wrap_end()
+section(t["equity_curve"])
+st.plotly_chart(make_equity_chart(normalized_df, t), use_container_width=True)
 
-section("Drawdown")
-chart_wrap_start()
-st.plotly_chart(make_drawdown_chart(normalized_df), use_container_width=True)
-chart_wrap_end()
+section(t["drawdown"])
+st.plotly_chart(make_drawdown_chart(normalized_df, t), use_container_width=True)
 
 chart_col1, chart_col2 = st.columns(2)
 
 with chart_col1:
-    section("Daily P&L")
+    section(t["daily_pnl"])
     daily_df = daily.reset_index()
     daily_df.columns = ["day", "net_pnl"]
-    chart_wrap_start()
-    st.plotly_chart(make_bar_chart(daily_df, "day", "net_pnl", "Daily P&L"), use_container_width=True)
-    chart_wrap_end()
+    st.plotly_chart(make_bar_chart(daily_df, "day", "net_pnl", t["daily_pnl"]), use_container_width=True)
 
 with chart_col2:
-    section("P&L by Hour")
+    section(t["pnl_by_hour"])
     hourly_df = hourly.reset_index()
     hourly_df.columns = ["hour", "net_pnl"]
-    chart_wrap_start()
-    st.plotly_chart(make_bar_chart(hourly_df, "hour", "net_pnl", "P&L by Hour"), use_container_width=True)
-    chart_wrap_end()
+    st.plotly_chart(make_bar_chart(hourly_df, "hour", "net_pnl", t["pnl_by_hour"]), use_container_width=True)
 
 chart_col3, chart_col4 = st.columns(2)
 
 with chart_col3:
-    section("P&L by Weekday")
+    section(t["pnl_by_weekday"])
     weekday_df = weekday.reset_index()
     weekday_df.columns = ["weekday", "net_pnl"]
-    chart_wrap_start()
-    st.plotly_chart(make_bar_chart(weekday_df, "weekday", "net_pnl", "P&L by Weekday"), use_container_width=True)
-    chart_wrap_end()
+    st.plotly_chart(make_bar_chart(weekday_df, "weekday", "net_pnl", t["pnl_by_weekday"]), use_container_width=True)
 
 with chart_col4:
-    section("P&L by Asset")
+    section(t["pnl_by_asset"])
     asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
-    chart_wrap_start()
-    st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", "P&L by Asset"), use_container_width=True)
-    chart_wrap_end()
+    st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", t["pnl_by_asset"]), use_container_width=True)
 
 # =========================
 # ALERTS
 # =========================
 
-section("Risk Alerts")
+section(t["risk_alerts"])
 
 alerts = generate_risk_alerts(
     normalized_df,
@@ -1089,7 +1552,7 @@ for alert in alerts:
 # =========================
 
 if st.session_state.authenticated:
-    if st.button("💾 Save Analysis"):
+    if st.button(t["save_analysis"]):
         save_upload(
             account_name="Main Account",
             platform="Unknown",
@@ -1098,13 +1561,13 @@ if st.session_state.authenticated:
             metrics=metrics,
             user_email=st.session_state.user_email
         )
-        st.success("Analysis saved.")
+        st.success(t["analysis_saved"])
 else:
-    st.warning("Create a free account to save your analysis history.")
+    st.warning(t["save_warning"])
 
 # =========================
 # DATA
 # =========================
 
-section("Trades")
+section(t["trades"])
 st.dataframe(normalized_df, use_container_width=True)
