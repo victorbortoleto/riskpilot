@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import bcrypt
 
 from core.loader import load_trading_file
@@ -58,7 +59,7 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
 }
 
 .block-container {
-    max-width: 1450px;
+    max-width: 1480px;
     padding-top: 1.8rem;
     padding-bottom: 4rem;
 }
@@ -162,6 +163,12 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     margin-top: 6px;
 }
 
+.metric-sub {
+    color: #64748b !important;
+    font-size: 0.82rem;
+    margin-top: 6px;
+}
+
 .section-title {
     font-size: 2rem;
     font-weight: 850;
@@ -180,6 +187,34 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     color: #ffffff !important;
 }
 
+.insight-card {
+    background: linear-gradient(135deg,#0f172a 0%,#172554 100%);
+    border: 1px solid rgba(56,189,248,0.22);
+    border-radius: 18px;
+    padding: 22px;
+    min-height: 126px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.20);
+}
+
+.insight-title {
+    color: #94a3b8 !important;
+    font-size: 0.88rem;
+    font-weight: 750;
+}
+
+.insight-value {
+    color: #ffffff !important;
+    font-size: 1.65rem;
+    font-weight: 850;
+    margin-top: 8px;
+}
+
+.insight-sub {
+    color: #7dd3fc !important;
+    font-size: 0.85rem;
+    margin-top: 8px;
+}
+
 .auth-box {
     max-width: 620px;
     margin: 30px auto;
@@ -187,6 +222,14 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     border: 1px solid rgba(255,255,255,0.09);
     border-radius: 26px;
     padding: 35px;
+}
+
+.chart-card {
+    background: #0b1020;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 22px;
+    padding: 12px 12px 2px 12px;
+    margin-bottom: 22px;
 }
 
 .stButton > button {
@@ -238,11 +281,22 @@ def percent(v):
         return "0.00%"
 
 
-def metric_card(title, value):
+def metric_card(title, value, sub=""):
     return f"""
     <div class="metric-card">
         <div class="metric-title">{title}</div>
         <div class="metric-value">{value}</div>
+        <div class="metric-sub">{sub}</div>
+    </div>
+    """
+
+
+def insight_card(title, value, sub=""):
+    return f"""
+    <div class="insight-card">
+        <div class="insight-title">{title}</div>
+        <div class="insight-value">{value}</div>
+        <div class="insight-sub">{sub}</div>
     </div>
     """
 
@@ -252,6 +306,14 @@ def section(title):
         f'<div class="section-title">{title}</div>',
         unsafe_allow_html=True
     )
+
+
+def chart_wrap_start():
+    st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+
+
+def chart_wrap_end():
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def prepare_dataframe(df, initial_capital):
@@ -273,6 +335,102 @@ def prepare_dataframe(df, initial_capital):
     df["drawdown"] = df["equity"] - df["equity_peak"]
 
     return df
+
+
+def smooth_series(series, window=5):
+    if len(series) < window:
+        return series
+    return series.rolling(window=window, min_periods=1).mean()
+
+
+def base_chart_layout(fig, height=380):
+    fig.update_layout(
+        template="plotly_dark",
+        height=height,
+        margin=dict(l=20, r=20, t=55, b=25),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#e5e7eb"),
+        title=dict(font=dict(size=18, color="#ffffff")),
+        hovermode="x unified",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+    fig.update_xaxes(
+        showgrid=False,
+        zeroline=False,
+        color="#cbd5e1"
+    )
+    fig.update_yaxes(
+        gridcolor="rgba(148,163,184,0.16)",
+        zeroline=False,
+        color="#cbd5e1"
+    )
+    return fig
+
+
+def make_equity_chart(df):
+    chart_df = df.copy()
+    chart_df["equity_smooth"] = smooth_series(chart_df["equity"], window=6)
+
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df["date"],
+            y=chart_df["equity"],
+            mode="lines",
+            name="Equity",
+            line=dict(width=1.4, color="rgba(56,189,248,0.28)"),
+            hovertemplate="%{y:.2f}<extra>Equity</extra>"
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df["date"],
+            y=chart_df["equity_smooth"],
+            mode="lines",
+            name="Smoothed Equity",
+            line=dict(width=3.2, color="#38bdf8", shape="spline", smoothing=1.2),
+            hovertemplate="%{y:.2f}<extra>Smoothed</extra>"
+        )
+    )
+
+    return base_chart_layout(fig, height=430)
+
+
+def make_drawdown_chart(df):
+    chart_df = df.copy()
+    chart_df["drawdown_smooth"] = smooth_series(chart_df["drawdown"], window=6)
+
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df["date"],
+            y=chart_df["drawdown_smooth"],
+            mode="lines",
+            name="Drawdown",
+            line=dict(width=3, color="#fb7185", shape="spline", smoothing=1.1),
+            fill="tozeroy",
+            fillcolor="rgba(251,113,133,0.18)",
+            hovertemplate="%{y:.2f}<extra>Drawdown</extra>"
+        )
+    )
+
+    return base_chart_layout(fig, height=360)
+
+
+def make_bar_chart(df, x, y, title):
+    fig = px.bar(df, x=x, y=y, title=title)
+    fig.update_traces(marker_color="#38bdf8", marker_line_width=0)
+    return base_chart_layout(fig, height=340)
 
 
 def make_demo_dataframe():
@@ -598,6 +756,7 @@ st.title("📊 RiskPilot Dashboard")
 if st.session_state.demo_mode and not st.session_state.authenticated:
     st.info("Demo mode: sample data loaded. Create a free account to upload and save your own trading reports.")
     normalized_df = prepare_dataframe(make_demo_dataframe(), initial_capital)
+    uploaded_file_name = "demo_data.csv"
 else:
     uploaded_file = st.file_uploader(
         t.get("upload_report", "Upload trading report"),
@@ -612,38 +771,140 @@ else:
         raw_df = load_trading_file(uploaded_file)
         normalized_df = normalize_trades(raw_df)
         normalized_df = prepare_dataframe(normalized_df, initial_capital)
+        uploaded_file_name = uploaded_file.name
     except Exception as e:
         st.error(f'{t.get("file_error", "Error reading file")}: {e}')
         st.stop()
 
 metrics = calculate_metrics(normalized_df, initial_capital)
 
+# =========================
+# PERFORMANCE OVERVIEW
+# =========================
+
 section("Performance Overview")
 
 c1, c2, c3, c4 = st.columns(4)
 
 with c1:
-    st.markdown(metric_card("Net P&L", money(metrics["net_pnl"])), unsafe_allow_html=True)
+    st.markdown(metric_card("Net P&L", money(metrics["net_pnl"]), "Total net result"), unsafe_allow_html=True)
 
 with c2:
-    st.markdown(metric_card("Winrate", percent(metrics["winrate"])), unsafe_allow_html=True)
+    st.markdown(metric_card("Winrate", percent(metrics["winrate"]), "Winning trades"), unsafe_allow_html=True)
 
 with c3:
-    st.markdown(metric_card("Profit Factor", f"{metrics['profit_factor']:.2f}"), unsafe_allow_html=True)
+    st.markdown(metric_card("Profit Factor", f"{metrics['profit_factor']:.2f}", "Gross profit / gross loss"), unsafe_allow_html=True)
 
 with c4:
-    st.markdown(metric_card("Max Drawdown", money(metrics["max_drawdown"])), unsafe_allow_html=True)
+    st.markdown(metric_card("Max Drawdown", money(metrics["max_drawdown"]), "Largest equity decline"), unsafe_allow_html=True)
+
+# =========================
+# ADVANCED INSIGHTS
+# =========================
+
+section("Automatic Insights")
+
+hourly = normalized_df.groupby("hour")["net_pnl"].sum()
+daily = normalized_df.groupby("day")["net_pnl"].sum()
+weekday = normalized_df.groupby("weekday")["net_pnl"].sum()
+
+best_hour = hourly.idxmax() if not hourly.empty else "N/A"
+best_hour_pnl = hourly.max() if not hourly.empty else 0
+worst_hour = hourly.idxmin() if not hourly.empty else "N/A"
+worst_hour_pnl = hourly.min() if not hourly.empty else 0
+
+best_day = daily.idxmax() if not daily.empty else "N/A"
+best_day_pnl = daily.max() if not daily.empty else 0
+worst_day = daily.idxmin() if not daily.empty else "N/A"
+worst_day_pnl = daily.min() if not daily.empty else 0
+
+best_weekday = weekday.idxmax() if not weekday.empty else "N/A"
+best_weekday_pnl = weekday.max() if not weekday.empty else 0
+worst_weekday = weekday.idxmin() if not weekday.empty else "N/A"
+worst_weekday_pnl = weekday.min() if not weekday.empty else 0
+
+ic1, ic2, ic3, ic4 = st.columns(4)
+
+with ic1:
+    st.markdown(insight_card("Best Hour", f"{best_hour}h", money(best_hour_pnl)), unsafe_allow_html=True)
+
+with ic2:
+    st.markdown(insight_card("Worst Hour", f"{worst_hour}h", money(worst_hour_pnl)), unsafe_allow_html=True)
+
+with ic3:
+    st.markdown(insight_card("Best Day", str(best_day), money(best_day_pnl)), unsafe_allow_html=True)
+
+with ic4:
+    st.markdown(insight_card("Worst Day", str(worst_day), money(worst_day_pnl)), unsafe_allow_html=True)
+
+ic5, ic6, ic7, ic8 = st.columns(4)
+
+with ic5:
+    st.markdown(insight_card("Best Weekday", str(best_weekday), money(best_weekday_pnl)), unsafe_allow_html=True)
+
+with ic6:
+    st.markdown(insight_card("Worst Weekday", str(worst_weekday), money(worst_weekday_pnl)), unsafe_allow_html=True)
+
+with ic7:
+    positive_days = int((daily > 0).sum()) if not daily.empty else 0
+    st.markdown(insight_card("Positive Days", positive_days, "Days above zero"), unsafe_allow_html=True)
+
+with ic8:
+    negative_days = int((daily < 0).sum()) if not daily.empty else 0
+    st.markdown(insight_card("Negative Days", negative_days, "Days below zero"), unsafe_allow_html=True)
+
+# =========================
+# CHARTS
+# =========================
 
 section("Equity Curve")
+chart_wrap_start()
+st.plotly_chart(make_equity_chart(normalized_df), use_container_width=True)
+chart_wrap_end()
 
-fig = px.line(
-    normalized_df,
-    x="date",
-    y="equity",
-    title="Equity Curve"
-)
-fig.update_layout(template="plotly_dark", height=500)
-st.plotly_chart(fig, use_container_width=True)
+section("Drawdown")
+chart_wrap_start()
+st.plotly_chart(make_drawdown_chart(normalized_df), use_container_width=True)
+chart_wrap_end()
+
+chart_col1, chart_col2 = st.columns(2)
+
+with chart_col1:
+    section("Daily P&L")
+    daily_df = daily.reset_index()
+    daily_df.columns = ["day", "net_pnl"]
+    chart_wrap_start()
+    st.plotly_chart(make_bar_chart(daily_df, "day", "net_pnl", "Daily P&L"), use_container_width=True)
+    chart_wrap_end()
+
+with chart_col2:
+    section("P&L by Hour")
+    hourly_df = hourly.reset_index()
+    hourly_df.columns = ["hour", "net_pnl"]
+    chart_wrap_start()
+    st.plotly_chart(make_bar_chart(hourly_df, "hour", "net_pnl", "P&L by Hour"), use_container_width=True)
+    chart_wrap_end()
+
+chart_col3, chart_col4 = st.columns(2)
+
+with chart_col3:
+    section("P&L by Weekday")
+    weekday_df = weekday.reset_index()
+    weekday_df.columns = ["weekday", "net_pnl"]
+    chart_wrap_start()
+    st.plotly_chart(make_bar_chart(weekday_df, "weekday", "net_pnl", "P&L by Weekday"), use_container_width=True)
+    chart_wrap_end()
+
+with chart_col4:
+    section("P&L by Asset")
+    asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
+    chart_wrap_start()
+    st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", "P&L by Asset"), use_container_width=True)
+    chart_wrap_end()
+
+# =========================
+# ALERTS
+# =========================
 
 section("Risk Alerts")
 
@@ -664,12 +925,16 @@ for alert in alerts:
         unsafe_allow_html=True
     )
 
+# =========================
+# SAVE
+# =========================
+
 if st.session_state.authenticated:
     if st.button("💾 Save Analysis"):
         save_upload(
             account_name="Main Account",
             platform="Unknown",
-            file_name="demo_data.csv" if st.session_state.demo_mode else uploaded_file.name,
+            file_name=uploaded_file_name,
             trades_df=normalized_df,
             metrics=metrics,
             user_email=st.session_state.user_email
@@ -677,6 +942,10 @@ if st.session_state.authenticated:
         st.success("Analysis saved.")
 else:
     st.warning("Create a free account to save your analysis history.")
+
+# =========================
+# DATA
+# =========================
 
 section("Trades")
 st.dataframe(normalized_df, use_container_width=True)
