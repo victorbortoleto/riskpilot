@@ -21,15 +21,10 @@ from core.i18n import get_translations
 
 
 # =========================
-# INIT DB
+# INIT
 # =========================
 
 init_db()
-
-
-# =========================
-# PAGE CONFIG
-# =========================
 
 st.set_page_config(
     page_title="RiskPilot",
@@ -42,122 +37,114 @@ st.set_page_config(
 # CSS
 # =========================
 
-st.markdown(
-    """
-    <style>
-    .main {
-        background-color: #0b0f19;
-    }
+st.markdown("""
+<style>
 
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 3rem;
-        max-width: 1400px;
-    }
+.main {
+    background-color: #050816;
+}
 
-    h1, h2, h3 {
-        color: #ffffff;
-        letter-spacing: -0.03em;
-    }
+.block-container {
+    max-width: 1450px;
+    padding-top: 1rem;
+    padding-bottom: 4rem;
+}
 
-    .subtitle {
-        color: #9ca3af;
-        font-size: 1.05rem;
-        margin-top: -10px;
-        margin-bottom: 30px;
-    }
+h1,h2,h3,h4 {
+    color: white;
+}
 
-    .section-title {
-        font-size: 1.6rem;
-        font-weight: 800;
-        color: #ffffff;
-        margin-top: 35px;
-        margin-bottom: 16px;
-        border-left: 4px solid #38bdf8;
-        padding-left: 12px;
-    }
+.hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.0;
+    color: white;
+}
 
-    .metric-card {
-        background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 18px;
-        padding: 22px;
-        box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-        min-height: 125px;
-    }
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #94a3b8;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
 
-    .metric-label {
-        color: #9ca3af;
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
+.feature-card {
+    background: linear-gradient(135deg,#111827 0%,#1f2937 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 22px;
+    padding: 30px;
+    min-height: 220px;
+    transition: 0.3s;
+}
 
-    .metric-value {
-        color: #ffffff;
-        font-size: 2rem;
-        font-weight: 800;
-        line-height: 1.1;
-    }
+.feature-card:hover {
+    transform: translateY(-4px);
+}
 
-    .metric-help {
-        color: #6b7280;
-        font-size: 0.78rem;
-        margin-top: 8px;
-    }
+.metric-card {
+    background: linear-gradient(135deg,#111827 0%,#1f2937 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 24px;
+}
 
-    .positive {
-        color: #22c55e;
-    }
+.metric-title {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
 
-    .negative {
-        color: #ef4444;
-    }
+.metric-value {
+    color: white;
+    font-size: 2rem;
+    font-weight: 800;
+}
 
-    .neutral {
-        color: #38bdf8;
-    }
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    margin-top: 60px;
+    margin-bottom: 25px;
+}
 
-    .alert-box {
-        background: #1f2937;
-        border-left: 5px solid #f59e0b;
-        padding: 16px 18px;
-        border-radius: 12px;
-        color: #f9fafb;
-        margin-bottom: 12px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+.alert-box {
+    background: #1f2937;
+    border-left: 5px solid orange;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    color: white;
+}
+
+.stButton > button {
+    border-radius: 12px;
+    height: 52px;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 
 # =========================
 # HELPERS
 # =========================
 
-def money(value):
-    return f"${float(value):,.2f}"
+def money(v):
+    return f"${float(v):,.2f}"
 
 
-def percent(value):
-    return f"{float(value):.2f}%"
+def percent(v):
+    return f"{float(v):.2f}%"
 
 
-def section(title):
-    st.markdown(
-        f'<div class="section-title">{title}</div>',
-        unsafe_allow_html=True
-    )
-
-
-def metric_card(label, value, help_text="", status="neutral"):
+def metric_card(title, value):
 
     return f"""
     <div class="metric-card">
-        <div class="metric-label">{label}</div>
-        <div class="metric-value {status}">{value}</div>
-        <div class="metric-help">{help_text}</div>
+        <div class="metric-title">{title}</div>
+        <div class="metric-value">{value}</div>
     </div>
     """
 
@@ -171,8 +158,6 @@ def prepare_dataframe(df, initial_capital):
         errors="coerce"
     )
 
-    df = df.dropna(subset=["date"])
-
     df["net_pnl"] = pd.to_numeric(
         df["net_pnl"],
         errors="coerce"
@@ -180,9 +165,6 @@ def prepare_dataframe(df, initial_capital):
 
     df["hour"] = df["date"].dt.hour
     df["day"] = df["date"].dt.date
-    df["weekday"] = df["date"].dt.day_name()
-
-    df = df.sort_values("date").reset_index(drop=True)
 
     df["equity"] = (
         df["net_pnl"].cumsum()
@@ -200,15 +182,110 @@ def prepare_dataframe(df, initial_capital):
 
 
 # =========================
-# AUTH
+# SESSION
 # =========================
 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
+if "show_login" not in st.session_state:
+    st.session_state.show_login = False
+
 if "user_email" not in st.session_state:
     st.session_state.user_email = None
 
+
+# =========================
+# HOMEPAGE
+# =========================
+
+if not st.session_state.authenticated and not st.session_state.show_login:
+
+    col1, col2 = st.columns([1.3,1])
+
+    with col1:
+
+        st.markdown("""
+        <div class="hero-title">
+        Institutional<br>
+        Trading Analytics
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="hero-subtitle">
+        Professional-grade trading analytics platform focused on risk,
+        performance, consistency and prop firm approval.
+        </div>
+        """, unsafe_allow_html=True)
+
+        c1, c2 = st.columns(2)
+
+        with c1:
+            if st.button("🚀 Start Free"):
+                st.session_state.show_login = True
+                st.rerun()
+
+        with c2:
+            if st.button("📊 Demo"):
+                st.session_state.show_login = True
+                st.rerun()
+
+    with col2:
+
+        st.image(
+            "https://images.unsplash.com/photo-1642790106117-e829e14a795f?q=80&w=1200&auto=format&fit=crop",
+            use_container_width=True
+        )
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="section-title">Why RiskPilot?</div>',
+        unsafe_allow_html=True
+    )
+
+    f1, f2, f3 = st.columns(3)
+
+    with f1:
+        st.markdown("""
+        <div class="feature-card">
+        <h3>📉 Risk Intelligence</h3>
+        <p>
+        Detect revenge trading, overtrading,
+        dangerous drawdowns and loss streaks automatically.
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with f2:
+        st.markdown("""
+        <div class="feature-card">
+        <h3>🏆 Prop Firm Ready</h3>
+        <p>
+        Track consistency, daily drawdown,
+        max drawdown and passing probability.
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with f3:
+        st.markdown("""
+        <div class="feature-card">
+        <h3>🤖 AI Trading Insights</h3>
+        <p>
+        Discover your best hours, worst behaviors
+        and operational weaknesses automatically.
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.stop()
+
+
+# =========================
+# LOGIN
+# =========================
 
 if not st.session_state.authenticated:
 
@@ -291,24 +368,17 @@ if not st.session_state.authenticated:
 
 
 # =========================
-# LANGUAGE
+# SIDEBAR
 # =========================
 
 language = st.sidebar.selectbox(
-    "Language / Idioma",
-    ["Português", "English", "Español"]
+    "Language",
+    ["English", "Português", "Español"]
 )
 
 t = get_translations(language)
 
-
-# =========================
-# SIDEBAR
-# =========================
-
-st.sidebar.title(
-    f"⚙️ {t['risk_settings']}"
-)
+st.sidebar.title("⚙️ RiskPilot")
 
 st.sidebar.write(
     f"👤 {st.session_state.user_email}"
@@ -317,47 +387,29 @@ st.sidebar.write(
 if st.sidebar.button("Logout"):
 
     st.session_state.authenticated = False
+    st.session_state.show_login = False
     st.session_state.user_email = None
 
     st.rerun()
 
 initial_capital = st.sidebar.number_input(
-    t["initial_capital"],
+    "Initial Capital",
     value=1000.0
 )
 
 max_daily_loss = st.sidebar.number_input(
-    t["daily_loss_limit"],
+    "Daily Loss Limit",
     value=500.0
 )
 
 max_drawdown_limit = st.sidebar.number_input(
-    t["max_drawdown_limit"],
+    "Max Drawdown",
     value=2000.0
 )
 
-profit_target = st.sidebar.number_input(
-    t["profit_target"],
-    value=3000.0
-)
-
-st.sidebar.markdown("---")
-
 page = st.sidebar.radio(
-    t["navigation"],
-    [t["dashboard"], t["history"]]
-)
-
-
-# =========================
-# HEADER
-# =========================
-
-st.markdown("# 📊 RiskPilot")
-
-st.markdown(
-    f'<div class="subtitle">{t["subtitle"]}</div>',
-    unsafe_allow_html=True
+    "Navigation",
+    ["Dashboard", "History"]
 )
 
 
@@ -365,62 +417,22 @@ st.markdown(
 # HISTORY
 # =========================
 
-if page == t["history"]:
+if page == "History":
 
-    section(t["history_uploads"])
+    st.title("📚 Upload History")
 
     history = load_upload_history(
         st.session_state.user_email
     )
 
     if history.empty:
-        st.info(t["no_saved_uploads"])
+        st.info("No uploads yet.")
         st.stop()
 
     st.dataframe(
         history,
         use_container_width=True
     )
-
-    selected_id = st.selectbox(
-        t["select_upload"],
-        history["id"].tolist()
-    )
-
-    if selected_id:
-
-        selected_df = load_upload_by_id(
-            selected_id
-        )
-
-        if not selected_df.empty:
-
-            selected_df = prepare_dataframe(
-                selected_df,
-                initial_capital
-            )
-
-            fig = px.line(
-                selected_df,
-                x="date",
-                y="equity",
-                title="Equity Curve"
-            )
-
-            fig.update_layout(
-                template="plotly_dark",
-                height=450
-            )
-
-            st.plotly_chart(
-                fig,
-                use_container_width=True
-            )
-
-            st.dataframe(
-                selected_df,
-                use_container_width=True
-            )
 
     st.stop()
 
@@ -429,148 +441,146 @@ if page == t["history"]:
 # DASHBOARD
 # =========================
 
+st.title("📊 RiskPilot Dashboard")
+
 uploaded_file = st.file_uploader(
-    t["upload_report"],
+    "Upload trading report",
     type=["csv", "xlsx"]
 )
 
 if uploaded_file:
 
-    try:
+    raw_df = load_trading_file(
+        uploaded_file
+    )
 
-        raw_df = load_trading_file(
-            uploaded_file
+    normalized_df = normalize_trades(
+        raw_df
+    )
+
+    normalized_df = prepare_dataframe(
+        normalized_df,
+        initial_capital
+    )
+
+    metrics = calculate_metrics(
+        normalized_df,
+        initial_capital
+    )
+
+    st.markdown(
+        '<div class="section-title">Performance Overview</div>',
+        unsafe_allow_html=True
+    )
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    with c1:
+        st.markdown(
+            metric_card(
+                "Net P&L",
+                money(metrics["net_pnl"])
+            ),
+            unsafe_allow_html=True
         )
 
-        normalized_df = normalize_trades(
-            raw_df
+    with c2:
+        st.markdown(
+            metric_card(
+                "Winrate",
+                percent(metrics["winrate"])
+            ),
+            unsafe_allow_html=True
         )
 
-        normalized_df = prepare_dataframe(
-            normalized_df,
-            initial_capital
+    with c3:
+        st.markdown(
+            metric_card(
+                "Profit Factor",
+                metrics["profit_factor"]
+            ),
+            unsafe_allow_html=True
         )
 
-        metrics = calculate_metrics(
-            normalized_df,
-            initial_capital
+    with c4:
+        st.markdown(
+            metric_card(
+                "Max Drawdown",
+                money(metrics["max_drawdown"])
+            ),
+            unsafe_allow_html=True
         )
 
-        section(t["summary"])
+    st.markdown(
+        '<div class="section-title">Equity Curve</div>',
+        unsafe_allow_html=True
+    )
 
-        c1, c2, c3, c4 = st.columns(4)
+    fig = px.line(
+        normalized_df,
+        x="date",
+        y="equity",
+        title="Equity Curve"
+    )
 
-        with c1:
-            st.markdown(
-                metric_card(
-                    t["net_pnl"],
-                    money(metrics["net_pnl"]),
-                    t["total_result"],
-                    "positive"
-                ),
-                unsafe_allow_html=True
-            )
+    fig.update_layout(
+        template="plotly_dark",
+        height=500
+    )
 
-        with c2:
-            st.markdown(
-                metric_card(
-                    t["winrate"],
-                    percent(metrics["winrate"]),
-                    t["winning_percent"]
-                ),
-                unsafe_allow_html=True
-            )
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
 
-        with c3:
-            st.markdown(
-                metric_card(
-                    t["profit_factor"],
-                    metrics["profit_factor"],
-                    t["above_one_positive"]
-                ),
-                unsafe_allow_html=True
-            )
+    st.markdown(
+        '<div class="section-title">Risk Alerts</div>',
+        unsafe_allow_html=True
+    )
 
-        with c4:
-            st.markdown(
-                metric_card(
-                    t["max_drawdown"],
-                    money(metrics["max_drawdown"]),
-                    t["biggest_curve_drop"],
-                    "negative"
-                ),
-                unsafe_allow_html=True
-            )
+    alerts = generate_risk_alerts(
+        normalized_df,
+        max_daily_loss,
+        max_drawdown_limit,
+        language=language
+    )
 
-        section(t["equity_curve"])
+    for alert in alerts:
 
-        fig_equity = px.line(
-            normalized_df,
-            x="date",
-            y="equity",
-            title="Equity Curve"
+        st.markdown(
+            f'''
+            <div class="alert-box">
+            ⚠️ {alert}
+            </div>
+            ''',
+            unsafe_allow_html=True
         )
 
-        fig_equity.update_layout(
-            template="plotly_dark",
-            height=450
+    if st.button("💾 Save Analysis"):
+
+        save_upload(
+            account_name="Main Account",
+            platform="Unknown",
+            file_name=uploaded_file.name,
+            trades_df=normalized_df,
+            metrics=metrics,
+            user_email=st.session_state.user_email
         )
 
-        st.plotly_chart(
-            fig_equity,
-            use_container_width=True
-        )
+        st.success("Analysis saved.")
 
-        section(t["risk_alerts"])
+    st.markdown(
+        '<div class="section-title">Trades</div>',
+        unsafe_allow_html=True
+    )
 
-        alerts = generate_risk_alerts(
-            normalized_df,
-            max_daily_loss,
-            max_drawdown_limit,
-            language=language
-        )
-
-        for alert in alerts:
-
-            st.markdown(
-                f'''
-                <div class="alert-box">
-                    ⚠️ {alert}
-                </div>
-                ''',
-                unsafe_allow_html=True
-            )
-
-        if st.button(t["save_analysis"]):
-
-            save_upload(
-                account_name="Main Account",
-                platform="Unknown",
-                file_name=uploaded_file.name,
-                trades_df=normalized_df,
-                metrics=metrics,
-                user_email=st.session_state.user_email
-            )
-
-            st.success(
-                t["saved_success"]
-            )
-
-        section(t["normalized_data"])
-
-        st.dataframe(
-            normalized_df,
-            use_container_width=True
-        )
-
-    except Exception as e:
-
-        st.error(
-            f'{t["file_error"]}: {e}'
-        )
+    st.dataframe(
+        normalized_df,
+        use_container_width=True
+    )
 
 else:
 
     st.info(
-        t["send_file_to_start"]
+        "Upload a CSV or XLSX report to begin."
     )
