@@ -3,5 +3,7 @@ pandas
 numpy
 plotly
 openpyxl
-sqlalchemy
 psycopg2-binary
+sqlalchemy
+streamlit-authenticator
+bcrypt
