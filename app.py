@@ -390,6 +390,7 @@ for alert in alerts:
         ''',
         unsafe_allow_html=True
     )
+
         if metrics["profit_factor"] < 1:
             st.error(t["pf_below_one"])
 
