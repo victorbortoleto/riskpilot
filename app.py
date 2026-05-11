@@ -401,4 +401,3 @@ if uploaded_file:
 
 else:
     st.info(t["send_file_to_start"])
-```
