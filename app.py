@@ -372,11 +372,24 @@ if uploaded_file:
         fig_asset.update_layout(template="plotly_dark", height=430)
         st.plotly_chart(fig_asset, use_container_width=True)
 
-        section(t["risk_alerts"])
-       alerts = generate_risk_alerts(filtered_df,max_daily_loss,max_drawdown_limit,language=language)
-        for alert in alerts:
-            st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
+       section(t["risk_alerts"])
 
+alerts = generate_risk_alerts(
+    filtered_df,
+    max_daily_loss,
+    max_drawdown_limit,
+    language=language
+)
+
+for alert in alerts:
+    st.markdown(
+        f'''
+        <div class="alert-box">
+            ⚠️ {alert}
+        </div>
+        ''',
+        unsafe_allow_html=True
+    )
         if metrics["profit_factor"] < 1:
             st.error(t["pf_below_one"])
 
