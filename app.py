@@ -30,12 +30,13 @@ init_db()
 st.set_page_config(
     page_title="RiskPilot",
     page_icon="📊",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 
 # =========================
-# CSS — FORCE DARK PREMIUM THEME
+# CSS — INSTITUTIONAL TERMINAL
 # =========================
 
 st.markdown("""
@@ -47,20 +48,25 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
 }
 
 [data-testid="stHeader"] {
-    background: rgba(5,8,22,0.95) !important;
+    background: rgba(5,8,22,0.98) !important;
 }
 
 [data-testid="stSidebar"] {
-    background: #0b1020 !important;
+    background: linear-gradient(180deg, #060b18 0%, #0b1020 100%) !important;
+    border-right: 1px solid rgba(148,163,184,0.12);
 }
 
 [data-testid="stSidebar"] * {
     color: #ffffff !important;
 }
 
+[data-testid="stSidebar"] > div:first-child {
+    padding-top: 1.2rem;
+}
+
 .block-container {
-    max-width: 1480px;
-    padding-top: 1.8rem;
+    max-width: 1500px;
+    padding-top: 1.6rem;
     padding-bottom: 4rem;
 }
 
@@ -70,6 +76,84 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     color: inherit;
 }
 
+/* Sidebar premium cards */
+.sidebar-brand {
+    background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(15,23,42,0.9));
+    border: 1px solid rgba(56,189,248,0.30);
+    border-radius: 22px;
+    padding: 20px 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.24);
+}
+
+.sidebar-logo {
+    font-size: 1.55rem;
+    font-weight: 950;
+    letter-spacing: -0.04em;
+    color: #ffffff !important;
+}
+
+.sidebar-subtitle {
+    color: #93c5fd !important;
+    font-size: 0.82rem;
+    margin-top: 4px;
+    line-height: 1.35;
+}
+
+.sidebar-user-card {
+    background: #0f172a;
+    border: 1px solid rgba(148,163,184,0.14);
+    border-radius: 18px;
+    padding: 16px;
+    margin: 14px 0 18px 0;
+}
+
+.sidebar-user-label {
+    color: #94a3b8 !important;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+}
+
+.sidebar-user-value {
+    color: #ffffff !important;
+    font-size: 0.92rem;
+    margin-top: 5px;
+    word-break: break-word;
+}
+
+.sidebar-kpi {
+    background: rgba(15,23,42,0.88);
+    border: 1px solid rgba(148,163,184,0.12);
+    border-radius: 15px;
+    padding: 13px 14px;
+    margin-bottom: 10px;
+}
+
+.sidebar-kpi-title {
+    color: #94a3b8 !important;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.sidebar-kpi-value {
+    color: #ffffff !important;
+    font-size: 1.15rem;
+    font-weight: 900;
+    margin-top: 4px;
+}
+
+.sidebar-note {
+    color: #64748b !important;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    margin-top: 12px;
+}
+
+/* Homepage */
 .hero-wrap {
     padding-top: 25px;
     padding-bottom: 30px;
@@ -83,10 +167,6 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     color: #ffffff !important;
     margin-bottom: 26px;
     max-width: 820px;
-}
-
-.hero-title span {
-    color: #38bdf8 !important;
 }
 
 .hero-subtitle {
@@ -141,6 +221,7 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     line-height: 1.65;
 }
 
+/* App components */
 .metric-card {
     background: linear-gradient(135deg,#111827 0%,#1f2937 100%);
     border: 1px solid rgba(255,255,255,0.08);
@@ -232,6 +313,41 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     margin-bottom: 22px;
 }
 
+.terminal-header {
+    background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(2,6,23,0.78));
+    border: 1px solid rgba(148,163,184,0.14);
+    border-radius: 26px;
+    padding: 26px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 20px 70px rgba(0,0,0,0.28);
+}
+
+.terminal-title {
+    color: #ffffff !important;
+    font-size: 2.65rem;
+    font-weight: 950;
+    letter-spacing: -0.055em;
+    line-height: 1.05;
+}
+
+.terminal-subtitle {
+    color: #94a3b8 !important;
+    font-size: 1rem;
+    margin-top: 8px;
+}
+
+.terminal-pill {
+    display: inline-block;
+    background: rgba(34,197,94,0.12);
+    color: #86efac !important;
+    border: 1px solid rgba(34,197,94,0.28);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    margin-top: 12px;
+}
+
 .stButton > button {
     border-radius: 14px;
     min-height: 52px;
@@ -301,6 +417,15 @@ def insight_card(title, value, sub=""):
     """
 
 
+def sidebar_kpi(title, value):
+    return f"""
+    <div class="sidebar-kpi">
+        <div class="sidebar-kpi-title">{title}</div>
+        <div class="sidebar-kpi-value">{value}</div>
+    </div>
+    """
+
+
 def section(title):
     st.markdown(
         f'<div class="section-title">{title}</div>',
@@ -361,16 +486,8 @@ def base_chart_layout(fig, height=380):
             x=1
         )
     )
-    fig.update_xaxes(
-        showgrid=False,
-        zeroline=False,
-        color="#cbd5e1"
-    )
-    fig.update_yaxes(
-        gridcolor="rgba(148,163,184,0.16)",
-        zeroline=False,
-        color="#cbd5e1"
-    )
+    fig.update_xaxes(showgrid=False, zeroline=False, color="#cbd5e1")
+    fig.update_yaxes(gridcolor="rgba(148,163,184,0.16)", zeroline=False, color="#cbd5e1")
     return fig
 
 
@@ -685,10 +802,26 @@ language = st.sidebar.selectbox(
 st.session_state.landing_language = language
 t = get_translations(language)
 
-st.sidebar.title("⚙️ RiskPilot")
+st.sidebar.markdown(
+    """
+    <div class="sidebar-brand">
+        <div class="sidebar-logo">📊 RiskPilot</div>
+        <div class="sidebar-subtitle">Professional Trading Analytics</div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 if st.session_state.authenticated:
-    st.sidebar.write(f"👤 {st.session_state.user_email}")
+    st.sidebar.markdown(
+        f"""
+        <div class="sidebar-user-card">
+            <div class="sidebar-user-label">Authenticated user</div>
+            <div class="sidebar-user-value">{st.session_state.user_email}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     if st.sidebar.button("Logout"):
         st.session_state.authenticated = False
@@ -697,7 +830,15 @@ if st.session_state.authenticated:
         st.session_state.user_email = None
         st.rerun()
 else:
-    st.sidebar.write("📊 Demo Mode")
+    st.sidebar.markdown(
+        """
+        <div class="sidebar-user-card">
+            <div class="sidebar-user-label">Current mode</div>
+            <div class="sidebar-user-value">Demo Mode</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     if st.sidebar.button("Create free account"):
         st.session_state.demo_mode = False
@@ -723,6 +864,15 @@ max_drawdown_limit = st.sidebar.number_input(
 page = st.sidebar.radio(
     t.get("navigation", "Navigation"),
     [t.get("dashboard", "Dashboard"), t.get("history", "History")]
+)
+
+st.sidebar.markdown("---")
+st.sidebar.markdown(sidebar_kpi("Account status", "Active"), unsafe_allow_html=True)
+st.sidebar.markdown(sidebar_kpi("Risk mode", "Prop firm"), unsafe_allow_html=True)
+st.sidebar.markdown(sidebar_kpi("Analytics", "Enabled"), unsafe_allow_html=True)
+st.sidebar.markdown(
+    '<div class="sidebar-note">RiskPilot monitors performance, drawdown, behavior and operational consistency.</div>',
+    unsafe_allow_html=True
 )
 
 
@@ -751,7 +901,16 @@ if page == t.get("history", "History"):
 # DASHBOARD
 # =========================
 
-st.title("📊 RiskPilot Dashboard")
+st.markdown(
+    """
+    <div class="terminal-header">
+        <div class="terminal-title">RiskPilot Terminal</div>
+        <div class="terminal-subtitle">Institutional-grade trading risk intelligence and performance analytics.</div>
+        <div class="terminal-pill">LIVE ANALYTICS ENGINE</div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 if st.session_state.demo_mode and not st.session_state.authenticated:
     st.info("Demo mode: sample data loaded. Create a free account to upload and save your own trading reports.")
