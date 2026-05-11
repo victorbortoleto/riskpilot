@@ -1,12 +1,4 @@
 import streamlit as st
-        daily_remaining = max_daily_loss - abs(daily_worst)
-        max_dd_remaining = max_drawdown_limit - abs(metrics["max_drawdown"])
-
-        prop1, prop2, prop3 = st.columns(3)
-        with prop1:
-            st.markdown(f'<div class="prop-card"><div class="metric-label">{t["target_distance"]}</div><div class="metric-value neutral">{money(remaining_target)}</div><div class="metric-help">{t["remaining_to_goal"]}</div></div>', unsafe_allow_html=True)
-        with prop2:
-            status = "negative" if daily_remaining < 0 else "neutral"
             st.markdown(f'<div class="prop-card"><div class="metric-label">{t["daily_dd_remaining"]}</div><div class="metric-value {status}">{money(daily_remaining)}</div><div class="metric-help">{t["daily_limit_margin"]}</div></div>', unsafe_allow_html=True)
         with prop3:
             status = "negative" if max_dd_remaining < 0 else "neutral"
