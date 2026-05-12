@@ -484,6 +484,19 @@ def ui_text(language):
     return texts.get(language, texts["English"])
  
  
+def language_options():
+    return {
+        "🇺🇸 English": "English",
+        "🇧🇷 Português": "Português",
+        "🇪🇸 Español": "Español",
+    }
+ 
+ 
+def language_display(language):
+    reverse = {value: key for key, value in language_options().items()}
+    return reverse.get(language, "🇺🇸 English")
+ 
+ 
 # =========================================================
 # CSS
 # =========================================================
@@ -510,6 +523,13 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
  
 .radar-card{background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(30,41,59,.70));border:1px solid rgba(56,189,248,.22);border-radius:24px;padding:20px;margin-bottom:18px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
 .premium-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(56,189,248,.55),transparent);margin:24px 0}
+ 
+.metric-card{display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:150px;overflow:hidden;}
+.metric-value{font-size:clamp(1.35rem,1.7vw,2rem)!important;line-height:1.12!important;overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important;}
+.metric-title,.metric-sub{line-height:1.25!important;overflow-wrap:normal!important;word-break:normal!important;}
+.diagnosis-box,.alert-box,.insight-card{overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important;}
+@media (max-width: 1100px){.metric-card{min-height:135px;padding:18px!important}.metric-value{font-size:1.45rem!important}.section-title{font-size:1.65rem!important}}
+ 
 </style>
 """, unsafe_allow_html=True)
  
@@ -737,6 +757,23 @@ def make_radar_chart(radar_scores, t):
     return fig
  
  
+def prop_firm_behavior(prop_mode):
+    """Controls how strict each prop firm profile is in the scoring layer."""
+    behaviors = {
+        "FTMO": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Balanced challenge / strict daily loss", "badge": "🏦"},
+        "Apex": {"strictness": 1.18, "consistency_weight": 1.12, "drawdown_weight": 1.20, "style": "Futures profile / trailing drawdown sensitivity", "badge": "⚡"},
+        "TopStep": {"strictness": 1.25, "consistency_weight": 1.15, "drawdown_weight": 1.25, "style": "Futures combine / very strict discipline", "badge": "🎯"},
+        "FundingPips": {"strictness": 0.95, "consistency_weight": 1.05, "drawdown_weight": 0.95, "style": "Flexible challenge / consistency focus", "badge": "💎"},
+        "MyFundedFX": {"strictness": 1.03, "consistency_weight": 1.05, "drawdown_weight": 1.02, "style": "Balanced FX challenge", "badge": "🌐"},
+        "MyFundedFutures": {"strictness": 1.15, "consistency_weight": 1.10, "drawdown_weight": 1.18, "style": "Futures evaluation / drawdown sensitive", "badge": "📈"},
+        "TakeProfit": {"strictness": 1.05, "consistency_weight": 1.08, "drawdown_weight": 1.05, "style": "Balanced target / consistency aware", "badge": "🚀"},
+        "E8": {"strictness": 1.08, "consistency_weight": 1.10, "drawdown_weight": 1.08, "style": "Institutional evaluation profile", "badge": "🏛️"},
+        "Custom": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Custom rule profile", "badge": "⚙️"},
+        "Personalizado": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Perfil personalizado", "badge": "⚙️"},
+    }
+    return behaviors.get(prop_mode, behaviors["Custom"])
+ 
+ 
 def prop_profiles(account_size):
     """Smart Prop Firm Engine - rule presets used for risk dashboards."""
     return {
@@ -792,10 +829,16 @@ def calculate_scores(metrics, daily, max_daily_loss, max_drawdown_limit):
     return risk_score, consistency_score, account_health, behavior_score
  
  
-def calculate_prop_status(metrics, daily, profit_target, max_daily_loss, max_drawdown_limit, risk_score, consistency_score, behavior_score):
+def calculate_prop_status(metrics, daily, profit_target, max_daily_loss, max_drawdown_limit, risk_score, consistency_score, behavior_score, prop_mode="Custom"):
     net_pnl = float(metrics.get("net_pnl", 0))
     max_dd = float(metrics.get("max_drawdown", 0))
+    profit_factor = float(metrics.get("profit_factor", 0))
     worst_day = abs(float(daily.min())) if not daily.empty else 0
+ 
+    behavior = prop_firm_behavior(prop_mode)
+    strictness = float(behavior.get("strictness", 1.0))
+    consistency_weight = float(behavior.get("consistency_weight", 1.0))
+    drawdown_weight = float(behavior.get("drawdown_weight", 1.0))
  
     target_distance = profit_target - net_pnl
     daily_remaining = max_daily_loss - worst_day
@@ -804,21 +847,29 @@ def calculate_prop_status(metrics, daily, profit_target, max_daily_loss, max_dra
     daily_ratio = max(0, min(1, daily_remaining / max(max_daily_loss, 1)))
     dd_ratio = max(0, min(1, dd_remaining / max(max_drawdown_limit, 1)))
     target_ratio = max(0, min(1, net_pnl / max(profit_target, 1)))
+    pf_bonus = max(0, min(1, (profit_factor - 1.0) / 1.0))
+ 
+    strictness_penalty = (strictness - 1.0) * 12
+    consistency_adjusted = max(0, min(100, consistency_score / max(consistency_weight, 0.01)))
+    drawdown_adjusted = max(0, min(100, (dd_ratio * 100) / max(drawdown_weight, 0.01)))
  
     approval = round(
-        (risk_score * 0.35)
-        + (consistency_score * 0.20)
-        + (behavior_score * 0.20)
+        (risk_score * 0.30)
+        + (consistency_adjusted * 0.22)
+        + (behavior_score * 0.18)
         + (daily_ratio * 10)
-        + (dd_ratio * 10)
-        + (target_ratio * 5)
+        + (drawdown_adjusted * 0.10)
+        + (target_ratio * 6)
+        + (pf_bonus * 4)
+        - strictness_penalty
     )
  
-    violation_score = 100 - approval
+    approval = max(0, min(100, approval))
+    violation_score = max(0, min(100, 100 - approval + round(strictness_penalty)))
  
     if daily_remaining < 0 or dd_remaining < 0:
-        approval = min(approval, 15)
-        violation_score = max(violation_score, 90)
+        approval = min(approval, 12)
+        violation_score = max(violation_score, 92)
  
     return approval, daily_remaining, dd_remaining, target_distance, violation_score
  
@@ -1231,6 +1282,7 @@ def render_full_dashboard(
         risk_score,
         consistency_score,
         behavior_score,
+        prop_mode,
     )
  
     best_hour = hourly.idxmax() if not hourly.empty else "N/A"
@@ -1293,13 +1345,25 @@ def render_full_dashboard(
  
     section(t["prop_firm_panel"])
  
-    p1, p2, p3, p4, p5 = st.columns(5)
+    prop_behavior = prop_firm_behavior(prop_mode)
+    prop_label = profile.get("label", prop_behavior.get("style", prop_mode))
+    st.markdown(
+        diagnosis_box(
+            f'{prop_behavior.get("badge", "🏦")} {prop_mode}',
+            f'{prop_label} · Strictness {prop_behavior.get("strictness", 1.0):.2f}x · Target {money(profit_target)} · Daily {money(max_daily_loss)} · Max DD {money(max_drawdown_limit)}',
+        ),
+        unsafe_allow_html=True,
+    )
+ 
+    p1, p2, p3 = st.columns(3)
     with p1:
         st.markdown(metric_card(t["approval_probability"], f"{approval}/100", t["approval_probability_sub"], score_class(approval)), unsafe_allow_html=True)
     with p2:
         st.markdown(metric_card(t["daily_remaining"], money(daily_remaining), t["daily_remaining_sub"], value_class(daily_remaining)), unsafe_allow_html=True)
     with p3:
         st.markdown(metric_card(t["drawdown_remaining"], money(dd_remaining), t["drawdown_remaining_sub"], value_class(dd_remaining)), unsafe_allow_html=True)
+ 
+    p4, p5 = st.columns(2)
     with p4:
         st.markdown(metric_card(t["target_distance"], money(target_distance), t["target_distance_sub"], "value-neutral" if target_distance > 0 else "value-positive"), unsafe_allow_html=True)
     with p5:
@@ -1402,7 +1466,7 @@ def render_full_dashboard(
  
     dna_color = score_class(trader_dna["dna_score"])
  
-    dna_col1, dna_col2, dna_col3, dna_col4 = st.columns(4)
+    dna_col1, dna_col2 = st.columns(2)
  
     with dna_col1:
         st.markdown(
@@ -1425,6 +1489,8 @@ def render_full_dashboard(
             ),
             unsafe_allow_html=True,
         )
+ 
+    dna_col3, dna_col4 = st.columns(2)
  
     with dna_col3:
         st.markdown(
@@ -1715,12 +1781,13 @@ if "landing_language" not in st.session_state:
 if not st.session_state.authenticated and not st.session_state.show_login and not st.session_state.demo_mode:
     top1, top2, top3 = st.columns([1, 4, 1])
     with top1:
-        selected_language = st.selectbox(
+        language_map = language_options()
+        selected_language_label = st.selectbox(
             "Language / Idioma",
-            ["English", "Português", "Español"],
-            index=["English", "Português", "Español"].index(st.session_state.landing_language),
+            list(language_map.keys()),
+            index=list(language_map.values()).index(st.session_state.landing_language),
         )
-        st.session_state.landing_language = selected_language
+        st.session_state.landing_language = language_map[selected_language_label]
  
     t = ui_text(st.session_state.landing_language)
  
@@ -1833,11 +1900,13 @@ if not st.session_state.authenticated and st.session_state.show_login:
 # SIDEBAR APP
 # =========================================================
  
-language = st.sidebar.selectbox(
+language_map = language_options()
+language_label = st.sidebar.selectbox(
     "Language / Idioma",
-    ["English", "Português", "Español"],
-    index=["English", "Português", "Español"].index(st.session_state.landing_language),
+    list(language_map.keys()),
+    index=list(language_map.values()).index(st.session_state.landing_language),
 )
+language = language_map[language_label]
 st.session_state.landing_language = language
  
 t = ui_text(language)
