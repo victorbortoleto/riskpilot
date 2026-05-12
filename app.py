@@ -46,6 +46,16 @@ def ui_text(language):
 "action_plan": "Action Plan",
 "risk_rules": "Risk Rules",
 "behavior_warnings": "Behavior Warnings",
+            "trader_dna": "Trader DNA Engine",
+            "dna_score": "DNA Score",
+            "trader_profile": "Trader Profile",
+            "execution_style": "Execution Style",
+            "risk_behavior": "Risk Behavior",
+            "prop_firm_fit": "Prop Firm Fit",
+            "profile_confidence": "Profile Confidence",
+            "profile_summary": "Profile Summary",
+            "strengths": "Strengths",
+            "improvement_points": "Improvement Points",
             "language": "Language",
             "hero_title": "Institutional trading analytics",
             "hero_subtitle": "Professional-grade trading analytics platform focused on risk, consistency, performance and prop firm approval.",
@@ -173,6 +183,16 @@ def ui_text(language):
 "action_plan": "Plano de Ação",
 "risk_rules": "Regras de Risco",
 "behavior_warnings": "Alertas Comportamentais",
+            "trader_dna": "Motor Trader DNA",
+            "dna_score": "DNA Score",
+            "trader_profile": "Perfil do Trader",
+            "execution_style": "Estilo de Execução",
+            "risk_behavior": "Comportamento de Risco",
+            "prop_firm_fit": "Compatibilidade Prop Firm",
+            "profile_confidence": "Confiança do Perfil",
+            "profile_summary": "Resumo do Perfil",
+            "strengths": "Pontos Fortes",
+            "improvement_points": "Pontos de Melhoria",
             "language": "Idioma",
             "hero_title": "Analytics institucional para traders",
             "hero_subtitle": "Plataforma profissional de análise operacional focada em risco, consistência, performance e aprovação em prop firms.",
@@ -299,6 +319,16 @@ def ui_text(language):
 "action_plan": "Plan de Acción",
 "risk_rules": "Reglas de Riesgo",
 "behavior_warnings": "Alertas Conductuales",
+            "trader_dna": "Motor Trader DNA",
+            "dna_score": "DNA Score",
+            "trader_profile": "Perfil del Trader",
+            "execution_style": "Estilo de Ejecución",
+            "risk_behavior": "Comportamiento de Riesgo",
+            "prop_firm_fit": "Compatibilidad Prop Firm",
+            "profile_confidence": "Confianza del Perfil",
+            "profile_summary": "Resumen del Perfil",
+            "strengths": "Fortalezas",
+            "improvement_points": "Puntos de Mejora",
             "language": "Idioma",
             "hero_title": "Analytics institucional para traders",
             "hero_subtitle": "Plataforma profesional de análisis operativo enfocada en riesgo, consistencia, rendimiento y aprobación en prop firms.",
@@ -750,6 +780,270 @@ def generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency
     return items
  
  
+ 
+def build_trader_dna(
+    language,
+    metrics,
+    daily,
+    hourly,
+    weekday,
+    risk_score,
+    consistency_score,
+    behavior_score,
+    approval,
+):
+    """Rule-based Trader DNA profile engine."""
+ 
+    net_pnl = float(metrics.get("net_pnl", 0))
+    profit_factor = float(metrics.get("profit_factor", 0))
+    winrate = float(metrics.get("winrate", 0))
+    max_drawdown = float(metrics.get("max_drawdown", 0))
+    total_trades = int(metrics.get("total_trades", 0))
+    loss_streak = int(metrics.get("max_loss_streak", 0))
+ 
+    positive_days = int((daily > 0).sum()) if not daily.empty else 0
+    negative_days = int((daily < 0).sum()) if not daily.empty else 0
+ 
+    best_hour = hourly.idxmax() if not hourly.empty else "N/A"
+    worst_hour = hourly.idxmin() if not hourly.empty else "N/A"
+ 
+    best_weekday = weekday.idxmax() if not weekday.empty else "N/A"
+    worst_weekday = weekday.idxmin() if not weekday.empty else "N/A"
+ 
+    dna_score = round(
+        risk_score * 0.28
+        + consistency_score * 0.27
+        + behavior_score * 0.25
+        + approval * 0.20
+    )
+    dna_score = max(0, min(100, dna_score))
+ 
+    if total_trades >= 120:
+        execution_density = "high"
+    elif total_trades >= 50:
+        execution_density = "medium"
+    else:
+        execution_density = "low"
+ 
+    if language == "Português":
+        if dna_score >= 80 and profit_factor >= 1.2 and behavior_score >= 75:
+            profile = "Trader Institucional"
+        elif total_trades >= 120 and loss_streak >= 4:
+            profile = "Scalper Agressivo com Risco de Tilt"
+        elif approval >= 70 and consistency_score >= 65:
+            profile = "Prop Firm Ready"
+        elif profit_factor < 1 and negative_days >= positive_days:
+            profile = "Trader Defensivo em Recuperação"
+        elif winrate >= 65 and profit_factor >= 1:
+            profile = "Trader de Alta Assertividade"
+        else:
+            profile = "Trader em Desenvolvimento"
+ 
+        execution_style = {
+            "high": "Alta frequência operacional",
+            "medium": "Frequência moderada",
+            "low": "Baixa frequência / amostra pequena",
+        }[execution_density]
+ 
+        if behavior_score >= 75:
+            risk_behavior = "Disciplina saudável"
+        elif behavior_score >= 50:
+            risk_behavior = "Risco comportamental moderado"
+        else:
+            risk_behavior = "Risco elevado de tilt ou overtrading"
+ 
+        if approval >= 75:
+            prop_fit = "Alta compatibilidade"
+        elif approval >= 50:
+            prop_fit = "Compatibilidade moderada"
+        else:
+            prop_fit = "Baixa compatibilidade"
+ 
+        summary = [
+            f"O perfil dominante identificado foi: {profile}.",
+            f"O melhor horário operacional foi {best_hour}h e o pior horário foi {worst_hour}h.",
+            f"O melhor dia da semana foi {best_weekday}; o ponto de atenção foi {worst_weekday}.",
+            f"A análise encontrou {positive_days} dias positivos e {negative_days} dias negativos.",
+        ]
+ 
+        strengths = []
+        improvements = []
+ 
+        if profit_factor >= 1:
+            strengths.append("Existe vantagem operacional inicial pelo Profit Factor acima de 1.")
+        else:
+            improvements.append("Aumentar seletividade de entrada até o Profit Factor superar 1.20.")
+ 
+        if consistency_score >= 65:
+            strengths.append("A consistência diária está em nível aceitável para evolução.")
+        else:
+            improvements.append("Reduzir dispersão dos resultados diários e evitar dias muito negativos.")
+ 
+        if behavior_score >= 70:
+            strengths.append("O comportamento de risco está relativamente controlado.")
+        else:
+            improvements.append("Criar trava operacional após perdas consecutivas para reduzir tilt.")
+ 
+        if approval >= 70:
+            strengths.append("O perfil atual tem boa aderência ao ambiente de prop firm.")
+        else:
+            improvements.append("Melhorar controle de drawdown antes de buscar aprovação em prop firm.")
+ 
+        if not strengths:
+            strengths.append("Há dados suficientes para iniciar uma evolução guiada por métricas.")
+        if not improvements:
+            improvements.append("Manter o mesmo padrão de risco e evitar aumentar lote cedo demais.")
+ 
+    elif language == "Español":
+        if dna_score >= 80 and profit_factor >= 1.2 and behavior_score >= 75:
+            profile = "Trader Institucional"
+        elif total_trades >= 120 and loss_streak >= 4:
+            profile = "Scalper Agresivo con Riesgo de Tilt"
+        elif approval >= 70 and consistency_score >= 65:
+            profile = "Prop Firm Ready"
+        elif profit_factor < 1 and negative_days >= positive_days:
+            profile = "Trader Defensivo en Recuperación"
+        elif winrate >= 65 and profit_factor >= 1:
+            profile = "Trader de Alta Asertividad"
+        else:
+            profile = "Trader en Desarrollo"
+ 
+        execution_style = {
+            "high": "Alta frecuencia operativa",
+            "medium": "Frecuencia moderada",
+            "low": "Baja frecuencia / muestra pequeña",
+        }[execution_density]
+ 
+        if behavior_score >= 75:
+            risk_behavior = "Disciplina saludable"
+        elif behavior_score >= 50:
+            risk_behavior = "Riesgo conductual moderado"
+        else:
+            risk_behavior = "Riesgo elevado de tilt u overtrading"
+ 
+        if approval >= 75:
+            prop_fit = "Alta compatibilidad"
+        elif approval >= 50:
+            prop_fit = "Compatibilidad moderada"
+        else:
+            prop_fit = "Baja compatibilidad"
+ 
+        summary = [
+            f"El perfil dominante identificado fue: {profile}.",
+            f"El mejor horario operativo fue {best_hour}h y el peor horario fue {worst_hour}h.",
+            f"El mejor día de la semana fue {best_weekday}; el punto de atención fue {worst_weekday}.",
+            f"El análisis encontró {positive_days} días positivos y {negative_days} días negativos.",
+        ]
+ 
+        strengths = []
+        improvements = []
+ 
+        if profit_factor >= 1:
+            strengths.append("Existe una ventaja operativa inicial por Profit Factor superior a 1.")
+        else:
+            improvements.append("Aumentar la selectividad de entrada hasta superar Profit Factor 1.20.")
+ 
+        if consistency_score >= 65:
+            strengths.append("La consistencia diaria está en un nivel aceptable para evolucionar.")
+        else:
+            improvements.append("Reducir dispersión de resultados diarios y evitar días muy negativos.")
+ 
+        if behavior_score >= 70:
+            strengths.append("El comportamiento de riesgo está relativamente controlado.")
+        else:
+            improvements.append("Crear bloqueo operativo después de pérdidas consecutivas para reducir tilt.")
+ 
+        if approval >= 70:
+            strengths.append("El perfil actual tiene buena compatibilidad con prop firms.")
+        else:
+            improvements.append("Mejorar control de drawdown antes de buscar aprobación en prop firm.")
+ 
+        if not strengths:
+            strengths.append("Hay datos suficientes para iniciar una evolución guiada por métricas.")
+        if not improvements:
+            improvements.append("Mantener el mismo patrón de riesgo y evitar aumentar lote demasiado pronto.")
+ 
+    else:
+        if dna_score >= 80 and profit_factor >= 1.2 and behavior_score >= 75:
+            profile = "Institutional Trader"
+        elif total_trades >= 120 and loss_streak >= 4:
+            profile = "Aggressive Scalper with Tilt Risk"
+        elif approval >= 70 and consistency_score >= 65:
+            profile = "Prop Firm Ready"
+        elif profit_factor < 1 and negative_days >= positive_days:
+            profile = "Defensive Recovery Trader"
+        elif winrate >= 65 and profit_factor >= 1:
+            profile = "High Accuracy Trader"
+        else:
+            profile = "Developing Trader"
+ 
+        execution_style = {
+            "high": "High-frequency execution",
+            "medium": "Moderate execution frequency",
+            "low": "Low frequency / small sample",
+        }[execution_density]
+ 
+        if behavior_score >= 75:
+            risk_behavior = "Healthy discipline"
+        elif behavior_score >= 50:
+            risk_behavior = "Moderate behavioral risk"
+        else:
+            risk_behavior = "Elevated tilt or overtrading risk"
+ 
+        if approval >= 75:
+            prop_fit = "High compatibility"
+        elif approval >= 50:
+            prop_fit = "Moderate compatibility"
+        else:
+            prop_fit = "Low compatibility"
+ 
+        summary = [
+            f"The dominant profile identified was: {profile}.",
+            f"Best trading hour was {best_hour}h and weakest trading hour was {worst_hour}h.",
+            f"Best weekday was {best_weekday}; key attention point was {worst_weekday}.",
+            f"The analysis found {positive_days} positive days and {negative_days} negative days.",
+        ]
+ 
+        strengths = []
+        improvements = []
+ 
+        if profit_factor >= 1:
+            strengths.append("There is an initial operational edge with Profit Factor above 1.")
+        else:
+            improvements.append("Increase entry selectivity until Profit Factor rises above 1.20.")
+ 
+        if consistency_score >= 65:
+            strengths.append("Daily consistency is at an acceptable level for development.")
+        else:
+            improvements.append("Reduce daily result dispersion and avoid very negative days.")
+ 
+        if behavior_score >= 70:
+            strengths.append("Risk behavior appears relatively controlled.")
+        else:
+            improvements.append("Create a hard stop after consecutive losses to reduce tilt risk.")
+ 
+        if approval >= 70:
+            strengths.append("Current profile has good prop firm compatibility.")
+        else:
+            improvements.append("Improve drawdown control before pursuing prop firm approval.")
+ 
+        if not strengths:
+            strengths.append("There is enough data to start metric-driven improvement.")
+        if not improvements:
+            improvements.append("Maintain current risk behavior and avoid increasing size too early.")
+ 
+    return {
+        "dna_score": dna_score,
+        "profile": profile,
+        "execution_style": execution_style,
+        "risk_behavior": risk_behavior,
+        "prop_fit": prop_fit,
+        "confidence": f"{min(95, max(45, total_trades // 2 + 45))}%",
+        "summary": summary,
+        "strengths": strengths[:4],
+        "improvements": improvements[:4],
+    }
+ 
 def make_demo_dataframe():
     data = [
         {"date": "2026-03-17 09:31:00", "asset": "WIN", "side": "buy", "quantity": 1, "entry_price": 182565, "exit_price": 182565, "pnl": 12, "fees": 0, "net_pnl": 12},
@@ -942,6 +1236,95 @@ def render_full_dashboard(
         section(t["pnl_by_asset"])
         asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
         st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", t["pnl_by_asset"]), use_container_width=True)
+ 
+ 
+    trader_dna = build_trader_dna(
+        language=language,
+        metrics=metrics,
+        daily=daily,
+        hourly=hourly,
+        weekday=weekday,
+        risk_score=risk_score,
+        consistency_score=consistency_score,
+        behavior_score=behavior_score,
+        approval=approval,
+    )
+ 
+    section(t["trader_dna"])
+ 
+    dna_color = score_class(trader_dna["dna_score"])
+ 
+    dna_col1, dna_col2, dna_col3, dna_col4 = st.columns(4)
+ 
+    with dna_col1:
+        st.markdown(
+            metric_card(
+                t["trader_profile"],
+                trader_dna["profile"],
+                t["profile_summary"],
+                dna_color,
+            ),
+            unsafe_allow_html=True,
+        )
+ 
+    with dna_col2:
+        st.markdown(
+            metric_card(
+                t["dna_score"],
+                f'{trader_dna["dna_score"]}/100',
+                t["profile_confidence"] + ": " + trader_dna["confidence"],
+                dna_color,
+            ),
+            unsafe_allow_html=True,
+        )
+ 
+    with dna_col3:
+        st.markdown(
+            metric_card(
+                t["execution_style"],
+                trader_dna["execution_style"],
+                t["risk_behavior"],
+                "value-neutral",
+            ),
+            unsafe_allow_html=True,
+        )
+ 
+    with dna_col4:
+        st.markdown(
+            metric_card(
+                t["prop_firm_fit"],
+                trader_dna["prop_fit"],
+                t["prop_firm_panel"],
+                dna_color,
+            ),
+            unsafe_allow_html=True,
+        )
+ 
+    dna_summary_col, dna_strength_col, dna_improve_col = st.columns(3)
+ 
+    with dna_summary_col:
+        st.markdown(f"## {t['profile_summary']}")
+        for item in trader_dna["summary"]:
+            st.markdown(
+                f'<div class="diagnosis-box">🧬 {item}</div>',
+                unsafe_allow_html=True,
+            )
+ 
+    with dna_strength_col:
+        st.markdown(f"## {t['strengths']}")
+        for item in trader_dna["strengths"]:
+            st.markdown(
+                f'<div class="diagnosis-box">✅ {item}</div>',
+                unsafe_allow_html=True,
+            )
+ 
+    with dna_improve_col:
+        st.markdown(f"## {t['improvement_points']}")
+        for item in trader_dna["improvements"]:
+            st.markdown(
+                f'<div class="alert-box">📌 {item}</div>',
+                unsafe_allow_html=True,
+            )
  
     section(t["ai_coach"])
  
