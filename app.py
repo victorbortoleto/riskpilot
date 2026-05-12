@@ -9,6 +9,7 @@ from core.normalizer import normalize_trades
 from core.metrics import calculate_metrics
 from core.risk_engine import generate_risk_alerts
 from core.pdf_report import build_pdf_report
+from core.ai_coach import build_ai_coach_report
 
 from core.db import (
     init_db,
@@ -37,6 +38,13 @@ st.set_page_config(
 def ui_text(language):
     texts = {
         "English": {
+            "ai_coach": "AI Trading Coach",
+"analyze_ai": "🧠 Analyze with AI",
+"ai_score": "AI Score",
+"executive_summary": "Executive Summary",
+"action_plan": "Action Plan",
+"risk_rules": "Risk Rules",
+"behavior_warnings": "Behavior Warnings",
             "language": "Language",
             "hero_title": "Institutional trading analytics",
             "hero_subtitle": "Professional-grade trading analytics platform focused on risk, consistency, performance and prop firm approval.",
@@ -154,8 +162,16 @@ def ui_text(language):
             "high": "High",
             "download_csv": "⬇️ Download normalized CSV",
             "download_pdf": "📄 Download professional PDF report",
+            
         },
         "Português": {
+            "ai_coach": "AI Trading Coach",
+"analyze_ai": "🧠 Analisar com IA",
+"ai_score": "AI Score",
+"executive_summary": "Resumo Executivo",
+"action_plan": "Plano de Ação",
+"risk_rules": "Regras de Risco",
+"behavior_warnings": "Alertas Comportamentais",
             "language": "Idioma",
             "hero_title": "Analytics institucional para traders",
             "hero_subtitle": "Plataforma profissional de análise operacional focada em risco, consistência, performance e aprovação em prop firms.",
@@ -275,6 +291,13 @@ def ui_text(language):
             "download_pdf": "📄 Baixar relatório profissional em PDF",
         },
         "Español": {
+            "ai_coach": "AI Trading Coach",
+"analyze_ai": "🧠 Analizar con IA",
+"ai_score": "AI Score",
+"executive_summary": "Resumen Ejecutivo",
+"action_plan": "Plan de Acción",
+"risk_rules": "Reglas de Riesgo",
+"behavior_warnings": "Alertas Conductuales",
             "language": "Idioma",
             "hero_title": "Analytics institucional para traders",
             "hero_subtitle": "Plataforma profesional de análisis operativo enfocada en riesgo, consistencia, rendimiento y aprobación en prop firms.",
@@ -919,6 +942,75 @@ def render_full_dashboard(
         asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
         st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", t["pnl_by_asset"]), use_container_width=True)
 
+    section(t["ai_coach"])
+    else:
+        ai_color = "value-negative"
+
+    st.markdown(
+        metric_card(
+            t["ai_score"],
+            f"{ai_score}/100",
+            ai_report["status"],
+            ai_color,
+        ),
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        diagnosis_box(
+            ai_report["profile"],
+            ai_report["headline"],
+        ),
+        unsafe_allow_html=True,
+    )
+
+    col_ai_1, col_ai_2 = st.columns(2)
+
+    with col_ai_1:
+        st.markdown(f"## {t['executive_summary']}")
+
+        for item in ai_report["executive_summary"]:
+            st.markdown(
+                f'<div class="diagnosis-box">{item}</div>',
+                unsafe_allow_html=True,
+            )
+
+        st.markdown(f"## {t['behavior_warnings']}")
+
+        if ai_report["warnings"]:
+            for item in ai_report["warnings"]:
+                st.markdown(
+                    f'<div class="alert-box">⚠️ {item}</div>',
+                    unsafe_allow_html=True,
+                )
+        else:
+            st.success("No critical behavioral warnings detected.")
+
+    with col_ai_2:
+        st.markdown(f"## {t['action_plan']}")
+
+        for item in ai_report["action_plan"]:
+            st.markdown(
+                f'<div class="diagnosis-box">✅ {item}</div>',
+                unsafe_allow_html=True,
+            )
+
+        st.markdown(f"## {t['risk_rules']}")
+
+        for item in ai_report["rules"]:
+            st.markdown(
+                f'<div class="diagnosis-box">📌 {item}</div>',
+                unsafe_allow_html=True,
+            )
+
+    section("AI Main Numbers")
+
+    metrics_df = pd.DataFrame(
+        list(ai_report["main_numbers"].items()),
+        columns=["Metric", "Value"],
+    )
+
+    st.dataframe(metrics_df, use_container_width=True)
     section(t["risk_alerts"])
 
     for alert in alerts:
