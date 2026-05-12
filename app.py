@@ -515,9 +515,9 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .sidebar-kpi{background:rgba(15,23,42,.88);border:1px solid rgba(148,163,184,.12);border-radius:15px;padding:13px 14px;margin-bottom:10px}.sidebar-kpi-title{color:#94a3b8!important;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}.sidebar-kpi-value{color:#fff!important;font-size:1.15rem;font-weight:900;margin-top:4px}.sidebar-note{color:#64748b!important;font-size:.78rem;line-height:1.45;margin-top:12px}
 .hero-wrap{padding-top:25px;padding-bottom:30px}.hero-title{font-size:clamp(3.2rem,6vw,5.8rem);font-weight:950;line-height:1.08;letter-spacing:-.06em;color:#fff!important;margin-bottom:26px;max-width:820px}.hero-subtitle{font-size:1.25rem;line-height:1.75;color:#b6c2d2!important;margin-top:18px;margin-bottom:34px;max-width:780px}.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.35);color:#7dd3fc!important;font-size:.9rem;font-weight:700;margin-bottom:20px}.hero-image-card{background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(30,41,59,.45));border:1px solid rgba(255,255,255,.08);border-radius:26px;padding:14px;box-shadow:0 25px 80px rgba(0,0,0,.35)}
 .feature-card{background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:30px;min-height:230px;box-shadow:0 14px 40px rgba(0,0,0,.23)}.feature-card h3{color:#fff!important;font-size:1.45rem;margin-bottom:15px}.feature-card p{color:#b6c2d2!important;font-size:1rem;line-height:1.65}
-.metric-card{background:linear-gradient(135deg,#111827 0%,#1f2937 100%);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px;min-height:125px;box-shadow:0 10px 30px rgba(0,0,0,.25)}.metric-title{color:#9ca3af!important;font-size:.9rem;font-weight:700}.metric-value{font-size:2rem;font-weight:850;margin-top:6px}.metric-sub{color:#64748b!important;font-size:.82rem;margin-top:6px}.value-positive{color:#22c55e!important}.value-negative{color:#fb7185!important}.value-neutral{color:#38bdf8!important}.value-warning{color:#f59e0b!important}
-.section-title{font-size:2rem;font-weight:850;color:#fff!important;margin-top:60px;margin-bottom:24px;letter-spacing:-.035em}.alert-box{background:#1f2937;border-left:5px solid #f59e0b;padding:16px;border-radius:12px;margin-bottom:12px;color:#fff!important}.diagnosis-box{background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(30,41,59,.78));border:1px solid rgba(56,189,248,.18);border-radius:22px;padding:22px 24px;margin-bottom:14px}.diagnosis-title{color:#7dd3fc!important;font-size:.85rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em}.diagnosis-text{color:#e5e7eb!important;font-size:1rem;line-height:1.6;margin-top:8px}
-.insight-card{background:linear-gradient(135deg,#0f172a 0%,#172554 100%);border:1px solid rgba(56,189,248,.22);border-radius:18px;padding:24px;min-height:148px;margin-bottom:24px;box-shadow:0 10px 30px rgba(0,0,0,.20)}.insight-title{color:#94a3b8!important;font-size:.88rem;font-weight:750}.insight-value{font-size:1.65rem;font-weight:850;margin-top:8px}.insight-sub{color:#7dd3fc!important;font-size:.85rem;margin-top:8px}
+.metric-card{margin-bottom:18px;background:linear-gradient(135deg,#111827 0%,#1f2937 100%);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px;min-height:125px;box-shadow:0 10px 30px rgba(0,0,0,.25)}.metric-title{color:#9ca3af!important;font-size:.9rem;font-weight:700}.metric-value{font-size:2rem;font-weight:850;margin-top:6px}.metric-sub{color:#64748b!important;font-size:.82rem;margin-top:6px}.value-positive{color:#22c55e!important}.value-negative{color:#fb7185!important}.value-neutral{color:#38bdf8!important}.value-warning{color:#f59e0b!important}
+.section-title{font-size:2rem;font-weight:850;color:#fff!important;margin-top:60px;margin-bottom:24px;letter-spacing:-.035em}.alert-box{background:#1f2937;border-left:5px solid #f59e0b;padding:16px;border-radius:12px;margin-bottom:12px;color:#fff!important}.diagnosis-box{margin-bottom:18px;background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(30,41,59,.78));border:1px solid rgba(56,189,248,.18);border-radius:22px;padding:22px 24px;margin-bottom:14px}.diagnosis-title{color:#7dd3fc!important;font-size:.85rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em}.diagnosis-text{color:#e5e7eb!important;font-size:1rem;line-height:1.6;margin-top:8px}
+.insight-card{margin-bottom:18px;background:linear-gradient(135deg,#0f172a 0%,#172554 100%);border:1px solid rgba(56,189,248,.22);border-radius:18px;padding:24px;min-height:148px;margin-bottom:24px;box-shadow:0 10px 30px rgba(0,0,0,.20)}.insight-title{color:#94a3b8!important;font-size:.88rem;font-weight:750}.insight-value{font-size:1.65rem;font-weight:850;margin-top:8px}.insight-sub{color:#7dd3fc!important;font-size:.85rem;margin-top:8px}
 .auth-box{max-width:620px;margin:30px auto;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(255,255,255,.09);border-radius:26px;padding:35px}.terminal-header{background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(2,6,23,.78));border:1px solid rgba(148,163,184,.14);border-radius:26px;padding:26px 30px;margin-bottom:30px;box-shadow:0 20px 70px rgba(0,0,0,.28)}.terminal-title{color:#fff!important;font-size:2.65rem;font-weight:950;letter-spacing:-.055em;line-height:1.05}.terminal-subtitle{color:#94a3b8!important;font-size:1rem;margin-top:8px}.terminal-pill{display:inline-block;background:rgba(34,197,94,.12);color:#86efac!important;border:1px solid rgba(34,197,94,.28);border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:800;margin-top:12px}
 .stButton>button{border-radius:14px;min-height:52px;font-weight:800;font-size:1rem;border:1px solid rgba(255,255,255,.15);background:#0f172a!important;color:#fff!important}.stButton>button:hover{border-color:#38bdf8!important;color:#7dd3fc!important}input,textarea,select{color:#fff!important}[data-testid="stTextInput"] input,[data-testid="stNumberInput"] input,[data-testid="stSelectbox"] div,[data-testid="stDateInput"] input{background:#111827!important;color:#fff!important}
  
@@ -1362,56 +1362,58 @@ def render_full_dashboard(
         language=language,
     )
  
-    section(t["performance"])
+    ai_report_preview = build_ai_coach_report(
+        language=language,
+        metrics=metrics,
+        daily=daily,
+        hourly=hourly,
+        risk_score=risk_score,
+        consistency_score=consistency_score,
+        behavior_score=behavior_score,
+        approval_probability=approval,
+        target_distance=target_distance,
+        daily_remaining=daily_remaining,
+        dd_remaining=dd_remaining,
+    )
  
-    c1, c2, c3, c4 = st.columns(4, gap="large")
-    with c1:
-        st.markdown(metric_card(t["net_pnl"], money(metrics["net_pnl"]), t["total_net_result"], value_class(metrics["net_pnl"])), unsafe_allow_html=True)
-    with c2:
-        st.markdown(metric_card(t["winrate"], percent(metrics["winrate"]), t["winning_trades"], value_class(metrics["winrate"], warning_threshold=50)), unsafe_allow_html=True)
-    with c3:
-        st.markdown(metric_card(t["profit_factor"], f"{metrics['profit_factor']:.2f}", t["gross_ratio"], value_class(metrics["profit_factor"], warning_threshold=1)), unsafe_allow_html=True)
-    with c4:
-        st.markdown(metric_card(t["max_drawdown"], money(metrics["max_drawdown"]), t["largest_decline"], value_class(metrics["max_drawdown"], higher_is_better=False)), unsafe_allow_html=True)
- 
-    s1, s2, s3, s4 = st.columns(4, gap="large")
-    with s1:
-        st.markdown(metric_card(t["risk_score"], f"{risk_score}/100", t["risk_score_sub"], score_class(risk_score)), unsafe_allow_html=True)
-    with s2:
-        st.markdown(metric_card(t["consistency_score"], f"{consistency_score}/100", t["consistency_score_sub"], score_class(consistency_score)), unsafe_allow_html=True)
-    with s3:
-        st.markdown(metric_card(t["account_health"], score_label(account_health, t), t["account_health_sub"], score_class(account_health)), unsafe_allow_html=True)
-    with s4:
-        st.markdown(metric_card(t["behavior_score"], f"{behavior_score}/100", t["behavior_score_sub"], score_class(behavior_score)), unsafe_allow_html=True)
- 
-    section(t["prop_firm_panel"])
- 
+    ai_score = ai_report_preview["score"]
     prop_behavior = prop_firm_behavior(prop_mode)
-    prop_label = profile.get("label", prop_behavior.get("style", prop_mode))
+    prop_description = prop_behavior.get("label", prop_behavior.get("style", prop_mode))
+ 
     st.markdown(
-        diagnosis_box(
-            f'{prop_behavior.get("badge", "🏦")} {prop_mode}',
-            f'{prop_label} · Strictness {prop_behavior.get("strictness", 1.0):.2f}x · Target {money(profit_target)} · Daily {money(max_daily_loss)} · Max DD {money(max_drawdown_limit)}',
+        score_ring_card(
+            t["ai_score"],
+            ai_score,
+            ai_report_preview["status"],
+            ai_report_preview["profile"],
+            ai_report_preview["headline"],
         ),
         unsafe_allow_html=True,
     )
  
-    p1, p2, p3 = st.columns(3, gap="large")
-    with p1:
-        st.markdown(metric_card(t["approval_probability"], f"{approval}/100", t["approval_probability_sub"], score_class(approval)), unsafe_allow_html=True)
-    with p2:
-        st.markdown(metric_card(t["daily_remaining"], money(daily_remaining), t["daily_remaining_sub"], value_class(daily_remaining)), unsafe_allow_html=True)
-    with p3:
-        st.markdown(metric_card(t["drawdown_remaining"], money(dd_remaining), t["drawdown_remaining_sub"], value_class(dd_remaining)), unsafe_allow_html=True)
- 
-    p4, p5 = st.columns(2, gap="large")
-    with p4:
-        st.markdown(metric_card(t["target_distance"], money(target_distance), t["target_distance_sub"], "value-neutral" if target_distance > 0 else "value-positive"), unsafe_allow_html=True)
-    with p5:
+    hero_1, hero_2, hero_3 = st.columns(3, gap="large")
+    with hero_1:
+        st.markdown(metric_card(t["net_pnl"], money(metrics["net_pnl"]), t["total_net_result"], value_class(metrics["net_pnl"])), unsafe_allow_html=True)
+    with hero_2:
+        st.markdown(metric_card(t["approval_probability"], f"{approval}/100", prop_mode, score_class(approval)), unsafe_allow_html=True)
+    with hero_3:
         st.markdown(metric_card(t["violation_risk"], violation_label(violation_score, t), t["violation_risk_sub"], score_class(100 - violation_score)), unsafe_allow_html=True)
  
-    section(t["institutional_radar"])
+    st.markdown(
+        diagnosis_box(
+            f'{prop_behavior.get("badge", "🏦")} {prop_mode}',
+            f'{prop_description} · Strictness {prop_behavior.get("strictness", 1.0):.2f}x · Target {money(profit_target)} · Daily {money(max_daily_loss)} · Max DD {money(max_drawdown_limit)}',
+        ),
+        unsafe_allow_html=True,
+    )
  
+    section(t["equity_curve"])
+    st.plotly_chart(make_equity_chart(normalized_df, t), use_container_width=True)
+ 
+    section(t["drawdown"])
+    st.plotly_chart(make_drawdown_chart(normalized_df, t), use_container_width=True)
+ 
+    section(t["institutional_radar"])
     radar_scores = build_radar_scores(
         risk_score=risk_score,
         consistency_score=consistency_score,
@@ -1421,73 +1423,50 @@ def render_full_dashboard(
         daily=daily,
     )
  
-    radar_col, radar_metrics_col = st.columns([1.28, 1], gap="large")
- 
+    radar_col, radar_metrics_col = st.columns([1.35, 1], gap="large")
     with radar_col:
         st.plotly_chart(make_radar_chart(radar_scores, t), use_container_width=True)
  
     with radar_metrics_col:
-        st.markdown(metric_card(t["smart_prop_engine"], prop_mode, profile.get("label", prop_mode), "value-neutral"), unsafe_allow_html=True)
-        st.markdown(metric_card(t["openai_ready"], "Ready", t["openai_ready_sub"], "value-positive"), unsafe_allow_html=True)
         st.markdown(metric_card(t["radar_risk_control"], f'{radar_scores["Risk Control"]}/100', t["max_drawdown_limit"], score_class(radar_scores["Risk Control"])), unsafe_allow_html=True)
+        st.markdown(metric_card(t["radar_consistency"], f'{radar_scores["Consistency"]}/100', t["consistency_score_sub"], score_class(radar_scores["Consistency"])), unsafe_allow_html=True)
         st.markdown(metric_card(t["radar_prop_compatibility"], f'{radar_scores["Prop Compatibility"]}/100', t["approval_probability"], score_class(radar_scores["Prop Compatibility"])), unsafe_allow_html=True)
  
+    section(t["performance"])
+    perf_1, perf_2, perf_3, perf_4 = st.columns(4, gap="large")
+    with perf_1:
+        st.markdown(metric_card(t["winrate"], percent(metrics["winrate"]), t["winning_trades"], value_class(metrics["winrate"], warning_threshold=50)), unsafe_allow_html=True)
+    with perf_2:
+        st.markdown(metric_card(t["profit_factor"], f"{metrics['profit_factor']:.2f}", t["gross_ratio"], value_class(metrics["profit_factor"], warning_threshold=1)), unsafe_allow_html=True)
+    with perf_3:
+        st.markdown(metric_card(t["max_drawdown"], money(metrics["max_drawdown"]), t["largest_decline"], value_class(metrics["max_drawdown"], higher_is_better=False)), unsafe_allow_html=True)
+    with perf_4:
+        st.markdown(metric_card(t["target_distance"], money(target_distance), t["target_distance_sub"], "value-neutral" if target_distance > 0 else "value-positive"), unsafe_allow_html=True)
+ 
+    risk_1, risk_2, risk_3 = st.columns(3, gap="large")
+    with risk_1:
+        st.markdown(metric_card(t["daily_remaining"], money(daily_remaining), t["daily_remaining_sub"], value_class(daily_remaining)), unsafe_allow_html=True)
+    with risk_2:
+        st.markdown(metric_card(t["drawdown_remaining"], money(dd_remaining), t["drawdown_remaining_sub"], value_class(dd_remaining)), unsafe_allow_html=True)
+    with risk_3:
+        st.markdown(metric_card(t["risk_score"], f"{risk_score}/100", t["risk_score_sub"], score_class(risk_score)), unsafe_allow_html=True)
+ 
     section(t["automatic_insights"])
- 
-    ic1, ic2, ic3, ic4 = st.columns(4, gap="large")
-    with ic1:
+    insight_1, insight_2, insight_3, insight_4 = st.columns(4, gap="large")
+    with insight_1:
         st.markdown(insight_card(t["best_hour"], f"{best_hour}h", money(best_hour_pnl), value_class(best_hour_pnl)), unsafe_allow_html=True)
-    with ic2:
+    with insight_2:
         st.markdown(insight_card(t["worst_hour"], f"{worst_hour}h", money(worst_hour_pnl), value_class(worst_hour_pnl)), unsafe_allow_html=True)
-    with ic3:
-        st.markdown(insight_card(t["best_day"], str(best_day), money(best_day_pnl), value_class(best_day_pnl)), unsafe_allow_html=True)
-    with ic4:
-        st.markdown(insight_card(t["worst_day"], str(worst_day), money(worst_day_pnl), value_class(worst_day_pnl)), unsafe_allow_html=True)
- 
-    ic5, ic6, ic7, ic8 = st.columns(4, gap="large")
-    with ic5:
-        st.markdown(insight_card(t["best_weekday"], str(best_weekday), money(best_weekday_pnl), value_class(best_weekday_pnl)), unsafe_allow_html=True)
-    with ic6:
-        st.markdown(insight_card(t["worst_weekday"], str(worst_weekday), money(worst_weekday_pnl), value_class(worst_weekday_pnl)), unsafe_allow_html=True)
-    with ic7:
+    with insight_3:
         st.markdown(insight_card(t["positive_days"], positive_days, t["days_above_zero"], "value-positive"), unsafe_allow_html=True)
-    with ic8:
+    with insight_4:
         st.markdown(insight_card(t["negative_days"], negative_days, t["days_below_zero"], "value-negative"), unsafe_allow_html=True)
  
-    section(t["ai_diagnosis"])
- 
-    for item in diagnosis_items:
-        st.markdown(diagnosis_box(t["ai_diagnosis"], item), unsafe_allow_html=True)
- 
-    section(t["equity_curve"])
-    st.plotly_chart(make_equity_chart(normalized_df, t), use_container_width=True)
- 
-    section(t["drawdown"])
-    st.plotly_chart(make_drawdown_chart(normalized_df, t), use_container_width=True)
- 
-    chart_col1, chart_col2 = st.columns(2)
-    with chart_col1:
-        section(t["daily_pnl"])
-        daily_df = daily.reset_index()
-        daily_df.columns = ["day", "net_pnl"]
-        st.plotly_chart(make_bar_chart(daily_df, "day", "net_pnl", t["daily_pnl"]), use_container_width=True)
-    with chart_col2:
-        section(t["pnl_by_hour"])
-        hourly_df = hourly.reset_index()
-        hourly_df.columns = ["hour", "net_pnl"]
-        st.plotly_chart(make_bar_chart(hourly_df, "hour", "net_pnl", t["pnl_by_hour"]), use_container_width=True)
- 
-    chart_col3, chart_col4 = st.columns(2)
-    with chart_col3:
-        section(t["pnl_by_weekday"])
-        weekday_df = weekday.reset_index()
-        weekday_df.columns = ["weekday", "net_pnl"]
-        st.plotly_chart(make_bar_chart(weekday_df, "weekday", "net_pnl", t["pnl_by_weekday"]), use_container_width=True)
-    with chart_col4:
-        section(t["pnl_by_asset"])
-        asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
-        st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", t["pnl_by_asset"]), use_container_width=True)
- 
+    insight_5, insight_6 = st.columns(2, gap="large")
+    with insight_5:
+        st.markdown(insight_card(t["best_day"], str(best_day), money(best_day_pnl), value_class(best_day_pnl)), unsafe_allow_html=True)
+    with insight_6:
+        st.markdown(insight_card(t["worst_day"], str(worst_day), money(worst_day_pnl), value_class(worst_day_pnl)), unsafe_allow_html=True)
  
     trader_dna = build_trader_dna(
         language=language,
@@ -1502,85 +1481,31 @@ def render_full_dashboard(
     )
  
     section(t["trader_dna"])
- 
     dna_color = score_class(trader_dna["dna_score"])
  
-    dna_col1, dna_col2 = st.columns(2)
- 
+    dna_col1, dna_col2, dna_col3 = st.columns(3, gap="large")
     with dna_col1:
-        st.markdown(
-            metric_card(
-                t["trader_profile"],
-                trader_dna["profile"],
-                t["profile_summary"],
-                dna_color,
-            ),
-            unsafe_allow_html=True,
-        )
- 
+        st.markdown(metric_card(t["trader_profile"], trader_dna["profile"], t["profile_summary"], dna_color), unsafe_allow_html=True)
     with dna_col2:
-        st.markdown(
-            metric_card(
-                t["dna_score"],
-                f'{trader_dna["dna_score"]}/100',
-                t["profile_confidence"] + ": " + trader_dna["confidence"],
-                dna_color,
-            ),
-            unsafe_allow_html=True,
-        )
- 
-    dna_col3, dna_col4 = st.columns(2)
- 
+        st.markdown(metric_card(t["dna_score"], f'{trader_dna["dna_score"]}/100', t["profile_confidence"] + ": " + trader_dna["confidence"], dna_color), unsafe_allow_html=True)
     with dna_col3:
-        st.markdown(
-            metric_card(
-                t["execution_style"],
-                trader_dna["execution_style"],
-                t["risk_behavior"],
-                "value-neutral",
-            ),
-            unsafe_allow_html=True,
-        )
+        st.markdown(metric_card(t["prop_firm_fit"], trader_dna["prop_fit"], t["prop_firm_panel"], dna_color), unsafe_allow_html=True)
  
-    with dna_col4:
-        st.markdown(
-            metric_card(
-                t["prop_firm_fit"],
-                trader_dna["prop_fit"],
-                t["prop_firm_panel"],
-                dna_color,
-            ),
-            unsafe_allow_html=True,
-        )
- 
-    dna_summary_col, dna_strength_col, dna_improve_col = st.columns(3)
- 
+    dna_summary_col, dna_strength_col, dna_improve_col = st.columns(3, gap="large")
     with dna_summary_col:
         st.markdown(f"## {t['profile_summary']}")
-        for item in trader_dna["summary"]:
-            st.markdown(
-                f'<div class="diagnosis-box">🧬 {item}</div>',
-                unsafe_allow_html=True,
-            )
- 
+        for item in trader_dna["summary"][:3]:
+            st.markdown(f'<div class="diagnosis-box">🧬 {item}</div>', unsafe_allow_html=True)
     with dna_strength_col:
         st.markdown(f"## {t['strengths']}")
-        for item in trader_dna["strengths"]:
-            st.markdown(
-                f'<div class="diagnosis-box">✅ {item}</div>',
-                unsafe_allow_html=True,
-            )
- 
+        for item in trader_dna["strengths"][:3]:
+            st.markdown(f'<div class="diagnosis-box">✅ {item}</div>', unsafe_allow_html=True)
     with dna_improve_col:
         st.markdown(f"## {t['improvement_points']}")
-        for item in trader_dna["improvements"]:
-            st.markdown(
-                f'<div class="alert-box">📌 {item}</div>',
-                unsafe_allow_html=True,
-            )
+        for item in trader_dna["improvements"][:3]:
+            st.markdown(f'<div class="alert-box">📌 {item}</div>', unsafe_allow_html=True)
  
     section(t["ai_coach"])
- 
     loading_texts = {
         "Português": [
             "Mapeando padrões comportamentais...",
@@ -1614,18 +1539,12 @@ def render_full_dashboard(
     if st.button(t["analyze_ai"], help=ai_button_help):
         loading_box = st.empty()
         progress_bar = st.progress(0)
- 
         steps = loading_texts.get(language, loading_texts["English"])
  
         for index, message in enumerate(steps):
             percent_done = int(((index + 1) / len(steps)) * 100)
             loading_box.markdown(
-                f'''
-                <div class="diagnosis-box">
-                    <div class="diagnosis-title">AI TRADING COACH</div>
-                    <div class="diagnosis-text">🧠 {message}</div>
-                </div>
-                ''',
+                f'''<div class="diagnosis-box"><div class="diagnosis-title">AI TRADING COACH</div><div class="diagnosis-text">🧠 {message}</div></div>''',
                 unsafe_allow_html=True,
             )
             progress_bar.progress(percent_done)
@@ -1648,91 +1567,35 @@ def render_full_dashboard(
             dd_remaining=dd_remaining,
         )
  
-        ai_score = ai_report["score"]
- 
-        if ai_score >= 80:
-            ai_color = "value-positive"
-        elif ai_score >= 60:
-            ai_color = "value-warning"
-        else:
-            ai_color = "value-negative"
- 
-        st.markdown(
-            score_ring_card(
-                t["ai_score"],
-                ai_score,
-                ai_report["status"],
-                ai_report["profile"],
-                ai_report["headline"],
-            ),
-            unsafe_allow_html=True,
-        )
+        st.markdown(score_ring_card(t["ai_score"], ai_report["score"], ai_report["status"], ai_report["profile"], ai_report["headline"]), unsafe_allow_html=True)
  
         col_ai_1, col_ai_2 = st.columns(2, gap="large")
- 
         with col_ai_1:
             st.markdown(f"## {t['executive_summary']}")
- 
-            for item in ai_report["executive_summary"]:
-                st.markdown(
-                    f'<div class="diagnosis-box">{item}</div>',
-                    unsafe_allow_html=True,
-                )
- 
+            for item in ai_report["executive_summary"][:4]:
+                st.markdown(f'<div class="diagnosis-box">{item}</div>', unsafe_allow_html=True)
             st.markdown(f"## {t['behavior_warnings']}")
- 
             if ai_report["warnings"]:
                 for item in ai_report["warnings"]:
-                    st.markdown(
-                        f'<div class="alert-box">⚠️ {item}</div>',
-                        unsafe_allow_html=True,
-                    )
+                    st.markdown(f'<div class="alert-box">⚠️ {item}</div>', unsafe_allow_html=True)
             else:
-                no_warning_text = {
-                    "Português": "Nenhum alerta comportamental crítico detectado.",
-                    "Español": "No se detectaron alertas conductuales críticos.",
-                    "English": "No critical behavioral warnings detected.",
-                }.get(language, "No critical behavioral warnings detected.")
+                no_warning_text = {"Português": "Nenhum alerta comportamental crítico detectado.", "Español": "No se detectaron alertas conductuales críticos.", "English": "No critical behavioral warnings detected."}.get(language, "No critical behavioral warnings detected.")
                 st.success(no_warning_text)
  
         with col_ai_2:
             st.markdown(f"## {t['action_plan']}")
- 
-            for item in ai_report["action_plan"]:
-                st.markdown(
-                    f'<div class="diagnosis-box">✅ {item}</div>',
-                    unsafe_allow_html=True,
-                )
- 
+            for item in ai_report["action_plan"][:5]:
+                st.markdown(f'<div class="diagnosis-box">✅ {item}</div>', unsafe_allow_html=True)
             st.markdown(f"## {t['risk_rules']}")
- 
-            for item in ai_report["rules"]:
-                st.markdown(
-                    f'<div class="diagnosis-box">📌 {item}</div>',
-                    unsafe_allow_html=True,
-                )
- 
-        section("AI Main Numbers")
- 
-        metrics_df = pd.DataFrame(
-            list(ai_report["main_numbers"].items()),
-            columns=["Metric", "Value"],
-        )
- 
-        st.dataframe(metrics_df, use_container_width=True)
+            for item in ai_report["rules"][:5]:
+                st.markdown(f'<div class="diagnosis-box">📌 {item}</div>', unsafe_allow_html=True)
  
     section(t["risk_alerts"])
- 
     for alert in alerts:
         st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
  
     csv = normalized_df.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        t["download_csv"],
-        csv,
-        f"riskpilot_{uploaded_file_name.replace(' ', '_')}.csv",
-        "text/csv",
-    )
+    st.download_button(t["download_csv"], csv, f"riskpilot_{uploaded_file_name.replace(' ', '_')}.csv", "text/csv")
  
     insights_for_pdf = [
         {"label": t["best_hour"], "value": f"{best_hour}h", "result": money(best_hour_pnl)},
@@ -1761,32 +1624,19 @@ def render_full_dashboard(
         trades_df=normalized_df,
     )
  
-    st.download_button(
-        t["download_pdf"],
-        pdf_bytes,
-        f"riskpilot_report_{uploaded_file_name.replace(' ', '_')}.pdf",
-        "application/pdf",
-    )
+    st.download_button(t["download_pdf"], pdf_bytes, f"riskpilot_report_{uploaded_file_name.replace(' ', '_')}.pdf", "application/pdf")
  
     if read_only:
         st.info(t["loaded_from_history"])
     elif allow_save and st.session_state.authenticated:
         if st.button(t["save_analysis"]):
-            save_upload(
-                account_name=prop_mode,
-                platform="Unknown",
-                file_name=uploaded_file_name,
-                trades_df=normalized_df,
-                metrics=metrics,
-                user_email=st.session_state.user_email,
-            )
+            save_upload(account_name=prop_mode, platform="Unknown", file_name=uploaded_file_name, trades_df=normalized_df, metrics=metrics, user_email=st.session_state.user_email)
             st.success(t["analysis_saved"])
     elif allow_save:
         st.warning(t["save_warning"])
  
-    section(t["trades"])
-    st.dataframe(normalized_df, use_container_width=True)
- 
+    with st.expander(t["trades"]):
+        st.dataframe(normalized_df, use_container_width=True)
  
 # =========================================================
 # SESSION STATE
@@ -1876,7 +1726,6 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
 if not st.session_state.authenticated and st.session_state.show_login:
     t = ui_text(st.session_state.landing_language)
  
-    st.markdown('<div class="auth-box">', unsafe_allow_html=True)
     st.title("🔐 RiskPilot")
  
     auth_mode = st.radio(
@@ -1924,7 +1773,6 @@ if not st.session_state.authenticated and st.session_state.show_login:
         st.session_state.show_login = False
         st.rerun()
  
-    st.markdown("</div>", unsafe_allow_html=True)
     st.stop()
  
  
