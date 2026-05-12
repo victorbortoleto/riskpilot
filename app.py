@@ -941,8 +941,28 @@ def render_full_dashboard(
         section(t["pnl_by_asset"])
         asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
         st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", t["pnl_by_asset"]), use_container_width=True)
-
     section(t["ai_coach"])
+
+    ai_report = build_ai_coach_report(
+        language=language,
+        metrics=metrics,
+        daily=daily,
+        hourly=hourly,
+        risk_score=risk_score,
+        consistency_score=consistency_score,
+        behavior_score=behavior_score,
+        approval_probability=approval,
+        target_distance=target_distance,
+        daily_remaining=daily_remaining,
+        dd_remaining=dd_remaining,
+    )
+
+    ai_score = ai_report["score"]
+
+    if ai_score >= 75:
+        ai_color = "value-positive"
+    elif ai_score >= 50:
+        ai_color = "value-warning"
     else:
         ai_color = "value-negative"
 
@@ -967,6 +987,7 @@ def render_full_dashboard(
     col_ai_1, col_ai_2 = st.columns(2)
 
     with col_ai_1:
+
         st.markdown(f"## {t['executive_summary']}")
 
         for item in ai_report["executive_summary"]:
@@ -978,15 +999,18 @@ def render_full_dashboard(
         st.markdown(f"## {t['behavior_warnings']}")
 
         if ai_report["warnings"]:
+
             for item in ai_report["warnings"]:
                 st.markdown(
                     f'<div class="alert-box">⚠️ {item}</div>',
                     unsafe_allow_html=True,
                 )
+
         else:
             st.success("No critical behavioral warnings detected.")
 
     with col_ai_2:
+
         st.markdown(f"## {t['action_plan']}")
 
         for item in ai_report["action_plan"]:
@@ -1011,6 +1035,7 @@ def render_full_dashboard(
     )
 
     st.dataframe(metrics_df, use_container_width=True)
+
     section(t["risk_alerts"])
 
     for alert in alerts:
