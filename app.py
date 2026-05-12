@@ -36,6 +36,26 @@ st.set_page_config(
  
  
 # =========================================================
+# ADMIN / BILLING READY
+# =========================================================
+ 
+ADMIN_EMAILS = [
+    "victorbortoleto@yahoo.com.br",
+]
+ 
+ 
+def is_admin_user():
+    email = st.session_state.get("user_email")
+    return bool(email and email.lower() in [admin.lower() for admin in ADMIN_EMAILS])
+ 
+ 
+def effective_user_plan():
+    if is_admin_user():
+        return "Premium"
+    return st.session_state.get("user_plan", "Free")
+ 
+ 
+# =========================================================
 # IDIOMAS
 # =========================================================
  
@@ -609,6 +629,8 @@ def plan_rank(plan):
  
  
 def has_plan(required_plan):
+    if is_admin_user():
+        return True
     return plan_rank(st.session_state.get("user_plan", "Free")) >= plan_rank(required_plan)
  
  
@@ -625,6 +647,8 @@ def locked_feature_box(language, required_plan="Premium"):
  
  
 def enforce_free_upload_limit(language, uploaded_file_name):
+    if is_admin_user():
+        return True
     if st.session_state.get("user_plan", "Free") != "Free":
         return True
     if "free_upload_count" not in st.session_state:
@@ -2351,6 +2375,8 @@ if not st.session_state.authenticated and st.session_state.show_login:
                     st.session_state.user_email = user["email"]
                     st.session_state.show_login = False
                     st.session_state.demo_mode = False
+                    if is_admin_user():
+                        st.session_state.user_plan = "Premium"
                     st.rerun()
                 else:
                     st.error(t["invalid_credentials"])
@@ -2394,6 +2420,7 @@ if st.session_state.authenticated:
         st.session_state.show_login = False
         st.session_state.demo_mode = False
         st.session_state.user_email = None
+        st.session_state.user_plan = "Free"
         st.rerun()
 else:
     st.sidebar.markdown(
@@ -2409,14 +2436,19 @@ else:
  
 plan_map = plan_options(language)
 plan_labels = list(plan_map.keys())
-current_plan_label = next((label for label, value in plan_map.items() if value == st.session_state.get("user_plan", "Free")), plan_labels[0])
-selected_plan_label = st.sidebar.selectbox(
-    plan_text(language)["current_plan"],
-    plan_labels,
-    index=plan_labels.index(current_plan_label),
-)
-st.session_state.user_plan = plan_map[selected_plan_label]
-st.sidebar.markdown(sidebar_kpi(plan_text(language)["current_plan"], st.session_state.user_plan), unsafe_allow_html=True)
+ 
+if is_admin_user():
+    st.session_state.user_plan = "Premium"
+    st.sidebar.markdown(sidebar_kpi(plan_text(language)["current_plan"], "Admin / Premium"), unsafe_allow_html=True)
+else:
+    current_plan_label = next((label for label, value in plan_map.items() if value == st.session_state.get("user_plan", "Free")), plan_labels[0])
+    selected_plan_label = st.sidebar.selectbox(
+        plan_text(language)["current_plan"],
+        plan_labels,
+        index=plan_labels.index(current_plan_label),
+    )
+    st.session_state.user_plan = plan_map[selected_plan_label]
+    st.sidebar.markdown(sidebar_kpi(plan_text(language)["current_plan"], st.session_state.user_plan), unsafe_allow_html=True)
  
 account_size = st.sidebar.number_input(t["account_size"], value=50000.0, step=5000.0)
 prop_mode = st.sidebar.selectbox(t["prop_firm_mode"], ["FTMO", "Apex", "TopStep", "MyFundedFX", "MyFundedFutures", "FundingPips", "TakeProfit", "E8", "Custom", "Personalizado"])
