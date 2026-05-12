@@ -494,15 +494,15 @@ FLAG_ES_BASE64 = "iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAABHNCSVQICAgIfA
  
 def language_options():
     return {
-        "🇺🇸 En": "English",
-        "🇧🇷 Pt": "Português",
-        "🇪🇸 Es": "Español",
+        "🇧🇷 Português": "Português",
+        "🇺🇸 English": "English",
+        "🇪🇸 Español": "Español",
     }
  
  
 def language_display(language):
     reverse = {value: key for key, value in language_options().items()}
-    return reverse.get(language, "🇺🇸 En")
+    return reverse.get(language, "🇺🇸 English")
  
  
 def language_flag_image(language):
@@ -515,11 +515,15 @@ def language_flag_image(language):
  
 def language_flag_pill(language):
     flag_base64, label = language_flag_image(language)
-    short = {"English": "En", "Português": "Pt", "Español": "Es"}.get(language, label)
+    display_text = {
+        "English": "English",
+        "Português": "Português",
+        "Español": "Español",
+    }.get(language, label)
     return f"""
     <div class="language-flag-pill">
         <img class="language-flag-img" src="data:image/png;base64,{flag_base64}" />
-        <span class="language-flag-text">{short}</span>
+        <span class="language-flag-text">{display_text}</span>
     </div>
     """
  
@@ -788,7 +792,7 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
  
  
 .language-flag-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(15,23,42,.92);border:1px solid rgba(56,189,248,.28);border-radius:999px;padding:8px 12px;margin:8px 0 4px 0;box-shadow:0 8px 24px rgba(0,0,0,.22)}
-.language-flag-icon{font-size:1.45rem;line-height:1}.language-flag-text{font-size:.86rem;font-weight:800;color:#e5e7eb!important}
+.language-flag-img{width:22px!important;height:22px!important;min-width:22px!important;max-width:22px!important;object-fit:cover!important;border-radius:50%!important;display:inline-block!important}.language-flag-icon{font-size:1.45rem;line-height:1}.language-flag-text{font-size:.86rem;font-weight:800;color:#e5e7eb!important;white-space:nowrap!important}
 .pricing-wrapper{margin-top:70px;text-align:center;padding:32px 20px;border-radius:28px;background:linear-gradient(135deg,rgba(15,23,42,.62),rgba(2,6,23,.2));border:1px solid rgba(56,189,248,.14)}
 .pricing-badge{display:inline-flex;padding:7px 12px;border-radius:999px;background:rgba(34,197,94,.11);border:1px solid rgba(34,197,94,.26);color:#86efac!important;font-size:.82rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}.pricing-title{font-size:2.55rem;font-weight:950;letter-spacing:-.055em;color:#fff!important}.pricing-subtitle{max-width:760px;margin:14px auto 0 auto;color:#94a3b8!important;font-size:1.08rem;line-height:1.65}
 .pricing-card{position:relative;min-height:255px;margin-top:24px;border-radius:26px;padding:28px;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(56,189,248,.18);box-shadow:0 20px 55px rgba(0,0,0,.28)}.pricing-card:hover{border-color:rgba(56,189,248,.55);box-shadow:0 25px 70px rgba(14,165,233,.15)}.plan-tag{display:inline-flex;padding:6px 10px;border-radius:999px;background:rgba(14,165,233,.16);border:1px solid rgba(14,165,233,.35);color:#7dd3fc!important;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.plan-tag-muted{background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.20);color:#cbd5e1!important}.plan-name{font-size:1.55rem;font-weight:950;color:#fff!important;margin-top:18px}.plan-price{font-size:2.15rem;font-weight:950;color:#22c55e!important;margin-top:10px}.plan-desc{color:#94a3b8!important;font-size:.95rem;line-height:1.55;margin-top:10px;min-height:52px}.plan-cta{margin-top:20px;background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff!important;border-radius:14px;padding:13px 16px;text-align:center;font-weight:900;box-shadow:0 12px 35px rgba(14,165,233,.18)}
