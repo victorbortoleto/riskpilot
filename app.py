@@ -29,9 +29,9 @@ st.set_page_config(
 )
 
 
-# =========================
-# TEXTOS / IDIOMAS
-# =========================
+# =========================================================
+# IDIOMAS
+# =========================================================
 
 def ui_text(language):
     texts = {
@@ -84,6 +84,8 @@ def ui_text(language):
             "history_title": "Upload History",
             "history_account_required": "History is available after creating a free account.",
             "no_uploads": "No uploads yet.",
+            "select_upload": "Select an upload to view",
+            "loaded_from_history": "Loaded from history. This analysis is read-only.",
             "terminal_title": "RiskPilot Terminal",
             "terminal_subtitle": "Institutional-grade trading risk intelligence and performance analytics.",
             "live_engine": "LIVE ANALYTICS ENGINE",
@@ -149,6 +151,7 @@ def ui_text(language):
             "low": "Low",
             "medium": "Medium",
             "high": "High",
+            "download_csv": "⬇️ Download normalized CSV",
         },
         "Português": {
             "language": "Idioma",
@@ -199,6 +202,8 @@ def ui_text(language):
             "history_title": "Histórico de Uploads",
             "history_account_required": "O histórico fica disponível após criar uma conta grátis.",
             "no_uploads": "Ainda não há uploads salvos.",
+            "select_upload": "Selecione um upload para visualizar",
+            "loaded_from_history": "Carregado do histórico. Esta análise está em modo somente leitura.",
             "terminal_title": "Terminal RiskPilot",
             "terminal_subtitle": "Inteligência institucional de risco e performance para traders.",
             "live_engine": "MOTOR DE ANÁLISE ATIVO",
@@ -264,6 +269,7 @@ def ui_text(language):
             "low": "Baixo",
             "medium": "Médio",
             "high": "Alto",
+            "download_csv": "⬇️ Baixar CSV normalizado",
         },
         "Español": {
             "language": "Idioma",
@@ -314,6 +320,8 @@ def ui_text(language):
             "history_title": "Historial de Uploads",
             "history_account_required": "El historial está disponible después de crear una cuenta gratis.",
             "no_uploads": "Aún no hay uploads guardados.",
+            "select_upload": "Selecciona un upload para visualizar",
+            "loaded_from_history": "Cargado desde historial. Este análisis está en modo solo lectura.",
             "terminal_title": "Terminal RiskPilot",
             "terminal_subtitle": "Inteligencia institucional de riesgo y rendimiento para traders.",
             "live_engine": "MOTOR DE ANÁLISIS ACTIVO",
@@ -379,14 +387,15 @@ def ui_text(language):
             "low": "Bajo",
             "medium": "Medio",
             "high": "Alto",
+            "download_csv": "⬇️ Descargar CSV normalizado",
         },
     }
     return texts.get(language, texts["English"])
 
 
-# =========================
+# =========================================================
 # CSS
-# =========================
+# =========================================================
 
 st.markdown("""
 <style>
@@ -411,9 +420,9 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 """, unsafe_allow_html=True)
 
 
-# =========================
+# =========================================================
 # HELPERS
-# =========================
+# =========================================================
 
 def money(v):
     try:
@@ -434,10 +443,12 @@ def value_class(value, higher_is_better=True, warning_threshold=None):
         value = float(value)
     except Exception:
         return "value-neutral"
+
     if warning_threshold is not None:
         if value >= warning_threshold:
             return "value-positive" if higher_is_better else "value-negative"
         return "value-warning"
+
     if value > 0:
         return "value-positive" if higher_is_better else "value-negative"
     if value < 0:
@@ -566,12 +577,15 @@ def calculate_scores(metrics, daily, max_daily_loss, max_drawdown_limit):
     max_drawdown = float(metrics.get("max_drawdown", 0))
     winrate = float(metrics.get("winrate", 0))
     loss_streak = float(metrics.get("max_loss_streak", 0))
+
     pf_score = min(max(profit_factor / 2.0, 0), 1) * 25
     dd_score = max(0, 1 - (max_drawdown / max(max_drawdown_limit, 1))) * 25
     win_score = min(max(winrate / 70, 0), 1) * 20
     pnl_score = 15 if net_pnl > 0 else 5
     streak_score = max(0, 1 - (loss_streak / 8)) * 15
+
     risk_score = round(pf_score + dd_score + win_score + pnl_score + streak_score)
+
     if daily.empty or len(daily) <= 1:
         consistency_score = 50
     else:
@@ -579,14 +593,20 @@ def calculate_scores(metrics, daily, max_daily_loss, max_drawdown_limit):
         avg_abs = max(abs(daily).mean(), 1)
         consistency_score = round(max(0, 100 - (daily_std / avg_abs * 35)))
         consistency_score = min(100, max(0, consistency_score))
+
     account_health = round((risk_score * 0.65) + (consistency_score * 0.35))
+
     behavior_score = 100
     behavior_score -= min(loss_streak * 8, 40)
+
     if not daily.empty and daily.min() < -abs(max_daily_loss):
         behavior_score -= 25
+
     if profit_factor < 1:
         behavior_score -= 20
+
     behavior_score = round(max(0, min(100, behavior_score)))
+
     return risk_score, consistency_score, account_health, behavior_score
 
 
@@ -594,17 +614,30 @@ def calculate_prop_status(metrics, daily, profit_target, max_daily_loss, max_dra
     net_pnl = float(metrics.get("net_pnl", 0))
     max_dd = float(metrics.get("max_drawdown", 0))
     worst_day = abs(float(daily.min())) if not daily.empty else 0
+
     target_distance = profit_target - net_pnl
     daily_remaining = max_daily_loss - worst_day
     dd_remaining = max_drawdown_limit - max_dd
+
     daily_ratio = max(0, min(1, daily_remaining / max(max_daily_loss, 1)))
     dd_ratio = max(0, min(1, dd_remaining / max(max_drawdown_limit, 1)))
     target_ratio = max(0, min(1, net_pnl / max(profit_target, 1)))
-    approval = round((risk_score * 0.35) + (consistency_score * 0.20) + (behavior_score * 0.20) + (daily_ratio * 10) + (dd_ratio * 10) + (target_ratio * 5))
+
+    approval = round(
+        (risk_score * 0.35)
+        + (consistency_score * 0.20)
+        + (behavior_score * 0.20)
+        + (daily_ratio * 10)
+        + (dd_ratio * 10)
+        + (target_ratio * 5)
+    )
+
     violation_score = 100 - approval
+
     if daily_remaining < 0 or dd_remaining < 0:
         approval = min(approval, 15)
         violation_score = max(violation_score, 90)
+
     return approval, daily_remaining, dd_remaining, target_distance, violation_score
 
 
@@ -711,9 +744,198 @@ def make_demo_dataframe():
     return pd.DataFrame(data)
 
 
-# =========================
+# =========================================================
+# RENDER DO DASHBOARD COMPLETO
+# =========================================================
+
+def render_full_dashboard(
+    normalized_df,
+    t,
+    language,
+    initial_capital,
+    max_daily_loss,
+    max_drawdown_limit,
+    profit_target,
+    prop_mode,
+    uploaded_file_name,
+    allow_save=True,
+    read_only=False,
+):
+    normalized_df = prepare_dataframe(normalized_df, initial_capital)
+    metrics = calculate_metrics(normalized_df, initial_capital)
+
+    hourly = normalized_df.groupby("hour")["net_pnl"].sum()
+    daily = normalized_df.groupby("day")["net_pnl"].sum()
+    weekday = normalized_df.groupby("weekday")["net_pnl"].sum()
+
+    risk_score, consistency_score, account_health, behavior_score = calculate_scores(
+        metrics,
+        daily,
+        max_daily_loss,
+        max_drawdown_limit,
+    )
+
+    approval, daily_remaining, dd_remaining, target_distance, violation_score = calculate_prop_status(
+        metrics,
+        daily,
+        profit_target,
+        max_daily_loss,
+        max_drawdown_limit,
+        risk_score,
+        consistency_score,
+        behavior_score,
+    )
+
+    section(t["performance"])
+
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.markdown(metric_card(t["net_pnl"], money(metrics["net_pnl"]), t["total_net_result"], value_class(metrics["net_pnl"])), unsafe_allow_html=True)
+    with c2:
+        st.markdown(metric_card(t["winrate"], percent(metrics["winrate"]), t["winning_trades"], value_class(metrics["winrate"], warning_threshold=50)), unsafe_allow_html=True)
+    with c3:
+        st.markdown(metric_card(t["profit_factor"], f"{metrics['profit_factor']:.2f}", t["gross_ratio"], value_class(metrics["profit_factor"], warning_threshold=1)), unsafe_allow_html=True)
+    with c4:
+        st.markdown(metric_card(t["max_drawdown"], money(metrics["max_drawdown"]), t["largest_decline"], value_class(metrics["max_drawdown"], higher_is_better=False)), unsafe_allow_html=True)
+
+    s1, s2, s3, s4 = st.columns(4)
+    with s1:
+        st.markdown(metric_card(t["risk_score"], f"{risk_score}/100", t["risk_score_sub"], score_class(risk_score)), unsafe_allow_html=True)
+    with s2:
+        st.markdown(metric_card(t["consistency_score"], f"{consistency_score}/100", t["consistency_score_sub"], score_class(consistency_score)), unsafe_allow_html=True)
+    with s3:
+        st.markdown(metric_card(t["account_health"], score_label(account_health, t), t["account_health_sub"], score_class(account_health)), unsafe_allow_html=True)
+    with s4:
+        st.markdown(metric_card(t["behavior_score"], f"{behavior_score}/100", t["behavior_score_sub"], score_class(behavior_score)), unsafe_allow_html=True)
+
+    section(t["prop_firm_panel"])
+
+    p1, p2, p3, p4, p5 = st.columns(5)
+    with p1:
+        st.markdown(metric_card(t["approval_probability"], f"{approval}/100", t["approval_probability_sub"], score_class(approval)), unsafe_allow_html=True)
+    with p2:
+        st.markdown(metric_card(t["daily_remaining"], money(daily_remaining), t["daily_remaining_sub"], value_class(daily_remaining)), unsafe_allow_html=True)
+    with p3:
+        st.markdown(metric_card(t["drawdown_remaining"], money(dd_remaining), t["drawdown_remaining_sub"], value_class(dd_remaining)), unsafe_allow_html=True)
+    with p4:
+        st.markdown(metric_card(t["target_distance"], money(target_distance), t["target_distance_sub"], "value-neutral" if target_distance > 0 else "value-positive"), unsafe_allow_html=True)
+    with p5:
+        st.markdown(metric_card(t["violation_risk"], violation_label(violation_score, t), t["violation_risk_sub"], score_class(100 - violation_score)), unsafe_allow_html=True)
+
+    section(t["automatic_insights"])
+
+    best_hour = hourly.idxmax() if not hourly.empty else "N/A"
+    best_hour_pnl = hourly.max() if not hourly.empty else 0
+    worst_hour = hourly.idxmin() if not hourly.empty else "N/A"
+    worst_hour_pnl = hourly.min() if not hourly.empty else 0
+    best_day = daily.idxmax() if not daily.empty else "N/A"
+    best_day_pnl = daily.max() if not daily.empty else 0
+    worst_day = daily.idxmin() if not daily.empty else "N/A"
+    worst_day_pnl = daily.min() if not daily.empty else 0
+    best_weekday = weekday.idxmax() if not weekday.empty else "N/A"
+    best_weekday_pnl = weekday.max() if not weekday.empty else 0
+    worst_weekday = weekday.idxmin() if not weekday.empty else "N/A"
+    worst_weekday_pnl = weekday.min() if not weekday.empty else 0
+
+    ic1, ic2, ic3, ic4 = st.columns(4)
+    with ic1:
+        st.markdown(insight_card(t["best_hour"], f"{best_hour}h", money(best_hour_pnl), value_class(best_hour_pnl)), unsafe_allow_html=True)
+    with ic2:
+        st.markdown(insight_card(t["worst_hour"], f"{worst_hour}h", money(worst_hour_pnl), value_class(worst_hour_pnl)), unsafe_allow_html=True)
+    with ic3:
+        st.markdown(insight_card(t["best_day"], str(best_day), money(best_day_pnl), value_class(best_day_pnl)), unsafe_allow_html=True)
+    with ic4:
+        st.markdown(insight_card(t["worst_day"], str(worst_day), money(worst_day_pnl), value_class(worst_day_pnl)), unsafe_allow_html=True)
+
+    ic5, ic6, ic7, ic8 = st.columns(4)
+    with ic5:
+        st.markdown(insight_card(t["best_weekday"], str(best_weekday), money(best_weekday_pnl), value_class(best_weekday_pnl)), unsafe_allow_html=True)
+    with ic6:
+        st.markdown(insight_card(t["worst_weekday"], str(worst_weekday), money(worst_weekday_pnl), value_class(worst_weekday_pnl)), unsafe_allow_html=True)
+    with ic7:
+        positive_days = int((daily > 0).sum()) if not daily.empty else 0
+        st.markdown(insight_card(t["positive_days"], positive_days, t["days_above_zero"], "value-positive"), unsafe_allow_html=True)
+    with ic8:
+        negative_days = int((daily < 0).sum()) if not daily.empty else 0
+        st.markdown(insight_card(t["negative_days"], negative_days, t["days_below_zero"], "value-negative"), unsafe_allow_html=True)
+
+    section(t["ai_diagnosis"])
+
+    for item in generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency_score, behavior_score, approval, target_distance, daily_remaining, dd_remaining):
+        st.markdown(diagnosis_box(t["ai_diagnosis"], item), unsafe_allow_html=True)
+
+    section(t["equity_curve"])
+    st.plotly_chart(make_equity_chart(normalized_df, t), use_container_width=True)
+
+    section(t["drawdown"])
+    st.plotly_chart(make_drawdown_chart(normalized_df, t), use_container_width=True)
+
+    chart_col1, chart_col2 = st.columns(2)
+    with chart_col1:
+        section(t["daily_pnl"])
+        daily_df = daily.reset_index()
+        daily_df.columns = ["day", "net_pnl"]
+        st.plotly_chart(make_bar_chart(daily_df, "day", "net_pnl", t["daily_pnl"]), use_container_width=True)
+    with chart_col2:
+        section(t["pnl_by_hour"])
+        hourly_df = hourly.reset_index()
+        hourly_df.columns = ["hour", "net_pnl"]
+        st.plotly_chart(make_bar_chart(hourly_df, "hour", "net_pnl", t["pnl_by_hour"]), use_container_width=True)
+
+    chart_col3, chart_col4 = st.columns(2)
+    with chart_col3:
+        section(t["pnl_by_weekday"])
+        weekday_df = weekday.reset_index()
+        weekday_df.columns = ["weekday", "net_pnl"]
+        st.plotly_chart(make_bar_chart(weekday_df, "weekday", "net_pnl", t["pnl_by_weekday"]), use_container_width=True)
+    with chart_col4:
+        section(t["pnl_by_asset"])
+        asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
+        st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", t["pnl_by_asset"]), use_container_width=True)
+
+    section(t["risk_alerts"])
+
+    alerts = generate_risk_alerts(
+        normalized_df,
+        max_daily_loss,
+        max_drawdown_limit,
+        language=language,
+    )
+
+    for alert in alerts:
+        st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
+
+    csv = normalized_df.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        t["download_csv"],
+        csv,
+        f"riskpilot_{uploaded_file_name.replace(' ', '_')}.csv",
+        "text/csv",
+    )
+
+    if read_only:
+        st.info(t["loaded_from_history"])
+    elif allow_save and st.session_state.authenticated:
+        if st.button(t["save_analysis"]):
+            save_upload(
+                account_name=prop_mode,
+                platform="Unknown",
+                file_name=uploaded_file_name,
+                trades_df=normalized_df,
+                metrics=metrics,
+                user_email=st.session_state.user_email,
+            )
+            st.success(t["analysis_saved"])
+    elif allow_save:
+        st.warning(t["save_warning"])
+
+    section(t["trades"])
+    st.dataframe(normalized_df, use_container_width=True)
+
+
+# =========================================================
 # SESSION STATE
-# =========================
+# =========================================================
 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
@@ -729,22 +951,30 @@ if "landing_language" not in st.session_state:
     st.session_state.landing_language = "English"
 
 
-# =========================
+# =========================================================
 # HOMEPAGE
-# =========================
+# =========================================================
 
 if not st.session_state.authenticated and not st.session_state.show_login and not st.session_state.demo_mode:
     top1, top2, top3 = st.columns([1, 4, 1])
     with top1:
-        selected_language = st.selectbox("Language / Idioma", ["English", "Português", "Español"], index=["English", "Português", "Español"].index(st.session_state.landing_language))
+        selected_language = st.selectbox(
+            "Language / Idioma",
+            ["English", "Português", "Español"],
+            index=["English", "Português", "Español"].index(st.session_state.landing_language),
+        )
         st.session_state.landing_language = selected_language
+
     t = ui_text(st.session_state.landing_language)
+
     st.markdown('<div class="hero-wrap">', unsafe_allow_html=True)
     col1, col2 = st.columns([1.25, 1])
+
     with col1:
         st.markdown(f'<div class="hero-badge">⚡ {t["hero_badge"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="hero-title">{t["hero_title"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="hero-subtitle">{t["hero_subtitle"]}</div>', unsafe_allow_html=True)
+
         b1, b2, b3 = st.columns([1, 1, 1])
         with b1:
             if st.button(t["start_free"]):
@@ -760,11 +990,17 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
             if st.button(t["view_demo"]):
                 st.session_state.demo_mode = True
                 st.rerun()
+
     with col2:
         st.markdown('<div class="hero-image-card">', unsafe_allow_html=True)
-        st.image("https://images.unsplash.com/photo-1642790106117-e829e14a795f?q=80&w=1200&auto=format&fit=crop", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.image(
+            "https://images.unsplash.com/photo-1642790106117-e829e14a795f?q=80&w=1200&auto=format&fit=crop",
+            use_container_width=True,
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
     st.markdown(f'<div class="section-title">{t["why"]}</div>', unsafe_allow_html=True)
     f1, f2, f3 = st.columns(3)
     with f1:
@@ -773,24 +1009,34 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         st.markdown(f'<div class="feature-card"><h3>{t["feature_2_title"]}</h3><p>{t["feature_2_text"]}</p></div>', unsafe_allow_html=True)
     with f3:
         st.markdown(f'<div class="feature-card"><h3>{t["feature_3_title"]}</h3><p>{t["feature_3_text"]}</p></div>', unsafe_allow_html=True)
+
     st.stop()
 
 
-# =========================
+# =========================================================
 # LOGIN / REGISTER
-# =========================
+# =========================================================
 
 if not st.session_state.authenticated and st.session_state.show_login:
     t = ui_text(st.session_state.landing_language)
+
     st.markdown('<div class="auth-box">', unsafe_allow_html=True)
     st.title("🔐 RiskPilot")
-    auth_mode = st.radio(t["choose"], [t["login"].replace("🔐 ", ""), t["register"]], index=0 if st.session_state.auth_mode == "Login" else 1)
+
+    auth_mode = st.radio(
+        t["choose"],
+        [t["login"].replace("🔐 ", ""), t["register"]],
+        index=0 if st.session_state.auth_mode == "Login" else 1,
+    )
+
     if auth_mode == t["register"]:
         name = st.text_input(t["name"])
         email = st.text_input(t["email"])
         password = st.text_input(t["password"], type="password")
+
         if st.button(t["create_account"]):
             existing = get_user_by_email(email)
+
             if existing:
                 st.error(t["user_exists"])
             else:
@@ -800,12 +1046,15 @@ if not st.session_state.authenticated and st.session_state.show_login:
     else:
         email = st.text_input(t["email"])
         password = st.text_input(t["password"], type="password")
+
         if st.button(t["login"]):
             user = get_user_by_email(email)
+
             if not user:
                 st.error(t["invalid_credentials"])
             else:
                 valid = bcrypt.checkpw(password.encode(), user["password"].encode())
+
                 if valid:
                     st.session_state.authenticated = True
                     st.session_state.user_email = user["email"]
@@ -814,25 +1063,39 @@ if not st.session_state.authenticated and st.session_state.show_login:
                     st.rerun()
                 else:
                     st.error(t["invalid_credentials"])
+
     if st.button(t["back_home"]):
         st.session_state.show_login = False
         st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
     st.stop()
 
 
-# =========================
+# =========================================================
 # SIDEBAR APP
-# =========================
+# =========================================================
 
-language = st.sidebar.selectbox("Language / Idioma", ["English", "Português", "Español"], index=["English", "Português", "Español"].index(st.session_state.landing_language))
+language = st.sidebar.selectbox(
+    "Language / Idioma",
+    ["English", "Português", "Español"],
+    index=["English", "Português", "Español"].index(st.session_state.landing_language),
+)
 st.session_state.landing_language = language
+
 t = ui_text(language)
 
-st.sidebar.markdown(f'<div class="sidebar-brand"><div class="sidebar-logo">📊 RiskPilot</div><div class="sidebar-subtitle">{t["professional_analytics"]}</div></div>', unsafe_allow_html=True)
+st.sidebar.markdown(
+    f'<div class="sidebar-brand"><div class="sidebar-logo">📊 RiskPilot</div><div class="sidebar-subtitle">{t["professional_analytics"]}</div></div>',
+    unsafe_allow_html=True,
+)
 
 if st.session_state.authenticated:
-    st.sidebar.markdown(f'<div class="sidebar-user-card"><div class="sidebar-user-label">{t["authenticated_user"]}</div><div class="sidebar-user-value">{st.session_state.user_email}</div></div>', unsafe_allow_html=True)
+    st.sidebar.markdown(
+        f'<div class="sidebar-user-card"><div class="sidebar-user-label">{t["authenticated_user"]}</div><div class="sidebar-user-value">{st.session_state.user_email}</div></div>',
+        unsafe_allow_html=True,
+    )
+
     if st.sidebar.button(t["logout"]):
         st.session_state.authenticated = False
         st.session_state.show_login = False
@@ -840,7 +1103,11 @@ if st.session_state.authenticated:
         st.session_state.user_email = None
         st.rerun()
 else:
-    st.sidebar.markdown(f'<div class="sidebar-user-card"><div class="sidebar-user-label">{t["current_mode"]}</div><div class="sidebar-user-value">{t["demo_mode"]}</div></div>', unsafe_allow_html=True)
+    st.sidebar.markdown(
+        f'<div class="sidebar-user-card"><div class="sidebar-user-label">{t["current_mode"]}</div><div class="sidebar-user-value">{t["demo_mode"]}</div></div>',
+        unsafe_allow_html=True,
+    )
+
     if st.sidebar.button(t["create_free_account"]):
         st.session_state.demo_mode = False
         st.session_state.auth_mode = "Register"
@@ -849,6 +1116,7 @@ else:
 
 account_size = st.sidebar.number_input(t["account_size"], value=50000.0, step=5000.0)
 prop_mode = st.sidebar.selectbox(t["prop_firm_mode"], ["FTMO", "Apex", "MyFundedFX", "TopStep", "Custom", "Personalizado"])
+
 profiles = prop_profiles(account_size)
 profile = profiles.get(prop_mode, profiles["Custom"])
 
@@ -875,168 +1143,97 @@ st.sidebar.markdown(sidebar_kpi(t["analytics"], t["enabled"]), unsafe_allow_html
 st.sidebar.markdown(f'<div class="sidebar-note">{t["sidebar_note"]}</div>', unsafe_allow_html=True)
 
 
-# =========================
-# HISTORY
-# =========================
+# =========================================================
+# HISTORY COM DASHBOARD COMPLETO
+# =========================================================
 
 if page == t["history"]:
-    st.title("📚 " + t["history_title"])
+    st.markdown(
+        f'<div class="terminal-header"><div class="terminal-title">📚 {t["history_title"]}</div><div class="terminal-subtitle">{t["loaded_from_history"]}</div><div class="terminal-pill">{prop_mode}</div></div>',
+        unsafe_allow_html=True,
+    )
+
     if not st.session_state.authenticated:
         st.info(t["history_account_required"])
         st.stop()
+
     history = load_upload_history(st.session_state.user_email)
+
     if history.empty:
         st.info(t["no_uploads"])
         st.stop()
+
     st.dataframe(history, use_container_width=True)
+
+    history_options = history.apply(
+        lambda row: f'{row["id"]} · {row["file_name"]} · {row["created_at"]}',
+        axis=1,
+    ).tolist()
+
+    selected_label = st.selectbox(t["select_upload"], history_options)
+    selected_id = int(selected_label.split(" · ")[0])
+
+    selected_df = load_upload_by_id(selected_id)
+
+    if selected_df.empty:
+        st.info(t["no_uploads"])
+        st.stop()
+
+    render_full_dashboard(
+        selected_df,
+        t,
+        language,
+        initial_capital,
+        max_daily_loss,
+        max_drawdown_limit,
+        profit_target,
+        prop_mode,
+        uploaded_file_name=f"upload_{selected_id}",
+        allow_save=False,
+        read_only=True,
+    )
+
     st.stop()
 
 
-# =========================
-# DASHBOARD
-# =========================
+# =========================================================
+# DASHBOARD NORMAL
+# =========================================================
 
-st.markdown(f'<div class="terminal-header"><div class="terminal-title">{t["terminal_title"]}</div><div class="terminal-subtitle">{t["terminal_subtitle"]}</div><div class="terminal-pill">{t["live_engine"]} · {prop_mode}</div></div>', unsafe_allow_html=True)
+st.markdown(
+    f'<div class="terminal-header"><div class="terminal-title">{t["terminal_title"]}</div><div class="terminal-subtitle">{t["terminal_subtitle"]}</div><div class="terminal-pill">{t["live_engine"]} · {prop_mode}</div></div>',
+    unsafe_allow_html=True,
+)
 
 if st.session_state.demo_mode and not st.session_state.authenticated:
     st.info(t["demo_info"])
-    normalized_df = prepare_dataframe(make_demo_dataframe(), initial_capital)
+    normalized_df = make_demo_dataframe()
     uploaded_file_name = "demo_data.csv"
 else:
     uploaded_file = st.file_uploader(t["upload_report"], type=["csv", "xlsx"])
+
     if not uploaded_file:
         st.info(t["upload_to_begin"])
         st.stop()
+
     try:
         raw_df = load_trading_file(uploaded_file)
         normalized_df = normalize_trades(raw_df)
-        normalized_df = prepare_dataframe(normalized_df, initial_capital)
         uploaded_file_name = uploaded_file.name
     except Exception as e:
         st.error(f'{t["file_error"]}: {e}')
         st.stop()
 
-metrics = calculate_metrics(normalized_df, initial_capital)
-hourly = normalized_df.groupby("hour")["net_pnl"].sum()
-daily = normalized_df.groupby("day")["net_pnl"].sum()
-weekday = normalized_df.groupby("weekday")["net_pnl"].sum()
-
-risk_score, consistency_score, account_health, behavior_score = calculate_scores(metrics, daily, max_daily_loss, max_drawdown_limit)
-approval, daily_remaining, dd_remaining, target_distance, violation_score = calculate_prop_status(metrics, daily, profit_target, max_daily_loss, max_drawdown_limit, risk_score, consistency_score, behavior_score)
-
-section(t["performance"])
-c1, c2, c3, c4 = st.columns(4)
-with c1:
-    st.markdown(metric_card(t["net_pnl"], money(metrics["net_pnl"]), t["total_net_result"], value_class(metrics["net_pnl"])), unsafe_allow_html=True)
-with c2:
-    st.markdown(metric_card(t["winrate"], percent(metrics["winrate"]), t["winning_trades"], value_class(metrics["winrate"], warning_threshold=50)), unsafe_allow_html=True)
-with c3:
-    st.markdown(metric_card(t["profit_factor"], f"{metrics['profit_factor']:.2f}", t["gross_ratio"], value_class(metrics["profit_factor"], warning_threshold=1)), unsafe_allow_html=True)
-with c4:
-    st.markdown(metric_card(t["max_drawdown"], money(metrics["max_drawdown"]), t["largest_decline"], value_class(metrics["max_drawdown"], higher_is_better=False)), unsafe_allow_html=True)
-
-s1, s2, s3, s4 = st.columns(4)
-with s1:
-    st.markdown(metric_card(t["risk_score"], f"{risk_score}/100", t["risk_score_sub"], score_class(risk_score)), unsafe_allow_html=True)
-with s2:
-    st.markdown(metric_card(t["consistency_score"], f"{consistency_score}/100", t["consistency_score_sub"], score_class(consistency_score)), unsafe_allow_html=True)
-with s3:
-    st.markdown(metric_card(t["account_health"], score_label(account_health, t), t["account_health_sub"], score_class(account_health)), unsafe_allow_html=True)
-with s4:
-    st.markdown(metric_card(t["behavior_score"], f"{behavior_score}/100", t["behavior_score_sub"], score_class(behavior_score)), unsafe_allow_html=True)
-
-section(t["prop_firm_panel"])
-p1, p2, p3, p4, p5 = st.columns(5)
-with p1:
-    st.markdown(metric_card(t["approval_probability"], f"{approval}/100", t["approval_probability_sub"], score_class(approval)), unsafe_allow_html=True)
-with p2:
-    st.markdown(metric_card(t["daily_remaining"], money(daily_remaining), t["daily_remaining_sub"], value_class(daily_remaining)), unsafe_allow_html=True)
-with p3:
-    st.markdown(metric_card(t["drawdown_remaining"], money(dd_remaining), t["drawdown_remaining_sub"], value_class(dd_remaining)), unsafe_allow_html=True)
-with p4:
-    st.markdown(metric_card(t["target_distance"], money(target_distance), t["target_distance_sub"], "value-neutral" if target_distance > 0 else "value-positive"), unsafe_allow_html=True)
-with p5:
-    st.markdown(metric_card(t["violation_risk"], violation_label(violation_score, t), t["violation_risk_sub"], score_class(100 - violation_score)), unsafe_allow_html=True)
-
-section(t["automatic_insights"])
-best_hour = hourly.idxmax() if not hourly.empty else "N/A"
-best_hour_pnl = hourly.max() if not hourly.empty else 0
-worst_hour = hourly.idxmin() if not hourly.empty else "N/A"
-worst_hour_pnl = hourly.min() if not hourly.empty else 0
-best_day = daily.idxmax() if not daily.empty else "N/A"
-best_day_pnl = daily.max() if not daily.empty else 0
-worst_day = daily.idxmin() if not daily.empty else "N/A"
-worst_day_pnl = daily.min() if not daily.empty else 0
-best_weekday = weekday.idxmax() if not weekday.empty else "N/A"
-best_weekday_pnl = weekday.max() if not weekday.empty else 0
-worst_weekday = weekday.idxmin() if not weekday.empty else "N/A"
-worst_weekday_pnl = weekday.min() if not weekday.empty else 0
-
-ic1, ic2, ic3, ic4 = st.columns(4)
-with ic1:
-    st.markdown(insight_card(t["best_hour"], f"{best_hour}h", money(best_hour_pnl), value_class(best_hour_pnl)), unsafe_allow_html=True)
-with ic2:
-    st.markdown(insight_card(t["worst_hour"], f"{worst_hour}h", money(worst_hour_pnl), value_class(worst_hour_pnl)), unsafe_allow_html=True)
-with ic3:
-    st.markdown(insight_card(t["best_day"], str(best_day), money(best_day_pnl), value_class(best_day_pnl)), unsafe_allow_html=True)
-with ic4:
-    st.markdown(insight_card(t["worst_day"], str(worst_day), money(worst_day_pnl), value_class(worst_day_pnl)), unsafe_allow_html=True)
-
-ic5, ic6, ic7, ic8 = st.columns(4)
-with ic5:
-    st.markdown(insight_card(t["best_weekday"], str(best_weekday), money(best_weekday_pnl), value_class(best_weekday_pnl)), unsafe_allow_html=True)
-with ic6:
-    st.markdown(insight_card(t["worst_weekday"], str(worst_weekday), money(worst_weekday_pnl), value_class(worst_weekday_pnl)), unsafe_allow_html=True)
-with ic7:
-    positive_days = int((daily > 0).sum()) if not daily.empty else 0
-    st.markdown(insight_card(t["positive_days"], positive_days, t["days_above_zero"], "value-positive"), unsafe_allow_html=True)
-with ic8:
-    negative_days = int((daily < 0).sum()) if not daily.empty else 0
-    st.markdown(insight_card(t["negative_days"], negative_days, t["days_below_zero"], "value-negative"), unsafe_allow_html=True)
-
-section(t["ai_diagnosis"])
-for item in generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency_score, behavior_score, approval, target_distance, daily_remaining, dd_remaining):
-    st.markdown(diagnosis_box(t["ai_diagnosis"], item), unsafe_allow_html=True)
-
-section(t["equity_curve"])
-st.plotly_chart(make_equity_chart(normalized_df, t), use_container_width=True)
-
-section(t["drawdown"])
-st.plotly_chart(make_drawdown_chart(normalized_df, t), use_container_width=True)
-
-chart_col1, chart_col2 = st.columns(2)
-with chart_col1:
-    section(t["daily_pnl"])
-    daily_df = daily.reset_index()
-    daily_df.columns = ["day", "net_pnl"]
-    st.plotly_chart(make_bar_chart(daily_df, "day", "net_pnl", t["daily_pnl"]), use_container_width=True)
-with chart_col2:
-    section(t["pnl_by_hour"])
-    hourly_df = hourly.reset_index()
-    hourly_df.columns = ["hour", "net_pnl"]
-    st.plotly_chart(make_bar_chart(hourly_df, "hour", "net_pnl", t["pnl_by_hour"]), use_container_width=True)
-chart_col3, chart_col4 = st.columns(2)
-with chart_col3:
-    section(t["pnl_by_weekday"])
-    weekday_df = weekday.reset_index()
-    weekday_df.columns = ["weekday", "net_pnl"]
-    st.plotly_chart(make_bar_chart(weekday_df, "weekday", "net_pnl", t["pnl_by_weekday"]), use_container_width=True)
-with chart_col4:
-    section(t["pnl_by_asset"])
-    asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
-    st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", t["pnl_by_asset"]), use_container_width=True)
-
-section(t["risk_alerts"])
-alerts = generate_risk_alerts(normalized_df, max_daily_loss, max_drawdown_limit, language=language)
-for alert in alerts:
-    st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
-
-if st.session_state.authenticated:
-    if st.button(t["save_analysis"]):
-        save_upload(account_name=prop_mode, platform="Unknown", file_name=uploaded_file_name, trades_df=normalized_df, metrics=metrics, user_email=st.session_state.user_email)
-        st.success(t["analysis_saved"])
-else:
-    st.warning(t["save_warning"])
-
-section(t["trades"])
-st.dataframe(normalized_df, use_container_width=True)
+render_full_dashboard(
+    normalized_df,
+    t,
+    language,
+    initial_capital,
+    max_daily_loss,
+    max_drawdown_limit,
+    profit_target,
+    prop_mode,
+    uploaded_file_name=uploaded_file_name,
+    allow_save=True,
+    read_only=False,
+)
