@@ -5,5 +5,5 @@ plotly
 openpyxl
 psycopg2-binary
 sqlalchemy
-streamlit-authenticator
 bcrypt
+reportlab
