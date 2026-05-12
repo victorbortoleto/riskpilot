@@ -8,6 +8,7 @@ from core.loader import load_trading_file
 from core.normalizer import normalize_trades
 from core.metrics import calculate_metrics
 from core.risk_engine import generate_risk_alerts
+from core.pdf_report import build_pdf_report
 
 from core.db import (
     init_db,
@@ -152,6 +153,7 @@ def ui_text(language):
             "medium": "Medium",
             "high": "High",
             "download_csv": "⬇️ Download normalized CSV",
+            "download_pdf": "📄 Download professional PDF report",
         },
         "Português": {
             "language": "Idioma",
@@ -270,6 +272,7 @@ def ui_text(language):
             "medium": "Médio",
             "high": "Alto",
             "download_csv": "⬇️ Baixar CSV normalizado",
+            "download_pdf": "📄 Baixar relatório profissional em PDF",
         },
         "Español": {
             "language": "Idioma",
@@ -388,6 +391,7 @@ def ui_text(language):
             "medium": "Medio",
             "high": "Alto",
             "download_csv": "⬇️ Descargar CSV normalizado",
+            "download_pdf": "📄 Descargar informe profesional en PDF",
         },
     }
     return texts.get(language, texts["English"])
@@ -757,6 +761,7 @@ def render_full_dashboard(
     max_drawdown_limit,
     profit_target,
     prop_mode,
+    account_size,
     uploaded_file_name,
     allow_save=True,
     read_only=False,
@@ -784,6 +789,42 @@ def render_full_dashboard(
         risk_score,
         consistency_score,
         behavior_score,
+    )
+
+    best_hour = hourly.idxmax() if not hourly.empty else "N/A"
+    best_hour_pnl = hourly.max() if not hourly.empty else 0
+    worst_hour = hourly.idxmin() if not hourly.empty else "N/A"
+    worst_hour_pnl = hourly.min() if not hourly.empty else 0
+    best_day = daily.idxmax() if not daily.empty else "N/A"
+    best_day_pnl = daily.max() if not daily.empty else 0
+    worst_day = daily.idxmin() if not daily.empty else "N/A"
+    worst_day_pnl = daily.min() if not daily.empty else 0
+    best_weekday = weekday.idxmax() if not weekday.empty else "N/A"
+    best_weekday_pnl = weekday.max() if not weekday.empty else 0
+    worst_weekday = weekday.idxmin() if not weekday.empty else "N/A"
+    worst_weekday_pnl = weekday.min() if not weekday.empty else 0
+    positive_days = int((daily > 0).sum()) if not daily.empty else 0
+    negative_days = int((daily < 0).sum()) if not daily.empty else 0
+
+    diagnosis_items = generate_diagnosis(
+        language,
+        metrics,
+        daily,
+        hourly,
+        risk_score,
+        consistency_score,
+        behavior_score,
+        approval,
+        target_distance,
+        daily_remaining,
+        dd_remaining,
+    )
+
+    alerts = generate_risk_alerts(
+        normalized_df,
+        max_daily_loss,
+        max_drawdown_limit,
+        language=language,
     )
 
     section(t["performance"])
@@ -824,19 +865,6 @@ def render_full_dashboard(
 
     section(t["automatic_insights"])
 
-    best_hour = hourly.idxmax() if not hourly.empty else "N/A"
-    best_hour_pnl = hourly.max() if not hourly.empty else 0
-    worst_hour = hourly.idxmin() if not hourly.empty else "N/A"
-    worst_hour_pnl = hourly.min() if not hourly.empty else 0
-    best_day = daily.idxmax() if not daily.empty else "N/A"
-    best_day_pnl = daily.max() if not daily.empty else 0
-    worst_day = daily.idxmin() if not daily.empty else "N/A"
-    worst_day_pnl = daily.min() if not daily.empty else 0
-    best_weekday = weekday.idxmax() if not weekday.empty else "N/A"
-    best_weekday_pnl = weekday.max() if not weekday.empty else 0
-    worst_weekday = weekday.idxmin() if not weekday.empty else "N/A"
-    worst_weekday_pnl = weekday.min() if not weekday.empty else 0
-
     ic1, ic2, ic3, ic4 = st.columns(4)
     with ic1:
         st.markdown(insight_card(t["best_hour"], f"{best_hour}h", money(best_hour_pnl), value_class(best_hour_pnl)), unsafe_allow_html=True)
@@ -853,15 +881,13 @@ def render_full_dashboard(
     with ic6:
         st.markdown(insight_card(t["worst_weekday"], str(worst_weekday), money(worst_weekday_pnl), value_class(worst_weekday_pnl)), unsafe_allow_html=True)
     with ic7:
-        positive_days = int((daily > 0).sum()) if not daily.empty else 0
         st.markdown(insight_card(t["positive_days"], positive_days, t["days_above_zero"], "value-positive"), unsafe_allow_html=True)
     with ic8:
-        negative_days = int((daily < 0).sum()) if not daily.empty else 0
         st.markdown(insight_card(t["negative_days"], negative_days, t["days_below_zero"], "value-negative"), unsafe_allow_html=True)
 
     section(t["ai_diagnosis"])
 
-    for item in generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency_score, behavior_score, approval, target_distance, daily_remaining, dd_remaining):
+    for item in diagnosis_items:
         st.markdown(diagnosis_box(t["ai_diagnosis"], item), unsafe_allow_html=True)
 
     section(t["equity_curve"])
@@ -895,13 +921,6 @@ def render_full_dashboard(
 
     section(t["risk_alerts"])
 
-    alerts = generate_risk_alerts(
-        normalized_df,
-        max_daily_loss,
-        max_drawdown_limit,
-        language=language,
-    )
-
     for alert in alerts:
         st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
 
@@ -911,6 +930,40 @@ def render_full_dashboard(
         csv,
         f"riskpilot_{uploaded_file_name.replace(' ', '_')}.csv",
         "text/csv",
+    )
+
+    insights_for_pdf = [
+        {"label": t["best_hour"], "value": f"{best_hour}h", "result": money(best_hour_pnl)},
+        {"label": t["worst_hour"], "value": f"{worst_hour}h", "result": money(worst_hour_pnl)},
+        {"label": t["best_day"], "value": str(best_day), "result": money(best_day_pnl)},
+        {"label": t["worst_day"], "value": str(worst_day), "result": money(worst_day_pnl)},
+        {"label": t["best_weekday"], "value": str(best_weekday), "result": money(best_weekday_pnl)},
+        {"label": t["worst_weekday"], "value": str(worst_weekday), "result": money(worst_weekday_pnl)},
+        {"label": t["positive_days"], "value": str(positive_days), "result": t["days_above_zero"]},
+        {"label": t["negative_days"], "value": str(negative_days), "result": t["days_below_zero"]},
+    ]
+
+    pdf_bytes = build_pdf_report(
+        language=language,
+        title=t["terminal_title"],
+        subtitle=t["terminal_subtitle"],
+        file_name=uploaded_file_name,
+        prop_mode=prop_mode,
+        account_size=account_size,
+        metrics=metrics,
+        scores=(risk_score, consistency_score, account_health, behavior_score),
+        prop_status=(approval, daily_remaining, dd_remaining, target_distance, violation_score),
+        insights=insights_for_pdf,
+        diagnosis_items=diagnosis_items,
+        alerts=alerts,
+        trades_df=normalized_df,
+    )
+
+    st.download_button(
+        t["download_pdf"],
+        pdf_bytes,
+        f"riskpilot_report_{uploaded_file_name.replace(' ', '_')}.pdf",
+        "application/pdf",
     )
 
     if read_only:
@@ -1188,6 +1241,7 @@ if page == t["history"]:
         max_drawdown_limit,
         profit_target,
         prop_mode,
+        account_size,
         uploaded_file_name=f"upload_{selected_id}",
         allow_save=False,
         read_only=True,
@@ -1233,6 +1287,7 @@ render_full_dashboard(
     max_drawdown_limit,
     profit_target,
     prop_mode,
+    account_size,
     uploaded_file_name=uploaded_file_name,
     allow_save=True,
     read_only=False,
