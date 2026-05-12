@@ -3,14 +3,15 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import bcrypt
-
+import time
+ 
 from core.loader import load_trading_file
 from core.normalizer import normalize_trades
 from core.metrics import calculate_metrics
 from core.risk_engine import generate_risk_alerts
 from core.pdf_report import build_pdf_report
 from core.ai_coach import build_ai_coach_report
-
+ 
 from core.db import (
     init_db,
     save_upload,
@@ -19,22 +20,22 @@ from core.db import (
     create_user,
     get_user_by_email,
 )
-
-
+ 
+ 
 init_db()
-
+ 
 st.set_page_config(
     page_title="RiskPilot",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
-
+ 
+ 
 # =========================================================
 # IDIOMAS
 # =========================================================
-
+ 
 def ui_text(language):
     texts = {
         "English": {
@@ -418,12 +419,12 @@ def ui_text(language):
         },
     }
     return texts.get(language, texts["English"])
-
-
+ 
+ 
 # =========================================================
 # CSS
 # =========================================================
-
+ 
 st.markdown("""
 <style>
 html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {background:#050816!important;color:#fff!important;}
@@ -445,44 +446,44 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .stButton>button{border-radius:14px;min-height:52px;font-weight:800;font-size:1rem;border:1px solid rgba(255,255,255,.15);background:#0f172a!important;color:#fff!important}.stButton>button:hover{border-color:#38bdf8!important;color:#7dd3fc!important}input,textarea,select{color:#fff!important}[data-testid="stTextInput"] input,[data-testid="stNumberInput"] input,[data-testid="stSelectbox"] div,[data-testid="stDateInput"] input{background:#111827!important;color:#fff!important}
 </style>
 """, unsafe_allow_html=True)
-
-
+ 
+ 
 # =========================================================
 # HELPERS
 # =========================================================
-
+ 
 def money(v):
     try:
         return f"${float(v):,.2f}"
     except Exception:
         return "$0.00"
-
-
+ 
+ 
 def percent(v):
     try:
         return f"{float(v):.2f}%"
     except Exception:
         return "0.00%"
-
-
+ 
+ 
 def value_class(value, higher_is_better=True, warning_threshold=None):
     try:
         value = float(value)
     except Exception:
         return "value-neutral"
-
+ 
     if warning_threshold is not None:
         if value >= warning_threshold:
             return "value-positive" if higher_is_better else "value-negative"
         return "value-warning"
-
+ 
     if value > 0:
         return "value-positive" if higher_is_better else "value-negative"
     if value < 0:
         return "value-negative" if higher_is_better else "value-positive"
     return "value-neutral"
-
-
+ 
+ 
 def metric_card(title, value, sub="", css_class="value-neutral"):
     return f"""
     <div class="metric-card">
@@ -491,8 +492,8 @@ def metric_card(title, value, sub="", css_class="value-neutral"):
         <div class="metric-sub">{sub}</div>
     </div>
     """
-
-
+ 
+ 
 def insight_card(title, value, sub="", css_class="value-neutral"):
     return f"""
     <div class="insight-card">
@@ -501,8 +502,8 @@ def insight_card(title, value, sub="", css_class="value-neutral"):
         <div class="insight-sub">{sub}</div>
     </div>
     """
-
-
+ 
+ 
 def diagnosis_box(title, text):
     return f"""
     <div class="diagnosis-box">
@@ -510,8 +511,8 @@ def diagnosis_box(title, text):
         <div class="diagnosis-text">{text}</div>
     </div>
     """
-
-
+ 
+ 
 def sidebar_kpi(title, value):
     return f"""
     <div class="sidebar-kpi">
@@ -519,12 +520,12 @@ def sidebar_kpi(title, value):
         <div class="sidebar-kpi-value">{value}</div>
     </div>
     """
-
-
+ 
+ 
 def section(title):
     st.markdown(f'<div class="section-title">{title}</div>', unsafe_allow_html=True)
-
-
+ 
+ 
 def prepare_dataframe(df, initial_capital):
     df = df.copy()
     df["date"] = pd.to_datetime(df["date"], errors="coerce")
@@ -538,14 +539,14 @@ def prepare_dataframe(df, initial_capital):
     df["equity_peak"] = df["equity"].cummax()
     df["drawdown"] = df["equity"] - df["equity_peak"]
     return df
-
-
+ 
+ 
 def smooth_series(series, window=5):
     if len(series) < window:
         return series
     return series.rolling(window=window, min_periods=1).mean()
-
-
+ 
+ 
 def base_chart_layout(fig, height=380):
     fig.update_layout(
         template="plotly_dark",
@@ -561,8 +562,8 @@ def base_chart_layout(fig, height=380):
     fig.update_xaxes(showgrid=False, zeroline=False, color="#cbd5e1")
     fig.update_yaxes(gridcolor="rgba(148,163,184,0.16)", zeroline=False, color="#cbd5e1")
     return fig
-
-
+ 
+ 
 def make_equity_chart(df, t):
     chart_df = df.copy()
     chart_df["equity_smooth"] = smooth_series(chart_df["equity"], window=6)
@@ -570,23 +571,23 @@ def make_equity_chart(df, t):
     fig.add_trace(go.Scatter(x=chart_df["date"], y=chart_df["equity"], mode="lines", name=t["equity_curve"], line=dict(width=1.4, color="rgba(56,189,248,0.28)")))
     fig.add_trace(go.Scatter(x=chart_df["date"], y=chart_df["equity_smooth"], mode="lines", name="Smooth", line=dict(width=3.2, color="#38bdf8", shape="spline", smoothing=1.2)))
     return base_chart_layout(fig, height=430)
-
-
+ 
+ 
 def make_drawdown_chart(df, t):
     chart_df = df.copy()
     chart_df["drawdown_smooth"] = smooth_series(chart_df["drawdown"], window=6)
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=chart_df["date"], y=chart_df["drawdown_smooth"], mode="lines", name=t["drawdown"], line=dict(width=3, color="#fb7185", shape="spline", smoothing=1.1), fill="tozeroy", fillcolor="rgba(251,113,133,0.18)"))
     return base_chart_layout(fig, height=360)
-
-
+ 
+ 
 def make_bar_chart(df, x, y, title):
     fig = px.bar(df, x=x, y=y, title=title)
     colors = ["#22c55e" if value >= 0 else "#fb7185" for value in df[y]]
     fig.update_traces(marker_color=colors, marker_line_width=0)
     return base_chart_layout(fig, height=340)
-
-
+ 
+ 
 def prop_profiles(account_size):
     return {
         "Custom": {"target": account_size * 0.10, "daily": account_size * 0.05, "drawdown": account_size * 0.10},
@@ -596,23 +597,23 @@ def prop_profiles(account_size):
         "TopStep": {"target": account_size * 0.06, "daily": account_size * 0.03, "drawdown": account_size * 0.04},
         "Personalizado": {"target": account_size * 0.10, "daily": account_size * 0.05, "drawdown": account_size * 0.10},
     }
-
-
+ 
+ 
 def calculate_scores(metrics, daily, max_daily_loss, max_drawdown_limit):
     net_pnl = float(metrics.get("net_pnl", 0))
     profit_factor = float(metrics.get("profit_factor", 0))
     max_drawdown = float(metrics.get("max_drawdown", 0))
     winrate = float(metrics.get("winrate", 0))
     loss_streak = float(metrics.get("max_loss_streak", 0))
-
+ 
     pf_score = min(max(profit_factor / 2.0, 0), 1) * 25
     dd_score = max(0, 1 - (max_drawdown / max(max_drawdown_limit, 1))) * 25
     win_score = min(max(winrate / 70, 0), 1) * 20
     pnl_score = 15 if net_pnl > 0 else 5
     streak_score = max(0, 1 - (loss_streak / 8)) * 15
-
+ 
     risk_score = round(pf_score + dd_score + win_score + pnl_score + streak_score)
-
+ 
     if daily.empty or len(daily) <= 1:
         consistency_score = 50
     else:
@@ -620,36 +621,36 @@ def calculate_scores(metrics, daily, max_daily_loss, max_drawdown_limit):
         avg_abs = max(abs(daily).mean(), 1)
         consistency_score = round(max(0, 100 - (daily_std / avg_abs * 35)))
         consistency_score = min(100, max(0, consistency_score))
-
+ 
     account_health = round((risk_score * 0.65) + (consistency_score * 0.35))
-
+ 
     behavior_score = 100
     behavior_score -= min(loss_streak * 8, 40)
-
+ 
     if not daily.empty and daily.min() < -abs(max_daily_loss):
         behavior_score -= 25
-
+ 
     if profit_factor < 1:
         behavior_score -= 20
-
+ 
     behavior_score = round(max(0, min(100, behavior_score)))
-
+ 
     return risk_score, consistency_score, account_health, behavior_score
-
-
+ 
+ 
 def calculate_prop_status(metrics, daily, profit_target, max_daily_loss, max_drawdown_limit, risk_score, consistency_score, behavior_score):
     net_pnl = float(metrics.get("net_pnl", 0))
     max_dd = float(metrics.get("max_drawdown", 0))
     worst_day = abs(float(daily.min())) if not daily.empty else 0
-
+ 
     target_distance = profit_target - net_pnl
     daily_remaining = max_daily_loss - worst_day
     dd_remaining = max_drawdown_limit - max_dd
-
+ 
     daily_ratio = max(0, min(1, daily_remaining / max(max_daily_loss, 1)))
     dd_ratio = max(0, min(1, dd_remaining / max(max_drawdown_limit, 1)))
     target_ratio = max(0, min(1, net_pnl / max(profit_target, 1)))
-
+ 
     approval = round(
         (risk_score * 0.35)
         + (consistency_score * 0.20)
@@ -658,24 +659,24 @@ def calculate_prop_status(metrics, daily, profit_target, max_daily_loss, max_dra
         + (dd_ratio * 10)
         + (target_ratio * 5)
     )
-
+ 
     violation_score = 100 - approval
-
+ 
     if daily_remaining < 0 or dd_remaining < 0:
         approval = min(approval, 15)
         violation_score = max(violation_score, 90)
-
+ 
     return approval, daily_remaining, dd_remaining, target_distance, violation_score
-
-
+ 
+ 
 def score_class(score):
     if score >= 75:
         return "value-positive"
     if score >= 50:
         return "value-warning"
     return "value-negative"
-
-
+ 
+ 
 def score_label(score, t):
     if score >= 80:
         return t["excellent"]
@@ -684,16 +685,16 @@ def score_label(score, t):
     if score >= 45:
         return t["attention"]
     return t["critical"]
-
-
+ 
+ 
 def violation_label(value, t):
     if value >= 75:
         return t["high"]
     if value >= 40:
         return t["medium"]
     return t["low"]
-
-
+ 
+ 
 def generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency_score, behavior_score, approval, target_distance, daily_remaining, dd_remaining):
     net_pnl = float(metrics.get("net_pnl", 0))
     profit_factor = float(metrics.get("profit_factor", 0))
@@ -703,7 +704,7 @@ def generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency
     best_hour = hourly.idxmax() if not hourly.empty else "N/A"
     best_hour_value = hourly.max() if not hourly.empty else 0
     negative_days = int((daily < 0).sum()) if not daily.empty else 0
-
+ 
     if language == "Português":
         items = []
         items.append("O Profit Factor está abaixo de 1, indicando que o operacional ainda perde mais do que ganha." if profit_factor < 1 else "O Profit Factor está acima de 1, indicando vantagem operacional inicial.")
@@ -718,7 +719,7 @@ def generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency
         items.append(f"Probabilidade estimada de aprovação: {approval}/100. Faltam {money(target_distance)} para a meta, {money(daily_remaining)} de margem diária e {money(dd_remaining)} de margem no drawdown máximo.")
         items.append(f"Score de risco: {risk_score}/100. Score de consistência: {consistency_score}/100. Score comportamental: {behavior_score}/100. Foram encontrados {negative_days} dias negativos.")
         return items
-
+ 
     if language == "Español":
         items = []
         items.append("El Profit Factor está por debajo de 1, indicando que el sistema aún pierde más de lo que gana." if profit_factor < 1 else "El Profit Factor está por encima de 1, indicando una ventaja operativa inicial.")
@@ -733,7 +734,7 @@ def generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency
         items.append(f"Probabilidad estimada de aprobación: {approval}/100. Faltan {money(target_distance)} para la meta, {money(daily_remaining)} de margen diario y {money(dd_remaining)} de margen en drawdown máximo.")
         items.append(f"Score de riesgo: {risk_score}/100. Score de consistencia: {consistency_score}/100. Score conductual: {behavior_score}/100. Se encontraron {negative_days} días negativos.")
         return items
-
+ 
     items = []
     items.append("Profit Factor is below 1, which means the system is still losing more than it wins." if profit_factor < 1 else "Profit Factor is above 1, indicating an initial operational edge.")
     if net_pnl < 0:
@@ -747,8 +748,8 @@ def generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency
     items.append(f"Estimated approval probability: {approval}/100. Remaining target: {money(target_distance)}, daily margin: {money(daily_remaining)}, max drawdown margin: {money(dd_remaining)}.")
     items.append(f"Risk Score: {risk_score}/100. Consistency Score: {consistency_score}/100. Behavior Score: {behavior_score}/100. There were {negative_days} negative days.")
     return items
-
-
+ 
+ 
 def make_demo_dataframe():
     data = [
         {"date": "2026-03-17 09:31:00", "asset": "WIN", "side": "buy", "quantity": 1, "entry_price": 182565, "exit_price": 182565, "pnl": 12, "fees": 0, "net_pnl": 12},
@@ -769,12 +770,12 @@ def make_demo_dataframe():
         {"date": "2026-04-15 10:45:00", "asset": "WIN", "side": "buy", "quantity": 1, "entry_price": 189300, "exit_price": 189300, "pnl": -12, "fees": 0, "net_pnl": -12},
     ]
     return pd.DataFrame(data)
-
-
+ 
+ 
 # =========================================================
 # RENDER DO DASHBOARD COMPLETO
 # =========================================================
-
+ 
 def render_full_dashboard(
     normalized_df,
     t,
@@ -791,18 +792,18 @@ def render_full_dashboard(
 ):
     normalized_df = prepare_dataframe(normalized_df, initial_capital)
     metrics = calculate_metrics(normalized_df, initial_capital)
-
+ 
     hourly = normalized_df.groupby("hour")["net_pnl"].sum()
     daily = normalized_df.groupby("day")["net_pnl"].sum()
     weekday = normalized_df.groupby("weekday")["net_pnl"].sum()
-
+ 
     risk_score, consistency_score, account_health, behavior_score = calculate_scores(
         metrics,
         daily,
         max_daily_loss,
         max_drawdown_limit,
     )
-
+ 
     approval, daily_remaining, dd_remaining, target_distance, violation_score = calculate_prop_status(
         metrics,
         daily,
@@ -813,7 +814,7 @@ def render_full_dashboard(
         consistency_score,
         behavior_score,
     )
-
+ 
     best_hour = hourly.idxmax() if not hourly.empty else "N/A"
     best_hour_pnl = hourly.max() if not hourly.empty else 0
     worst_hour = hourly.idxmin() if not hourly.empty else "N/A"
@@ -828,7 +829,7 @@ def render_full_dashboard(
     worst_weekday_pnl = weekday.min() if not weekday.empty else 0
     positive_days = int((daily > 0).sum()) if not daily.empty else 0
     negative_days = int((daily < 0).sum()) if not daily.empty else 0
-
+ 
     diagnosis_items = generate_diagnosis(
         language,
         metrics,
@@ -842,16 +843,16 @@ def render_full_dashboard(
         daily_remaining,
         dd_remaining,
     )
-
+ 
     alerts = generate_risk_alerts(
         normalized_df,
         max_daily_loss,
         max_drawdown_limit,
         language=language,
     )
-
+ 
     section(t["performance"])
-
+ 
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         st.markdown(metric_card(t["net_pnl"], money(metrics["net_pnl"]), t["total_net_result"], value_class(metrics["net_pnl"])), unsafe_allow_html=True)
@@ -861,7 +862,7 @@ def render_full_dashboard(
         st.markdown(metric_card(t["profit_factor"], f"{metrics['profit_factor']:.2f}", t["gross_ratio"], value_class(metrics["profit_factor"], warning_threshold=1)), unsafe_allow_html=True)
     with c4:
         st.markdown(metric_card(t["max_drawdown"], money(metrics["max_drawdown"]), t["largest_decline"], value_class(metrics["max_drawdown"], higher_is_better=False)), unsafe_allow_html=True)
-
+ 
     s1, s2, s3, s4 = st.columns(4)
     with s1:
         st.markdown(metric_card(t["risk_score"], f"{risk_score}/100", t["risk_score_sub"], score_class(risk_score)), unsafe_allow_html=True)
@@ -871,9 +872,9 @@ def render_full_dashboard(
         st.markdown(metric_card(t["account_health"], score_label(account_health, t), t["account_health_sub"], score_class(account_health)), unsafe_allow_html=True)
     with s4:
         st.markdown(metric_card(t["behavior_score"], f"{behavior_score}/100", t["behavior_score_sub"], score_class(behavior_score)), unsafe_allow_html=True)
-
+ 
     section(t["prop_firm_panel"])
-
+ 
     p1, p2, p3, p4, p5 = st.columns(5)
     with p1:
         st.markdown(metric_card(t["approval_probability"], f"{approval}/100", t["approval_probability_sub"], score_class(approval)), unsafe_allow_html=True)
@@ -885,9 +886,9 @@ def render_full_dashboard(
         st.markdown(metric_card(t["target_distance"], money(target_distance), t["target_distance_sub"], "value-neutral" if target_distance > 0 else "value-positive"), unsafe_allow_html=True)
     with p5:
         st.markdown(metric_card(t["violation_risk"], violation_label(violation_score, t), t["violation_risk_sub"], score_class(100 - violation_score)), unsafe_allow_html=True)
-
+ 
     section(t["automatic_insights"])
-
+ 
     ic1, ic2, ic3, ic4 = st.columns(4)
     with ic1:
         st.markdown(insight_card(t["best_hour"], f"{best_hour}h", money(best_hour_pnl), value_class(best_hour_pnl)), unsafe_allow_html=True)
@@ -897,7 +898,7 @@ def render_full_dashboard(
         st.markdown(insight_card(t["best_day"], str(best_day), money(best_day_pnl), value_class(best_day_pnl)), unsafe_allow_html=True)
     with ic4:
         st.markdown(insight_card(t["worst_day"], str(worst_day), money(worst_day_pnl), value_class(worst_day_pnl)), unsafe_allow_html=True)
-
+ 
     ic5, ic6, ic7, ic8 = st.columns(4)
     with ic5:
         st.markdown(insight_card(t["best_weekday"], str(best_weekday), money(best_weekday_pnl), value_class(best_weekday_pnl)), unsafe_allow_html=True)
@@ -907,18 +908,18 @@ def render_full_dashboard(
         st.markdown(insight_card(t["positive_days"], positive_days, t["days_above_zero"], "value-positive"), unsafe_allow_html=True)
     with ic8:
         st.markdown(insight_card(t["negative_days"], negative_days, t["days_below_zero"], "value-negative"), unsafe_allow_html=True)
-
+ 
     section(t["ai_diagnosis"])
-
+ 
     for item in diagnosis_items:
         st.markdown(diagnosis_box(t["ai_diagnosis"], item), unsafe_allow_html=True)
-
+ 
     section(t["equity_curve"])
     st.plotly_chart(make_equity_chart(normalized_df, t), use_container_width=True)
-
+ 
     section(t["drawdown"])
     st.plotly_chart(make_drawdown_chart(normalized_df, t), use_container_width=True)
-
+ 
     chart_col1, chart_col2 = st.columns(2)
     with chart_col1:
         section(t["daily_pnl"])
@@ -930,7 +931,7 @@ def render_full_dashboard(
         hourly_df = hourly.reset_index()
         hourly_df.columns = ["hour", "net_pnl"]
         st.plotly_chart(make_bar_chart(hourly_df, "hour", "net_pnl", t["pnl_by_hour"]), use_container_width=True)
-
+ 
     chart_col3, chart_col4 = st.columns(2)
     with chart_col3:
         section(t["pnl_by_weekday"])
@@ -941,106 +942,161 @@ def render_full_dashboard(
         section(t["pnl_by_asset"])
         asset_df = normalized_df.groupby("asset")["net_pnl"].sum().reset_index()
         st.plotly_chart(make_bar_chart(asset_df, "asset", "net_pnl", t["pnl_by_asset"]), use_container_width=True)
+ 
     section(t["ai_coach"])
-
-    ai_report = build_ai_coach_report(
-        language=language,
-        metrics=metrics,
-        daily=daily,
-        hourly=hourly,
-        risk_score=risk_score,
-        consistency_score=consistency_score,
-        behavior_score=behavior_score,
-        approval_probability=approval,
-        target_distance=target_distance,
-        daily_remaining=daily_remaining,
-        dd_remaining=dd_remaining,
-    )
-
-    ai_score = ai_report["score"]
-
-    if ai_score >= 75:
-        ai_color = "value-positive"
-    elif ai_score >= 50:
-        ai_color = "value-warning"
-    else:
-        ai_color = "value-negative"
-
-    st.markdown(
-        metric_card(
-            t["ai_score"],
-            f"{ai_score}/100",
-            ai_report["status"],
-            ai_color,
-        ),
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(
-        diagnosis_box(
-            ai_report["profile"],
-            ai_report["headline"],
-        ),
-        unsafe_allow_html=True,
-    )
-
-    col_ai_1, col_ai_2 = st.columns(2)
-
-    with col_ai_1:
-
-        st.markdown(f"## {t['executive_summary']}")
-
-        for item in ai_report["executive_summary"]:
-            st.markdown(
-                f'<div class="diagnosis-box">{item}</div>',
+ 
+    loading_texts = {
+        "Português": [
+            "Mapeando padrões comportamentais...",
+            "Detectando risco de tilt e revenge trading...",
+            "Avaliando consistência para prop firm...",
+            "Calculando qualidade operacional...",
+            "Gerando diagnóstico institucional...",
+        ],
+        "Español": [
+            "Mapeando patrones conductuales...",
+            "Detectando riesgo de tilt y revenge trading...",
+            "Evaluando consistencia para prop firm...",
+            "Calculando calidad operativa...",
+            "Generando diagnóstico institucional...",
+        ],
+        "English": [
+            "Mapping behavioral patterns...",
+            "Detecting tilt and revenge trading risk...",
+            "Evaluating prop firm consistency...",
+            "Calculating execution quality...",
+            "Generating institutional diagnosis...",
+        ],
+    }
+ 
+    ai_button_help = {
+        "Português": "Gera uma análise comportamental premium com plano de ação.",
+        "Español": "Genera un análisis conductual premium con plan de acción.",
+        "English": "Generates a premium behavioral analysis with an action plan.",
+    }.get(language, "Generates a premium behavioral analysis with an action plan.")
+ 
+    if st.button(t["analyze_ai"], help=ai_button_help):
+        loading_box = st.empty()
+        progress_bar = st.progress(0)
+ 
+        steps = loading_texts.get(language, loading_texts["English"])
+ 
+        for index, message in enumerate(steps):
+            percent_done = int(((index + 1) / len(steps)) * 100)
+            loading_box.markdown(
+                f'''
+                <div class="diagnosis-box">
+                    <div class="diagnosis-title">AI TRADING COACH</div>
+                    <div class="diagnosis-text">🧠 {message}</div>
+                </div>
+                ''',
                 unsafe_allow_html=True,
             )
-
-        st.markdown(f"## {t['behavior_warnings']}")
-
-        if ai_report["warnings"]:
-
-            for item in ai_report["warnings"]:
+            progress_bar.progress(percent_done)
+            time.sleep(0.35)
+ 
+        loading_box.empty()
+        progress_bar.empty()
+ 
+        ai_report = build_ai_coach_report(
+            language=language,
+            metrics=metrics,
+            daily=daily,
+            hourly=hourly,
+            risk_score=risk_score,
+            consistency_score=consistency_score,
+            behavior_score=behavior_score,
+            approval_probability=approval,
+            target_distance=target_distance,
+            daily_remaining=daily_remaining,
+            dd_remaining=dd_remaining,
+        )
+ 
+        ai_score = ai_report["score"]
+ 
+        if ai_score >= 80:
+            ai_color = "value-positive"
+        elif ai_score >= 60:
+            ai_color = "value-warning"
+        else:
+            ai_color = "value-negative"
+ 
+        st.markdown(
+            metric_card(
+                t["ai_score"],
+                f"{ai_score}/100",
+                ai_report["status"],
+                ai_color,
+            ),
+            unsafe_allow_html=True,
+        )
+ 
+        st.markdown(
+            diagnosis_box(
+                ai_report["profile"],
+                ai_report["headline"],
+            ),
+            unsafe_allow_html=True,
+        )
+ 
+        col_ai_1, col_ai_2 = st.columns(2)
+ 
+        with col_ai_1:
+            st.markdown(f"## {t['executive_summary']}")
+ 
+            for item in ai_report["executive_summary"]:
                 st.markdown(
-                    f'<div class="alert-box">⚠️ {item}</div>',
+                    f'<div class="diagnosis-box">{item}</div>',
                     unsafe_allow_html=True,
                 )
-
-        else:
-            st.success("No critical behavioral warnings detected.")
-
-    with col_ai_2:
-
-        st.markdown(f"## {t['action_plan']}")
-
-        for item in ai_report["action_plan"]:
-            st.markdown(
-                f'<div class="diagnosis-box">✅ {item}</div>',
-                unsafe_allow_html=True,
-            )
-
-        st.markdown(f"## {t['risk_rules']}")
-
-        for item in ai_report["rules"]:
-            st.markdown(
-                f'<div class="diagnosis-box">📌 {item}</div>',
-                unsafe_allow_html=True,
-            )
-
-    section("AI Main Numbers")
-
-    metrics_df = pd.DataFrame(
-        list(ai_report["main_numbers"].items()),
-        columns=["Metric", "Value"],
-    )
-
-    st.dataframe(metrics_df, use_container_width=True)
-
+ 
+            st.markdown(f"## {t['behavior_warnings']}")
+ 
+            if ai_report["warnings"]:
+                for item in ai_report["warnings"]:
+                    st.markdown(
+                        f'<div class="alert-box">⚠️ {item}</div>',
+                        unsafe_allow_html=True,
+                    )
+            else:
+                no_warning_text = {
+                    "Português": "Nenhum alerta comportamental crítico detectado.",
+                    "Español": "No se detectaron alertas conductuales críticos.",
+                    "English": "No critical behavioral warnings detected.",
+                }.get(language, "No critical behavioral warnings detected.")
+                st.success(no_warning_text)
+ 
+        with col_ai_2:
+            st.markdown(f"## {t['action_plan']}")
+ 
+            for item in ai_report["action_plan"]:
+                st.markdown(
+                    f'<div class="diagnosis-box">✅ {item}</div>',
+                    unsafe_allow_html=True,
+                )
+ 
+            st.markdown(f"## {t['risk_rules']}")
+ 
+            for item in ai_report["rules"]:
+                st.markdown(
+                    f'<div class="diagnosis-box">📌 {item}</div>',
+                    unsafe_allow_html=True,
+                )
+ 
+        section("AI Main Numbers")
+ 
+        metrics_df = pd.DataFrame(
+            list(ai_report["main_numbers"].items()),
+            columns=["Metric", "Value"],
+        )
+ 
+        st.dataframe(metrics_df, use_container_width=True)
+ 
     section(t["risk_alerts"])
-
+ 
     for alert in alerts:
         st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
-
+ 
     csv = normalized_df.to_csv(index=False).encode("utf-8")
     st.download_button(
         t["download_csv"],
@@ -1048,7 +1104,7 @@ def render_full_dashboard(
         f"riskpilot_{uploaded_file_name.replace(' ', '_')}.csv",
         "text/csv",
     )
-
+ 
     insights_for_pdf = [
         {"label": t["best_hour"], "value": f"{best_hour}h", "result": money(best_hour_pnl)},
         {"label": t["worst_hour"], "value": f"{worst_hour}h", "result": money(worst_hour_pnl)},
@@ -1059,7 +1115,7 @@ def render_full_dashboard(
         {"label": t["positive_days"], "value": str(positive_days), "result": t["days_above_zero"]},
         {"label": t["negative_days"], "value": str(negative_days), "result": t["days_below_zero"]},
     ]
-
+ 
     pdf_bytes = build_pdf_report(
         language=language,
         title=t["terminal_title"],
@@ -1075,14 +1131,14 @@ def render_full_dashboard(
         alerts=alerts,
         trades_df=normalized_df,
     )
-
+ 
     st.download_button(
         t["download_pdf"],
         pdf_bytes,
         f"riskpilot_report_{uploaded_file_name.replace(' ', '_')}.pdf",
         "application/pdf",
     )
-
+ 
     if read_only:
         st.info(t["loaded_from_history"])
     elif allow_save and st.session_state.authenticated:
@@ -1098,15 +1154,15 @@ def render_full_dashboard(
             st.success(t["analysis_saved"])
     elif allow_save:
         st.warning(t["save_warning"])
-
+ 
     section(t["trades"])
     st.dataframe(normalized_df, use_container_width=True)
-
-
+ 
+ 
 # =========================================================
 # SESSION STATE
 # =========================================================
-
+ 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 if "show_login" not in st.session_state:
@@ -1119,12 +1175,12 @@ if "demo_mode" not in st.session_state:
     st.session_state.demo_mode = False
 if "landing_language" not in st.session_state:
     st.session_state.landing_language = "English"
-
-
+ 
+ 
 # =========================================================
 # HOMEPAGE
 # =========================================================
-
+ 
 if not st.session_state.authenticated and not st.session_state.show_login and not st.session_state.demo_mode:
     top1, top2, top3 = st.columns([1, 4, 1])
     with top1:
@@ -1134,17 +1190,17 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
             index=["English", "Português", "Español"].index(st.session_state.landing_language),
         )
         st.session_state.landing_language = selected_language
-
+ 
     t = ui_text(st.session_state.landing_language)
-
+ 
     st.markdown('<div class="hero-wrap">', unsafe_allow_html=True)
     col1, col2 = st.columns([1.25, 1])
-
+ 
     with col1:
         st.markdown(f'<div class="hero-badge">⚡ {t["hero_badge"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="hero-title">{t["hero_title"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="hero-subtitle">{t["hero_subtitle"]}</div>', unsafe_allow_html=True)
-
+ 
         b1, b2, b3 = st.columns([1, 1, 1])
         with b1:
             if st.button(t["start_free"]):
@@ -1160,7 +1216,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
             if st.button(t["view_demo"]):
                 st.session_state.demo_mode = True
                 st.rerun()
-
+ 
     with col2:
         st.markdown('<div class="hero-image-card">', unsafe_allow_html=True)
         st.image(
@@ -1168,9 +1224,9 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
             use_container_width=True,
         )
         st.markdown("</div>", unsafe_allow_html=True)
-
+ 
     st.markdown("</div>", unsafe_allow_html=True)
-
+ 
     st.markdown(f'<div class="section-title">{t["why"]}</div>', unsafe_allow_html=True)
     f1, f2, f3 = st.columns(3)
     with f1:
@@ -1179,34 +1235,34 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         st.markdown(f'<div class="feature-card"><h3>{t["feature_2_title"]}</h3><p>{t["feature_2_text"]}</p></div>', unsafe_allow_html=True)
     with f3:
         st.markdown(f'<div class="feature-card"><h3>{t["feature_3_title"]}</h3><p>{t["feature_3_text"]}</p></div>', unsafe_allow_html=True)
-
+ 
     st.stop()
-
-
+ 
+ 
 # =========================================================
 # LOGIN / REGISTER
 # =========================================================
-
+ 
 if not st.session_state.authenticated and st.session_state.show_login:
     t = ui_text(st.session_state.landing_language)
-
+ 
     st.markdown('<div class="auth-box">', unsafe_allow_html=True)
     st.title("🔐 RiskPilot")
-
+ 
     auth_mode = st.radio(
         t["choose"],
         [t["login"].replace("🔐 ", ""), t["register"]],
         index=0 if st.session_state.auth_mode == "Login" else 1,
     )
-
+ 
     if auth_mode == t["register"]:
         name = st.text_input(t["name"])
         email = st.text_input(t["email"])
         password = st.text_input(t["password"], type="password")
-
+ 
         if st.button(t["create_account"]):
             existing = get_user_by_email(email)
-
+ 
             if existing:
                 st.error(t["user_exists"])
             else:
@@ -1216,15 +1272,15 @@ if not st.session_state.authenticated and st.session_state.show_login:
     else:
         email = st.text_input(t["email"])
         password = st.text_input(t["password"], type="password")
-
+ 
         if st.button(t["login"]):
             user = get_user_by_email(email)
-
+ 
             if not user:
                 st.error(t["invalid_credentials"])
             else:
                 valid = bcrypt.checkpw(password.encode(), user["password"].encode())
-
+ 
                 if valid:
                     st.session_state.authenticated = True
                     st.session_state.user_email = user["email"]
@@ -1233,39 +1289,39 @@ if not st.session_state.authenticated and st.session_state.show_login:
                     st.rerun()
                 else:
                     st.error(t["invalid_credentials"])
-
+ 
     if st.button(t["back_home"]):
         st.session_state.show_login = False
         st.rerun()
-
+ 
     st.markdown("</div>", unsafe_allow_html=True)
     st.stop()
-
-
+ 
+ 
 # =========================================================
 # SIDEBAR APP
 # =========================================================
-
+ 
 language = st.sidebar.selectbox(
     "Language / Idioma",
     ["English", "Português", "Español"],
     index=["English", "Português", "Español"].index(st.session_state.landing_language),
 )
 st.session_state.landing_language = language
-
+ 
 t = ui_text(language)
-
+ 
 st.sidebar.markdown(
     f'<div class="sidebar-brand"><div class="sidebar-logo">📊 RiskPilot</div><div class="sidebar-subtitle">{t["professional_analytics"]}</div></div>',
     unsafe_allow_html=True,
 )
-
+ 
 if st.session_state.authenticated:
     st.sidebar.markdown(
         f'<div class="sidebar-user-card"><div class="sidebar-user-label">{t["authenticated_user"]}</div><div class="sidebar-user-value">{st.session_state.user_email}</div></div>',
         unsafe_allow_html=True,
     )
-
+ 
     if st.sidebar.button(t["logout"]):
         st.session_state.authenticated = False
         st.session_state.show_login = False
@@ -1277,21 +1333,21 @@ else:
         f'<div class="sidebar-user-card"><div class="sidebar-user-label">{t["current_mode"]}</div><div class="sidebar-user-value">{t["demo_mode"]}</div></div>',
         unsafe_allow_html=True,
     )
-
+ 
     if st.sidebar.button(t["create_free_account"]):
         st.session_state.demo_mode = False
         st.session_state.auth_mode = "Register"
         st.session_state.show_login = True
         st.rerun()
-
+ 
 account_size = st.sidebar.number_input(t["account_size"], value=50000.0, step=5000.0)
 prop_mode = st.sidebar.selectbox(t["prop_firm_mode"], ["FTMO", "Apex", "MyFundedFX", "TopStep", "Custom", "Personalizado"])
-
+ 
 profiles = prop_profiles(account_size)
 profile = profiles.get(prop_mode, profiles["Custom"])
-
+ 
 initial_capital = st.sidebar.number_input(t["initial_capital"], value=1000.0)
-
+ 
 if prop_mode in ["Custom", "Personalizado"]:
     max_daily_loss = st.sidebar.number_input(t["daily_loss_limit"], value=float(profile["daily"]))
     max_drawdown_limit = st.sidebar.number_input(t["max_drawdown_limit"], value=float(profile["drawdown"]))
@@ -1303,52 +1359,52 @@ else:
     st.sidebar.markdown(sidebar_kpi(t["daily_loss_limit"], money(max_daily_loss)), unsafe_allow_html=True)
     st.sidebar.markdown(sidebar_kpi(t["max_drawdown_limit"], money(max_drawdown_limit)), unsafe_allow_html=True)
     st.sidebar.markdown(sidebar_kpi(t["profit_target"], money(profit_target)), unsafe_allow_html=True)
-
+ 
 page = st.sidebar.radio(t["navigation"], [t["dashboard"], t["history"]])
-
+ 
 st.sidebar.markdown("---")
 st.sidebar.markdown(sidebar_kpi(t["account_status"], t["active"]), unsafe_allow_html=True)
 st.sidebar.markdown(sidebar_kpi(t["risk_mode"], prop_mode), unsafe_allow_html=True)
 st.sidebar.markdown(sidebar_kpi(t["analytics"], t["enabled"]), unsafe_allow_html=True)
 st.sidebar.markdown(f'<div class="sidebar-note">{t["sidebar_note"]}</div>', unsafe_allow_html=True)
-
-
+ 
+ 
 # =========================================================
 # HISTORY COM DASHBOARD COMPLETO
 # =========================================================
-
+ 
 if page == t["history"]:
     st.markdown(
         f'<div class="terminal-header"><div class="terminal-title">📚 {t["history_title"]}</div><div class="terminal-subtitle">{t["loaded_from_history"]}</div><div class="terminal-pill">{prop_mode}</div></div>',
         unsafe_allow_html=True,
     )
-
+ 
     if not st.session_state.authenticated:
         st.info(t["history_account_required"])
         st.stop()
-
+ 
     history = load_upload_history(st.session_state.user_email)
-
+ 
     if history.empty:
         st.info(t["no_uploads"])
         st.stop()
-
+ 
     st.dataframe(history, use_container_width=True)
-
+ 
     history_options = history.apply(
         lambda row: f'{row["id"]} · {row["file_name"]} · {row["created_at"]}',
         axis=1,
     ).tolist()
-
+ 
     selected_label = st.selectbox(t["select_upload"], history_options)
     selected_id = int(selected_label.split(" · ")[0])
-
+ 
     selected_df = load_upload_by_id(selected_id)
-
+ 
     if selected_df.empty:
         st.info(t["no_uploads"])
         st.stop()
-
+ 
     render_full_dashboard(
         selected_df,
         t,
@@ -1363,30 +1419,30 @@ if page == t["history"]:
         allow_save=False,
         read_only=True,
     )
-
+ 
     st.stop()
-
-
+ 
+ 
 # =========================================================
 # DASHBOARD NORMAL
 # =========================================================
-
+ 
 st.markdown(
     f'<div class="terminal-header"><div class="terminal-title">{t["terminal_title"]}</div><div class="terminal-subtitle">{t["terminal_subtitle"]}</div><div class="terminal-pill">{t["live_engine"]} · {prop_mode}</div></div>',
     unsafe_allow_html=True,
 )
-
+ 
 if st.session_state.demo_mode and not st.session_state.authenticated:
     st.info(t["demo_info"])
     normalized_df = make_demo_dataframe()
     uploaded_file_name = "demo_data.csv"
 else:
     uploaded_file = st.file_uploader(t["upload_report"], type=["csv", "xlsx"])
-
+ 
     if not uploaded_file:
         st.info(t["upload_to_begin"])
         st.stop()
-
+ 
     try:
         raw_df = load_trading_file(uploaded_file)
         normalized_df = normalize_trades(raw_df)
@@ -1394,7 +1450,7 @@ else:
     except Exception as e:
         st.error(f'{t["file_error"]}: {e}')
         st.stop()
-
+ 
 render_full_dashboard(
     normalized_df,
     t,
