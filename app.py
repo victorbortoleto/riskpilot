@@ -497,6 +497,194 @@ def language_display(language):
     return reverse.get(language, "🇺🇸 English")
  
  
+ 
+def language_flag_pill(language):
+    flag_map = {
+        "English": ("🇺🇸", "English"),
+        "Português": ("🇧🇷", "Português"),
+        "Español": ("🇪🇸", "Español"),
+    }
+    flag, label = flag_map.get(language, ("🌐", language))
+    return f"""
+    <div class="language-flag-pill">
+        <span class="language-flag-icon">{flag}</span>
+        <span class="language-flag-text">{label}</span>
+    </div>
+    """
+ 
+ 
+def get_pricing_copy(language):
+    if language == "Português":
+        return {
+            "title": "Planos para cada fase do trader",
+            "subtitle": "Comece grátis, evolua com analytics profissional e desbloqueie inteligência comportamental premium.",
+            "badge": "SaaS Trading Analytics",
+            "free": "Free",
+            "pro": "Pro",
+            "premium": "Premium",
+            "free_price": "R$ 0",
+            "pro_price": "R$ 49/mês",
+            "premium_price": "R$ 97/mês",
+            "free_desc": "Para testar a plataforma e validar os primeiros relatórios.",
+            "pro_desc": "Para traders que querem acompanhar performance, risco e evolução.",
+            "premium_desc": "Para traders sérios que querem AI Coach, DNA e radar institucional.",
+            "popular": "Mais recomendado",
+            "cta_free": "Começar grátis",
+            "cta_pro": "Plano profissional",
+            "cta_premium": "Desbloquear Premium",
+            "comparison_title": "Comparação de recursos",
+            "faq_title": "Perguntas frequentes",
+            "faq_1_q": "O RiskPilot opera por mim?",
+            "faq_1_a": "Não. O RiskPilot analisa seus relatórios, performance, risco e comportamento operacional.",
+            "faq_2_q": "Funciona para prop firm?",
+            "faq_2_a": "Sim. O sistema calcula limites, drawdown, aprovação estimada e risco de violação.",
+            "faq_3_q": "A IA já é real?",
+            "faq_3_a": "A estrutura está pronta para OpenAI real. A versão atual usa regras inteligentes e análise comportamental baseada em métricas.",
+            "features": {
+                "Uploads": ["1 por dia", "Ilimitado", "Ilimitado"],
+                "Dashboard": ["Básico", "Completo", "Institucional"],
+                "Histórico": ["Limitado", "Completo", "Completo"],
+                "PDF": ["Não", "Sim", "Sim Premium"],
+                "AI Coach": ["Não", "Limitado", "Completo"],
+                "Trader DNA": ["Não", "Sim", "Avançado"],
+                "Radar Institucional": ["Não", "Sim", "Completo"],
+                "Prop Firm Engine": ["Básico", "Completo", "Completo"],
+            },
+        }
+    if language == "Español":
+        return {
+            "title": "Planes para cada etapa del trader",
+            "subtitle": "Empieza gratis, evoluciona con analytics profesional y desbloquea inteligencia conductual premium.",
+            "badge": "SaaS Trading Analytics",
+            "free": "Free",
+            "pro": "Pro",
+            "premium": "Premium",
+            "free_price": "$0",
+            "pro_price": "$9/mes",
+            "premium_price": "$19/mes",
+            "free_desc": "Para probar la plataforma y validar los primeros reportes.",
+            "pro_desc": "Para traders que quieren seguir rendimiento, riesgo y evolución.",
+            "premium_desc": "Para traders serios que quieren AI Coach, DNA y radar institucional.",
+            "popular": "Más recomendado",
+            "cta_free": "Empezar gratis",
+            "cta_pro": "Plan profesional",
+            "cta_premium": "Desbloquear Premium",
+            "comparison_title": "Comparación de recursos",
+            "faq_title": "Preguntas frecuentes",
+            "faq_1_q": "¿RiskPilot opera por mí?",
+            "faq_1_a": "No. RiskPilot analiza tus reportes, rendimiento, riesgo y comportamiento operativo.",
+            "faq_2_q": "¿Funciona para prop firms?",
+            "faq_2_a": "Sí. El sistema calcula límites, drawdown, aprobación estimada y riesgo de violación.",
+            "faq_3_q": "¿La IA ya es real?",
+            "faq_3_a": "La estructura está lista para OpenAI real. La versión actual usa reglas inteligentes y análisis basado en métricas.",
+            "features": {
+                "Uploads": ["1 por día", "Ilimitado", "Ilimitado"],
+                "Dashboard": ["Básico", "Completo", "Institucional"],
+                "Historial": ["Limitado", "Completo", "Completo"],
+                "PDF": ["No", "Sí", "Sí Premium"],
+                "AI Coach": ["No", "Limitado", "Completo"],
+                "Trader DNA": ["No", "Sí", "Avanzado"],
+                "Radar Institucional": ["No", "Sí", "Completo"],
+                "Prop Firm Engine": ["Básico", "Completo", "Completo"],
+            },
+        }
+    return {
+        "title": "Plans for every trader stage",
+        "subtitle": "Start free, evolve with professional analytics and unlock premium behavioral intelligence.",
+        "badge": "SaaS Trading Analytics",
+        "free": "Free",
+        "pro": "Pro",
+        "premium": "Premium",
+        "free_price": "$0",
+        "pro_price": "$9/mo",
+        "premium_price": "$19/mo",
+        "free_desc": "For testing the platform and validating your first reports.",
+        "pro_desc": "For traders who want to track performance, risk and evolution.",
+        "premium_desc": "For serious traders who want AI Coach, DNA and institutional radar.",
+        "popular": "Most recommended",
+        "cta_free": "Start free",
+        "cta_pro": "Go Pro",
+        "cta_premium": "Unlock Premium",
+        "comparison_title": "Feature comparison",
+        "faq_title": "Frequently asked questions",
+        "faq_1_q": "Does RiskPilot trade for me?",
+        "faq_1_a": "No. RiskPilot analyzes your reports, performance, risk and operational behavior.",
+        "faq_2_q": "Does it work for prop firms?",
+        "faq_2_a": "Yes. The system calculates limits, drawdown, estimated approval and violation risk.",
+        "faq_3_q": "Is the AI already real?",
+        "faq_3_a": "The structure is ready for real OpenAI integration. The current version uses intelligent rules and metric-based behavior analysis.",
+        "features": {
+            "Uploads": ["1 per day", "Unlimited", "Unlimited"],
+            "Dashboard": ["Basic", "Full", "Institutional"],
+            "History": ["Limited", "Full", "Full"],
+            "PDF": ["No", "Yes", "Premium PDF"],
+            "AI Coach": ["No", "Limited", "Full"],
+            "Trader DNA": ["No", "Yes", "Advanced"],
+            "Institutional Radar": ["No", "Yes", "Full"],
+            "Prop Firm Engine": ["Basic", "Full", "Full"],
+        },
+    }
+ 
+ 
+def render_pricing_section(language):
+    copy = get_pricing_copy(language)
+    st.markdown(
+        f"""
+        <div class="pricing-wrapper">
+            <div class="pricing-badge">{copy["badge"]}</div>
+            <div class="pricing-title">{copy["title"]}</div>
+            <div class="pricing-subtitle">{copy["subtitle"]}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+ 
+    plan_cols = st.columns(3, gap="large")
+    plans = [
+        (copy["free"], copy["free_price"], copy["free_desc"], copy["cta_free"], ""),
+        (copy["pro"], copy["pro_price"], copy["pro_desc"], copy["cta_pro"], copy["popular"]),
+        (copy["premium"], copy["premium_price"], copy["premium_desc"], copy["cta_premium"], "AI"),
+    ]
+ 
+    for col, plan in zip(plan_cols, plans):
+        name, price, desc, cta, tag = plan
+        with col:
+            tag_html = f'<div class="plan-tag">{tag}</div>' if tag else '<div class="plan-tag plan-tag-muted">Starter</div>'
+            st.markdown(
+                f"""
+                <div class="pricing-card">
+                    {tag_html}
+                    <div class="plan-name">{name}</div>
+                    <div class="plan-price">{price}</div>
+                    <div class="plan-desc">{desc}</div>
+                    <div class="plan-cta">{cta}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+ 
+    st.markdown(f'<div class="section-title">{copy["comparison_title"]}</div>', unsafe_allow_html=True)
+    rows = []
+    for feature, values in copy["features"].items():
+        rows.append({"Feature": feature, copy["free"]: values[0], copy["pro"]: values[1], copy["premium"]: values[2]})
+    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+ 
+    st.markdown(f'<div class="section-title">{copy["faq_title"]}</div>', unsafe_allow_html=True)
+    faq1, faq2, faq3 = st.columns(3, gap="large")
+    faqs = [(copy["faq_1_q"], copy["faq_1_a"]), (copy["faq_2_q"], copy["faq_2_a"]), (copy["faq_3_q"], copy["faq_3_a"])]
+    for col, (q, a) in zip([faq1, faq2, faq3], faqs):
+        with col:
+            st.markdown(
+                f"""
+                <div class="faq-card">
+                    <div class="faq-question">{q}</div>
+                    <div class="faq-answer">{a}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+ 
+ 
 # =========================================================
 # CSS
 # =========================================================
@@ -537,6 +725,15 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .score-ring-content{flex:1}.score-ring-title{color:#93c5fd!important;font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;font-weight:900;margin-bottom:8px}.score-ring-status{font-size:2.25rem;font-weight:950;letter-spacing:-.05em;margin-bottom:8px}.score-ring-text{color:#cbd5e1!important;font-size:1rem;line-height:1.55}.score-ring-hint{color:#64748b!important;font-size:.82rem;margin-top:8px}
 [data-testid="column"]{padding-left:.48rem!important;padding-right:.48rem!important}.stColumn{gap:1.2rem!important}
 @media (max-width: 900px){.score-ring-card{flex-direction:column;text-align:center}.score-ring{width:140px;height:140px}.score-ring::before{width:98px;height:98px}}
+ 
+ 
+ 
+.language-flag-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(15,23,42,.92);border:1px solid rgba(56,189,248,.28);border-radius:999px;padding:8px 12px;margin:8px 0 4px 0;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.language-flag-icon{font-size:1.45rem;line-height:1}.language-flag-text{font-size:.86rem;font-weight:800;color:#e5e7eb!important}
+.pricing-wrapper{margin-top:70px;text-align:center;padding:32px 20px;border-radius:28px;background:linear-gradient(135deg,rgba(15,23,42,.62),rgba(2,6,23,.2));border:1px solid rgba(56,189,248,.14)}
+.pricing-badge{display:inline-flex;padding:7px 12px;border-radius:999px;background:rgba(34,197,94,.11);border:1px solid rgba(34,197,94,.26);color:#86efac!important;font-size:.82rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}.pricing-title{font-size:2.55rem;font-weight:950;letter-spacing:-.055em;color:#fff!important}.pricing-subtitle{max-width:760px;margin:14px auto 0 auto;color:#94a3b8!important;font-size:1.08rem;line-height:1.65}
+.pricing-card{position:relative;min-height:255px;margin-top:24px;border-radius:26px;padding:28px;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(56,189,248,.18);box-shadow:0 20px 55px rgba(0,0,0,.28)}.pricing-card:hover{border-color:rgba(56,189,248,.55);box-shadow:0 25px 70px rgba(14,165,233,.15)}.plan-tag{display:inline-flex;padding:6px 10px;border-radius:999px;background:rgba(14,165,233,.16);border:1px solid rgba(14,165,233,.35);color:#7dd3fc!important;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.plan-tag-muted{background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.20);color:#cbd5e1!important}.plan-name{font-size:1.55rem;font-weight:950;color:#fff!important;margin-top:18px}.plan-price{font-size:2.15rem;font-weight:950;color:#22c55e!important;margin-top:10px}.plan-desc{color:#94a3b8!important;font-size:.95rem;line-height:1.55;margin-top:10px;min-height:52px}.plan-cta{margin-top:20px;background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff!important;border-radius:14px;padding:13px 16px;text-align:center;font-weight:900;box-shadow:0 12px 35px rgba(14,165,233,.18)}
+.faq-card{min-height:170px;border-radius:22px;padding:24px;background:rgba(15,23,42,.84);border:1px solid rgba(148,163,184,.14);box-shadow:0 14px 40px rgba(0,0,0,.20);margin-bottom:20px}.faq-question{font-size:1.05rem;font-weight:900;color:#fff!important;line-height:1.35}.faq-answer{font-size:.92rem;color:#94a3b8!important;line-height:1.6;margin-top:12px}
  
 </style>
 """, unsafe_allow_html=True)
@@ -1670,6 +1867,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
             index=list(language_map.values()).index(st.session_state.landing_language),
         )
         st.session_state.landing_language = language_map[selected_language_label]
+        st.markdown(language_flag_pill(st.session_state.landing_language), unsafe_allow_html=True)
  
     t = ui_text(st.session_state.landing_language)
  
@@ -1716,6 +1914,8 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
     with f3:
         st.markdown(f'<div class="feature-card"><h3>{t["feature_3_title"]}</h3><p>{t["feature_3_text"]}</p></div>', unsafe_allow_html=True)
  
+    render_pricing_section(st.session_state.landing_language)
+ 
     st.stop()
  
  
@@ -1727,6 +1927,7 @@ if not st.session_state.authenticated and st.session_state.show_login:
     t = ui_text(st.session_state.landing_language)
  
     st.title("🔐 RiskPilot")
+    st.markdown(language_flag_pill(st.session_state.landing_language), unsafe_allow_html=True)
  
     auth_mode = st.radio(
         t["choose"],
@@ -1788,6 +1989,7 @@ language_label = st.sidebar.selectbox(
 )
 language = language_map[language_label]
 st.session_state.landing_language = language
+st.sidebar.markdown(language_flag_pill(language), unsafe_allow_html=True)
  
 t = ui_text(language)
  
