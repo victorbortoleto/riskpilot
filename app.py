@@ -517,18 +517,26 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .feature-card{background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:30px;min-height:230px;box-shadow:0 14px 40px rgba(0,0,0,.23)}.feature-card h3{color:#fff!important;font-size:1.45rem;margin-bottom:15px}.feature-card p{color:#b6c2d2!important;font-size:1rem;line-height:1.65}
 .metric-card{background:linear-gradient(135deg,#111827 0%,#1f2937 100%);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px;min-height:125px;box-shadow:0 10px 30px rgba(0,0,0,.25)}.metric-title{color:#9ca3af!important;font-size:.9rem;font-weight:700}.metric-value{font-size:2rem;font-weight:850;margin-top:6px}.metric-sub{color:#64748b!important;font-size:.82rem;margin-top:6px}.value-positive{color:#22c55e!important}.value-negative{color:#fb7185!important}.value-neutral{color:#38bdf8!important}.value-warning{color:#f59e0b!important}
 .section-title{font-size:2rem;font-weight:850;color:#fff!important;margin-top:60px;margin-bottom:24px;letter-spacing:-.035em}.alert-box{background:#1f2937;border-left:5px solid #f59e0b;padding:16px;border-radius:12px;margin-bottom:12px;color:#fff!important}.diagnosis-box{background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(30,41,59,.78));border:1px solid rgba(56,189,248,.18);border-radius:22px;padding:22px 24px;margin-bottom:14px}.diagnosis-title{color:#7dd3fc!important;font-size:.85rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em}.diagnosis-text{color:#e5e7eb!important;font-size:1rem;line-height:1.6;margin-top:8px}
-.insight-card{background:linear-gradient(135deg,#0f172a 0%,#172554 100%);border:1px solid rgba(56,189,248,.22);border-radius:18px;padding:22px;min-height:126px;box-shadow:0 10px 30px rgba(0,0,0,.20)}.insight-title{color:#94a3b8!important;font-size:.88rem;font-weight:750}.insight-value{font-size:1.65rem;font-weight:850;margin-top:8px}.insight-sub{color:#7dd3fc!important;font-size:.85rem;margin-top:8px}
+.insight-card{background:linear-gradient(135deg,#0f172a 0%,#172554 100%);border:1px solid rgba(56,189,248,.22);border-radius:18px;padding:24px;min-height:148px;margin-bottom:24px;box-shadow:0 10px 30px rgba(0,0,0,.20)}.insight-title{color:#94a3b8!important;font-size:.88rem;font-weight:750}.insight-value{font-size:1.65rem;font-weight:850;margin-top:8px}.insight-sub{color:#7dd3fc!important;font-size:.85rem;margin-top:8px}
 .auth-box{max-width:620px;margin:30px auto;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(255,255,255,.09);border-radius:26px;padding:35px}.terminal-header{background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(2,6,23,.78));border:1px solid rgba(148,163,184,.14);border-radius:26px;padding:26px 30px;margin-bottom:30px;box-shadow:0 20px 70px rgba(0,0,0,.28)}.terminal-title{color:#fff!important;font-size:2.65rem;font-weight:950;letter-spacing:-.055em;line-height:1.05}.terminal-subtitle{color:#94a3b8!important;font-size:1rem;margin-top:8px}.terminal-pill{display:inline-block;background:rgba(34,197,94,.12);color:#86efac!important;border:1px solid rgba(34,197,94,.28);border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:800;margin-top:12px}
 .stButton>button{border-radius:14px;min-height:52px;font-weight:800;font-size:1rem;border:1px solid rgba(255,255,255,.15);background:#0f172a!important;color:#fff!important}.stButton>button:hover{border-color:#38bdf8!important;color:#7dd3fc!important}input,textarea,select{color:#fff!important}[data-testid="stTextInput"] input,[data-testid="stNumberInput"] input,[data-testid="stSelectbox"] div,[data-testid="stDateInput"] input{background:#111827!important;color:#fff!important}
  
 .radar-card{background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(30,41,59,.70));border:1px solid rgba(56,189,248,.22);border-radius:24px;padding:20px;margin-bottom:18px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
 .premium-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(56,189,248,.55),transparent);margin:24px 0}
  
-.metric-card{display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:150px;overflow:hidden;}
+.metric-card{display:flex;flex-direction:column;justify-content:center;gap:6px;min-height:158px;overflow:hidden;margin-bottom:22px;}
 .metric-value{font-size:clamp(1.35rem,1.7vw,2rem)!important;line-height:1.12!important;overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important;}
 .metric-title,.metric-sub{line-height:1.25!important;overflow-wrap:normal!important;word-break:normal!important;}
 .diagnosis-box,.alert-box,.insight-card{overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important;}
 @media (max-width: 1100px){.metric-card{min-height:135px;padding:18px!important}.metric-value{font-size:1.45rem!important}.section-title{font-size:1.65rem!important}}
+ 
+.score-ring-card{background:linear-gradient(135deg,#101827 0%,#1e293b 100%);border:1px solid rgba(56,189,248,.24);border-radius:26px;padding:30px;display:flex;align-items:center;gap:28px;min-height:230px;margin-bottom:26px;box-shadow:0 22px 70px rgba(0,0,0,.28)}
+.score-ring{width:168px;height:168px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--ring-color) calc(var(--score)*1%),rgba(30,41,59,.80) 0);position:relative;box-shadow:0 0 38px rgba(56,189,248,.18)}
+.score-ring::before{content:"";position:absolute;width:118px;height:118px;border-radius:50%;background:#0b1220;border:1px solid rgba(148,163,184,.18)}
+.score-ring-value{position:relative;z-index:1;font-size:2.05rem;font-weight:950;color:#fff!important;letter-spacing:-.05em}.score-ring-label{position:relative;z-index:1;font-size:.72rem;color:#94a3b8!important;margin-top:-4px}
+.score-ring-content{flex:1}.score-ring-title{color:#93c5fd!important;font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;font-weight:900;margin-bottom:8px}.score-ring-status{font-size:2.25rem;font-weight:950;letter-spacing:-.05em;margin-bottom:8px}.score-ring-text{color:#cbd5e1!important;font-size:1rem;line-height:1.55}.score-ring-hint{color:#64748b!important;font-size:.82rem;margin-top:8px}
+[data-testid="column"]{padding-left:.48rem!important;padding-right:.48rem!important}.stColumn{gap:1.2rem!important}
+@media (max-width: 900px){.score-ring-card{flex-direction:column;text-align:center}.score-ring{width:140px;height:140px}.score-ring::before{width:98px;height:98px}}
  
 </style>
 """, unsafe_allow_html=True)
@@ -576,6 +584,39 @@ def metric_card(title, value, sub="", css_class="value-neutral"):
         <div class="metric-title">{title}</div>
         <div class="metric-value {css_class}">{value}</div>
         <div class="metric-sub">{sub}</div>
+    </div>
+    """
+ 
+ 
+def score_ring_card(title, score, status, profile, hint=""):
+    try:
+        score_int = int(float(score))
+    except Exception:
+        score_int = 0
+    score_int = max(0, min(100, score_int))
+    if score_int >= 80:
+        ring_color = "#22c55e"
+        status_class = "value-positive"
+    elif score_int >= 60:
+        ring_color = "#f59e0b"
+        status_class = "value-warning"
+    else:
+        ring_color = "#fb7185"
+        status_class = "value-negative"
+    return f"""
+    <div class="score-ring-card">
+        <div class="score-ring" style="--score:{score_int};--ring-color:{ring_color};">
+            <div>
+                <div class="score-ring-value">{score_int}</div>
+                <div class="score-ring-label">/100</div>
+            </div>
+        </div>
+        <div class="score-ring-content">
+            <div class="score-ring-title">{title}</div>
+            <div class="score-ring-status {status_class}">{status}</div>
+            <div class="score-ring-text">{profile}</div>
+            <div class="score-ring-hint">{hint}</div>
+        </div>
     </div>
     """
  
@@ -1323,7 +1364,7 @@ def render_full_dashboard(
  
     section(t["performance"])
  
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3, c4 = st.columns(4, gap="large")
     with c1:
         st.markdown(metric_card(t["net_pnl"], money(metrics["net_pnl"]), t["total_net_result"], value_class(metrics["net_pnl"])), unsafe_allow_html=True)
     with c2:
@@ -1333,7 +1374,7 @@ def render_full_dashboard(
     with c4:
         st.markdown(metric_card(t["max_drawdown"], money(metrics["max_drawdown"]), t["largest_decline"], value_class(metrics["max_drawdown"], higher_is_better=False)), unsafe_allow_html=True)
  
-    s1, s2, s3, s4 = st.columns(4)
+    s1, s2, s3, s4 = st.columns(4, gap="large")
     with s1:
         st.markdown(metric_card(t["risk_score"], f"{risk_score}/100", t["risk_score_sub"], score_class(risk_score)), unsafe_allow_html=True)
     with s2:
@@ -1355,7 +1396,7 @@ def render_full_dashboard(
         unsafe_allow_html=True,
     )
  
-    p1, p2, p3 = st.columns(3)
+    p1, p2, p3 = st.columns(3, gap="large")
     with p1:
         st.markdown(metric_card(t["approval_probability"], f"{approval}/100", t["approval_probability_sub"], score_class(approval)), unsafe_allow_html=True)
     with p2:
@@ -1363,7 +1404,7 @@ def render_full_dashboard(
     with p3:
         st.markdown(metric_card(t["drawdown_remaining"], money(dd_remaining), t["drawdown_remaining_sub"], value_class(dd_remaining)), unsafe_allow_html=True)
  
-    p4, p5 = st.columns(2)
+    p4, p5 = st.columns(2, gap="large")
     with p4:
         st.markdown(metric_card(t["target_distance"], money(target_distance), t["target_distance_sub"], "value-neutral" if target_distance > 0 else "value-positive"), unsafe_allow_html=True)
     with p5:
@@ -1380,12 +1421,10 @@ def render_full_dashboard(
         daily=daily,
     )
  
-    radar_col, radar_metrics_col = st.columns([1.25, 1])
+    radar_col, radar_metrics_col = st.columns([1.28, 1], gap="large")
  
     with radar_col:
-        st.markdown('<div class="radar-card">', unsafe_allow_html=True)
         st.plotly_chart(make_radar_chart(radar_scores, t), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
  
     with radar_metrics_col:
         st.markdown(metric_card(t["smart_prop_engine"], prop_mode, profile.get("label", prop_mode), "value-neutral"), unsafe_allow_html=True)
@@ -1395,7 +1434,7 @@ def render_full_dashboard(
  
     section(t["automatic_insights"])
  
-    ic1, ic2, ic3, ic4 = st.columns(4)
+    ic1, ic2, ic3, ic4 = st.columns(4, gap="large")
     with ic1:
         st.markdown(insight_card(t["best_hour"], f"{best_hour}h", money(best_hour_pnl), value_class(best_hour_pnl)), unsafe_allow_html=True)
     with ic2:
@@ -1405,7 +1444,7 @@ def render_full_dashboard(
     with ic4:
         st.markdown(insight_card(t["worst_day"], str(worst_day), money(worst_day_pnl), value_class(worst_day_pnl)), unsafe_allow_html=True)
  
-    ic5, ic6, ic7, ic8 = st.columns(4)
+    ic5, ic6, ic7, ic8 = st.columns(4, gap="large")
     with ic5:
         st.markdown(insight_card(t["best_weekday"], str(best_weekday), money(best_weekday_pnl), value_class(best_weekday_pnl)), unsafe_allow_html=True)
     with ic6:
@@ -1619,24 +1658,17 @@ def render_full_dashboard(
             ai_color = "value-negative"
  
         st.markdown(
-            metric_card(
+            score_ring_card(
                 t["ai_score"],
-                f"{ai_score}/100",
+                ai_score,
                 ai_report["status"],
-                ai_color,
-            ),
-            unsafe_allow_html=True,
-        )
- 
-        st.markdown(
-            diagnosis_box(
                 ai_report["profile"],
                 ai_report["headline"],
             ),
             unsafe_allow_html=True,
         )
  
-        col_ai_1, col_ai_2 = st.columns(2)
+        col_ai_1, col_ai_2 = st.columns(2, gap="large")
  
         with col_ai_1:
             st.markdown(f"## {t['executive_summary']}")
