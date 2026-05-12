@@ -1499,6 +1499,8 @@ def build_trader_dna(
  
 def _normalize_text(value):
     value = str(value).strip().lower()
+    value = value.replace("\ufeff", "").replace("\x00", "")
+    value = value.replace("<", "").replace(">", "")
     value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
     value = value.replace("\n", " ").replace("\r", " ")
     value = " ".join(value.split())
@@ -1522,19 +1524,57 @@ def _find_column(df, candidates):
 def _to_number(series):
     if series is None:
         return None
-    s = series.astype(str).str.strip()
-    s = s.str.replace("R$", "", regex=False).str.replace("$", "", regex=False)
-    s = s.str.replace(" ", "", regex=False)
-    s = s.str.replace(".", "", regex=False).str.replace(",", ".", regex=False)
-    return pd.to_numeric(s, errors="coerce")
+ 
+    def convert_one(value):
+        if pd.isna(value):
+            return None
+        text = str(value).strip()
+        text = text.replace("\ufeff", "").replace("\x00", "")
+        text = text.replace("R$", "").replace("$", "").replace("€", "")
+        text = text.replace(" ", "").replace("\u00a0", "")
+        text = text.replace("%", "")
+        text = text.replace("+", "")
+ 
+        if text in ["", "-", "--", "nan", "None"]:
+            return None
+ 
+        # Brazilian format: 1.234,56
+        if "," in text and "." in text:
+            if text.rfind(",") > text.rfind("."):
+                text = text.replace(".", "").replace(",", ".")
+            else:
+                text = text.replace(",", "")
+ 
+        # Decimal comma only: 1234,56
+        elif "," in text and "." not in text:
+            text = text.replace(",", ".")
+ 
+        try:
+            return float(text)
+        except Exception:
+            return None
+ 
+    return pd.to_numeric(series.apply(convert_one), errors="coerce")
+ 
+ 
+def _clean_imported_columns(df):
+    df = df.copy()
+    cleaned = []
+    for col in df.columns:
+        col_text = str(col).replace("\ufeff", "").replace("\x00", "").strip()
+        col_text = col_text.replace("<", "").replace(">", "").strip()
+        cleaned.append(col_text)
+    df.columns = cleaned
+    return df
  
  
 def _read_csv_safely(file_bytes):
-    encodings = ["utf-8-sig", "utf-8", "latin1", "cp1252"]
-    separators = [None, ";", ",", "\t", "|"]
+    encodings = ["utf-16", "utf-16-le", "utf-16-be", "utf-8-sig", "utf-8", "latin1", "cp1252"]
+    separators = ["\t", ";", ",", "|", None]
     best_df = None
     best_score = -1
     last_error = None
+ 
     for encoding in encodings:
         for separator in separators:
             try:
@@ -1543,14 +1583,23 @@ def _read_csv_safely(file_bytes):
                     df = pd.read_csv(buffer, sep=None, engine="python", encoding=encoding)
                 else:
                     df = pd.read_csv(buffer, sep=separator, engine="python", encoding=encoding)
+ 
+                df = _clean_imported_columns(df)
+                df = df.dropna(how="all")
+ 
                 score = int(df.shape[1]) * 10 + int(df.shape[0] > 0)
+                recognizable = sum(1 for col in df.columns if _normalize_text(col) in ["date", "time", "datetime", "balance", "equity", "profit", "pnl", "net pnl"])
+                score += recognizable * 25
+ 
                 if df.shape[0] > 0 and df.shape[1] > 1 and score > best_score:
                     best_df = df
                     best_score = score
             except Exception as exc:
                 last_error = exc
+ 
     if best_df is not None:
         return best_df
+ 
     raise ValueError(f"Could not read CSV/TXT file. Last error: {last_error}")
  
  
@@ -1577,13 +1626,29 @@ def load_universal_trading_file(uploaded_file, platform="auto"):
     return _read_csv_safely(file_bytes)
  
  
+def _parse_datetime_series(series):
+    raw = series.astype(str).str.replace("\x00", "", regex=False).str.strip()
+ 
+    # First try ISO / yyyy-mm-dd / yyyy.mm.dd formats.
+    parsed = pd.to_datetime(raw, errors="coerce")
+ 
+    # Then try Brazilian/European day-first formats only where needed.
+    missing = parsed.isna()
+    if missing.any():
+        parsed_alt = pd.to_datetime(raw[missing], errors="coerce", dayfirst=True)
+        parsed.loc[missing] = parsed_alt
+ 
+    return parsed
+ 
+ 
 def universal_normalize_trades(raw_df, platform="auto"):
     df = raw_df.copy()
     df = df.dropna(how="all")
+    df = _clean_imported_columns(df)
     df.columns = [str(col).strip() for col in df.columns]
  
     date_col = _find_column(df, [
-        "date", "time", "datetime", "open time", "close time", "data", "hora", "data/hora", "fecha", "fecha/hora",
+        "date", "time", "datetime", "date time", "open time", "close time", "data", "hora", "data/hora", "fecha", "fecha/hora",
         "open date", "close date", "entry time", "exit time", "abertura", "fechamento"
     ])
     asset_col = _find_column(df, [
@@ -1609,13 +1674,51 @@ def universal_normalize_trades(raw_df, platform="auto"):
         "resultado líquido", "net profit", "gross profit", "close profit", "profit currency", "pl", "gain", "realized p/l"
     ])
  
+    balance_col = _find_column(df, [
+        "balance", "saldo", "saldo conta", "account balance", "balanco", "balanço"
+    ])
+    equity_col = _find_column(df, [
+        "equity", "patrimonio", "patrimônio", "saldo liquido", "saldo líquido", "account equity"
+    ])
+ 
     if date_col is None:
         raise ValueError("Could not identify the date/time column. Please export a report with Date/Time, Open Time or Close Time.")
+ 
+    parsed_dates = _parse_datetime_series(df[date_col])
+ 
+    # TesterGraph / strategy tester equity reports often do not have trade rows.
+    # They usually contain DATE, BALANCE, EQUITY and DEPOSIT LOAD. In this case,
+    # RiskPilot reconstructs closed-result events from BALANCE changes.
+    if pnl_col is None and (balance_col is not None or equity_col is not None):
+        source_col = balance_col if balance_col is not None else equity_col
+        source_values = _to_number(df[source_col])
+        pnl_values = source_values.diff().fillna(0)
+ 
+        normalized = pd.DataFrame()
+        normalized["date"] = parsed_dates
+        normalized["asset"] = "TesterGraph"
+        normalized["side"] = "balance_change" if balance_col is not None else "equity_change"
+        normalized["quantity"] = 1
+        normalized["entry_price"] = source_values.shift(1).fillna(source_values)
+        normalized["exit_price"] = source_values
+        normalized["fees"] = 0
+        normalized["pnl"] = pnl_values
+        normalized["net_pnl"] = pnl_values
+ 
+        normalized = normalized.dropna(subset=["date"])
+        normalized = normalized[normalized["net_pnl"].notna()]
+        normalized = normalized[normalized["net_pnl"].abs() > 0.0000001]
+ 
+        if normalized.empty:
+            raise ValueError("The file was read as an equity/balance report, but no balance/equity changes were found.")
+ 
+        return normalized.reset_index(drop=True)
+ 
     if pnl_col is None:
-        raise ValueError("Could not identify the result/P&L column. Please export a report with Profit, PnL, Resultado or Net Profit.")
+        raise ValueError("Could not identify the result/P&L column. Please export a report with Profit, PnL, Resultado, Net Profit, Balance or Equity.")
  
     normalized = pd.DataFrame()
-    normalized["date"] = pd.to_datetime(df[date_col], errors="coerce", dayfirst=True)
+    normalized["date"] = parsed_dates
     normalized["asset"] = df[asset_col].astype(str) if asset_col else "UNKNOWN"
     normalized["side"] = df[side_col].astype(str).str.lower() if side_col else "unknown"
     normalized["quantity"] = _to_number(df[qty_col]).fillna(1) if qty_col else 1
@@ -1633,7 +1736,6 @@ def universal_normalize_trades(raw_df, platform="auto"):
         raise ValueError("The file was read, but no valid trades were found after normalization.")
  
     return normalized.reset_index(drop=True)
- 
  
 def make_demo_dataframe():
     data = [
