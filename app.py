@@ -46,6 +46,17 @@ def ui_text(language):
 "action_plan": "Action Plan",
 "risk_rules": "Risk Rules",
 "behavior_warnings": "Behavior Warnings",
+            "institutional_radar": "Institutional Radar",
+            "radar_discipline": "Discipline",
+            "radar_consistency": "Consistency",
+            "radar_risk_control": "Risk Control",
+            "radar_execution": "Execution",
+            "radar_recovery": "Recovery",
+            "radar_prop_compatibility": "Prop Compatibility",
+            "smart_prop_engine": "Smart Prop Firm Engine",
+            "prop_rule_profile": "Rule Profile",
+            "openai_ready": "OpenAI Ready",
+            "openai_ready_sub": "Prepared for real AI integration",
             "trader_dna": "Trader DNA Engine",
             "dna_score": "DNA Score",
             "trader_profile": "Trader Profile",
@@ -183,6 +194,17 @@ def ui_text(language):
 "action_plan": "Plano de Ação",
 "risk_rules": "Regras de Risco",
 "behavior_warnings": "Alertas Comportamentais",
+            "institutional_radar": "Radar Institucional",
+            "radar_discipline": "Disciplina",
+            "radar_consistency": "Consistência",
+            "radar_risk_control": "Controle de Risco",
+            "radar_execution": "Execução",
+            "radar_recovery": "Recuperação",
+            "radar_prop_compatibility": "Compatibilidade Prop",
+            "smart_prop_engine": "Motor Prop Firm Inteligente",
+            "prop_rule_profile": "Perfil de Regras",
+            "openai_ready": "OpenAI Ready",
+            "openai_ready_sub": "Preparado para integração com IA real",
             "trader_dna": "Motor Trader DNA",
             "dna_score": "DNA Score",
             "trader_profile": "Perfil do Trader",
@@ -319,6 +341,17 @@ def ui_text(language):
 "action_plan": "Plan de Acción",
 "risk_rules": "Reglas de Riesgo",
 "behavior_warnings": "Alertas Conductuales",
+            "institutional_radar": "Radar Institucional",
+            "radar_discipline": "Disciplina",
+            "radar_consistency": "Consistencia",
+            "radar_risk_control": "Control de Riesgo",
+            "radar_execution": "Ejecución",
+            "radar_recovery": "Recuperación",
+            "radar_prop_compatibility": "Compatibilidad Prop",
+            "smart_prop_engine": "Motor Prop Firm Inteligente",
+            "prop_rule_profile": "Perfil de Reglas",
+            "openai_ready": "OpenAI Ready",
+            "openai_ready_sub": "Preparado para integración con IA real",
             "trader_dna": "Motor Trader DNA",
             "dna_score": "DNA Score",
             "trader_profile": "Perfil del Trader",
@@ -474,6 +507,9 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .insight-card{background:linear-gradient(135deg,#0f172a 0%,#172554 100%);border:1px solid rgba(56,189,248,.22);border-radius:18px;padding:22px;min-height:126px;box-shadow:0 10px 30px rgba(0,0,0,.20)}.insight-title{color:#94a3b8!important;font-size:.88rem;font-weight:750}.insight-value{font-size:1.65rem;font-weight:850;margin-top:8px}.insight-sub{color:#7dd3fc!important;font-size:.85rem;margin-top:8px}
 .auth-box{max-width:620px;margin:30px auto;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(255,255,255,.09);border-radius:26px;padding:35px}.terminal-header{background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(2,6,23,.78));border:1px solid rgba(148,163,184,.14);border-radius:26px;padding:26px 30px;margin-bottom:30px;box-shadow:0 20px 70px rgba(0,0,0,.28)}.terminal-title{color:#fff!important;font-size:2.65rem;font-weight:950;letter-spacing:-.055em;line-height:1.05}.terminal-subtitle{color:#94a3b8!important;font-size:1rem;margin-top:8px}.terminal-pill{display:inline-block;background:rgba(34,197,94,.12);color:#86efac!important;border:1px solid rgba(34,197,94,.28);border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:800;margin-top:12px}
 .stButton>button{border-radius:14px;min-height:52px;font-weight:800;font-size:1rem;border:1px solid rgba(255,255,255,.15);background:#0f172a!important;color:#fff!important}.stButton>button:hover{border-color:#38bdf8!important;color:#7dd3fc!important}input,textarea,select{color:#fff!important}[data-testid="stTextInput"] input,[data-testid="stNumberInput"] input,[data-testid="stSelectbox"] div,[data-testid="stDateInput"] input{background:#111827!important;color:#fff!important}
+ 
+.radar-card{background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(30,41,59,.70));border:1px solid rgba(56,189,248,.22);border-radius:24px;padding:20px;margin-bottom:18px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.premium-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(56,189,248,.55),transparent);margin:24px 0}
 </style>
 """, unsafe_allow_html=True)
  
@@ -618,14 +654,102 @@ def make_bar_chart(df, x, y, title):
     return base_chart_layout(fig, height=340)
  
  
-def prop_profiles(account_size):
+ 
+def clamp_score(value):
+    try:
+        value = float(value)
+    except Exception:
+        value = 0
+    return max(0, min(100, round(value)))
+ 
+ 
+def build_radar_scores(risk_score, consistency_score, behavior_score, approval, metrics, daily):
+    profit_factor = float(metrics.get("profit_factor", 0))
+    net_pnl = float(metrics.get("net_pnl", 0))
+    loss_streak = float(metrics.get("max_loss_streak", 0))
+ 
+    risk_control = clamp_score(risk_score)
+    consistency = clamp_score(consistency_score)
+    discipline = clamp_score(behavior_score)
+    prop_compatibility = clamp_score(approval)
+    execution = clamp_score(min(max(profit_factor / 1.8, 0), 1) * 100)
+ 
+    if daily.empty:
+        recovery = 50
+    else:
+        positive_days = int((daily > 0).sum())
+        negative_days = int((daily < 0).sum())
+        recovery = clamp_score(55 + (positive_days - negative_days) * 7 + (10 if net_pnl > 0 else -10) - loss_streak * 4)
+ 
     return {
-        "Custom": {"target": account_size * 0.10, "daily": account_size * 0.05, "drawdown": account_size * 0.10},
-        "FTMO": {"target": account_size * 0.10, "daily": account_size * 0.05, "drawdown": account_size * 0.10},
-        "Apex": {"target": account_size * 0.06, "daily": account_size * 0.03, "drawdown": account_size * 0.05},
-        "MyFundedFX": {"target": account_size * 0.08, "daily": account_size * 0.05, "drawdown": account_size * 0.08},
-        "TopStep": {"target": account_size * 0.06, "daily": account_size * 0.03, "drawdown": account_size * 0.04},
-        "Personalizado": {"target": account_size * 0.10, "daily": account_size * 0.05, "drawdown": account_size * 0.10},
+        "Discipline": discipline,
+        "Consistency": consistency,
+        "Risk Control": risk_control,
+        "Execution": execution,
+        "Recovery": recovery,
+        "Prop Compatibility": prop_compatibility,
+    }
+ 
+ 
+def make_radar_chart(radar_scores, t):
+    labels = [
+        t["radar_discipline"],
+        t["radar_consistency"],
+        t["radar_risk_control"],
+        t["radar_execution"],
+        t["radar_recovery"],
+        t["radar_prop_compatibility"],
+    ]
+    values = [
+        radar_scores["Discipline"],
+        radar_scores["Consistency"],
+        radar_scores["Risk Control"],
+        radar_scores["Execution"],
+        radar_scores["Recovery"],
+        radar_scores["Prop Compatibility"],
+    ]
+ 
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatterpolar(
+            r=values + [values[0]],
+            theta=labels + [labels[0]],
+            fill="toself",
+            name="RiskPilot Radar",
+            line=dict(color="#38bdf8", width=3),
+            fillcolor="rgba(56,189,248,0.22)",
+        )
+    )
+    fig.update_layout(
+        template="plotly_dark",
+        height=470,
+        margin=dict(l=30, r=30, t=50, b=30),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#e5e7eb"),
+        polar=dict(
+            bgcolor="rgba(0,0,0,0)",
+            radialaxis=dict(visible=True, range=[0, 100], gridcolor="rgba(148,163,184,0.22)"),
+            angularaxis=dict(gridcolor="rgba(148,163,184,0.18)"),
+        ),
+        showlegend=False,
+    )
+    return fig
+ 
+ 
+def prop_profiles(account_size):
+    """Smart Prop Firm Engine - rule presets used for risk dashboards."""
+    return {
+        "Custom": {"target": account_size * 0.10, "daily": account_size * 0.05, "drawdown": account_size * 0.10, "label": "Custom rule profile"},
+        "Personalizado": {"target": account_size * 0.10, "daily": account_size * 0.05, "drawdown": account_size * 0.10, "label": "Perfil personalizado"},
+        "FTMO": {"target": account_size * 0.10, "daily": account_size * 0.05, "drawdown": account_size * 0.10, "label": "FTMO style: 10% target / 5% daily / 10% max"},
+        "Apex": {"target": account_size * 0.06, "daily": account_size * 0.03, "drawdown": account_size * 0.05, "label": "Apex style: futures evaluation profile"},
+        "MyFundedFX": {"target": account_size * 0.08, "daily": account_size * 0.05, "drawdown": account_size * 0.08, "label": "MyFundedFX style: balanced evaluation"},
+        "MyFundedFutures": {"target": account_size * 0.06, "daily": account_size * 0.03, "drawdown": account_size * 0.05, "label": "MyFundedFutures style: futures risk profile"},
+        "TopStep": {"target": account_size * 0.06, "daily": account_size * 0.03, "drawdown": account_size * 0.04, "label": "TopStep style: strict drawdown control"},
+        "TakeProfit": {"target": account_size * 0.08, "daily": account_size * 0.04, "drawdown": account_size * 0.08, "label": "TakeProfit style: balanced target and drawdown"},
+        "FundingPips": {"target": account_size * 0.08, "daily": account_size * 0.05, "drawdown": account_size * 0.10, "label": "FundingPips style: target with 10% max drawdown"},
+        "E8": {"target": account_size * 0.08, "daily": account_size * 0.05, "drawdown": account_size * 0.08, "label": "E8 style: institutional evaluation profile"},
     }
  
  
@@ -1181,6 +1305,30 @@ def render_full_dashboard(
     with p5:
         st.markdown(metric_card(t["violation_risk"], violation_label(violation_score, t), t["violation_risk_sub"], score_class(100 - violation_score)), unsafe_allow_html=True)
  
+    section(t["institutional_radar"])
+ 
+    radar_scores = build_radar_scores(
+        risk_score=risk_score,
+        consistency_score=consistency_score,
+        behavior_score=behavior_score,
+        approval=approval,
+        metrics=metrics,
+        daily=daily,
+    )
+ 
+    radar_col, radar_metrics_col = st.columns([1.25, 1])
+ 
+    with radar_col:
+        st.markdown('<div class="radar-card">', unsafe_allow_html=True)
+        st.plotly_chart(make_radar_chart(radar_scores, t), use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+ 
+    with radar_metrics_col:
+        st.markdown(metric_card(t["smart_prop_engine"], prop_mode, profile.get("label", prop_mode), "value-neutral"), unsafe_allow_html=True)
+        st.markdown(metric_card(t["openai_ready"], "Ready", t["openai_ready_sub"], "value-positive"), unsafe_allow_html=True)
+        st.markdown(metric_card(t["radar_risk_control"], f'{radar_scores["Risk Control"]}/100', t["max_drawdown_limit"], score_class(radar_scores["Risk Control"])), unsafe_allow_html=True)
+        st.markdown(metric_card(t["radar_prop_compatibility"], f'{radar_scores["Prop Compatibility"]}/100', t["approval_probability"], score_class(radar_scores["Prop Compatibility"])), unsafe_allow_html=True)
+ 
     section(t["automatic_insights"])
  
     ic1, ic2, ic3, ic4 = st.columns(4)
@@ -1724,7 +1872,7 @@ else:
         st.rerun()
  
 account_size = st.sidebar.number_input(t["account_size"], value=50000.0, step=5000.0)
-prop_mode = st.sidebar.selectbox(t["prop_firm_mode"], ["FTMO", "Apex", "MyFundedFX", "TopStep", "Custom", "Personalizado"])
+prop_mode = st.sidebar.selectbox(t["prop_firm_mode"], ["FTMO", "Apex", "TopStep", "MyFundedFX", "MyFundedFutures", "FundingPips", "TakeProfit", "E8", "Custom", "Personalizado"])
  
 profiles = prop_profiles(account_size)
 profile = profiles.get(prop_mode, profiles["Custom"])
