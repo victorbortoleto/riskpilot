@@ -552,6 +552,94 @@ def platform_help_text(language):
     return "Supports CSV, XLSX, TXT and HTML. RiskPilot tries to identify date, symbol, side, quantity and result columns automatically."
  
  
+ 
+ 
+# =========================================================
+# MONETIZATION / PLAN GATES
+# =========================================================
+ 
+def plan_text(language):
+    if language == "Português":
+        return {
+            "current_plan": "Plano atual",
+            "free": "Free",
+            "pro": "Pro",
+            "premium": "Premium",
+            "upgrade_title": "Recurso bloqueado",
+            "upgrade_pro": "Este recurso está disponível a partir do plano Pro.",
+            "upgrade_premium": "Este recurso está disponível no plano Premium.",
+            "upgrade_cta": "Atualizar plano",
+            "free_limit": "Plano Free: limite de 1 upload por sessão nesta versão de testes.",
+            "pricing_note": "Checkout ainda não integrado. Esta tela já prepara a estrutura para Stripe ou Mercado Pago.",
+        }
+    if language == "Español":
+        return {
+            "current_plan": "Plan actual",
+            "free": "Free",
+            "pro": "Pro",
+            "premium": "Premium",
+            "upgrade_title": "Recurso bloqueado",
+            "upgrade_pro": "Este recurso está disponible desde el plan Pro.",
+            "upgrade_premium": "Este recurso está disponible en el plan Premium.",
+            "upgrade_cta": "Actualizar plan",
+            "free_limit": "Plan Free: límite de 1 upload por sesión en esta versión de prueba.",
+            "pricing_note": "Checkout aún no integrado. Esta pantalla ya prepara la estructura para Stripe o Mercado Pago.",
+        }
+    return {
+        "current_plan": "Current plan",
+        "free": "Free",
+        "pro": "Pro",
+        "premium": "Premium",
+        "upgrade_title": "Feature locked",
+        "upgrade_pro": "This feature is available from the Pro plan.",
+        "upgrade_premium": "This feature is available on the Premium plan.",
+        "upgrade_cta": "Upgrade plan",
+        "free_limit": "Free plan: limited to 1 upload per session in this test version.",
+        "pricing_note": "Checkout is not integrated yet. This screen is ready for Stripe or Mercado Pago.",
+    }
+ 
+ 
+def plan_options(language):
+    txt = plan_text(language)
+    return {txt["free"]: "Free", txt["pro"]: "Pro", txt["premium"]: "Premium"}
+ 
+ 
+def plan_rank(plan):
+    return {"Free": 0, "Pro": 1, "Premium": 2}.get(plan, 0)
+ 
+ 
+def has_plan(required_plan):
+    return plan_rank(st.session_state.get("user_plan", "Free")) >= plan_rank(required_plan)
+ 
+ 
+def locked_feature_box(language, required_plan="Premium"):
+    txt = plan_text(language)
+    message = txt["upgrade_premium"] if required_plan == "Premium" else txt["upgrade_pro"]
+    return (
+        f'<div class="diagnosis-box">'
+        f'<div class="diagnosis-title">🔒 {txt["upgrade_title"]}</div>'
+        f'<div class="diagnosis-text">{message}</div>'
+        f'<div style="margin-top:14px;display:inline-block;background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:10px 14px;border-radius:12px;color:white;font-weight:900;">{txt["upgrade_cta"]}</div>'
+        f'</div>'
+    )
+ 
+ 
+def enforce_free_upload_limit(language, uploaded_file_name):
+    if st.session_state.get("user_plan", "Free") != "Free":
+        return True
+    if "free_upload_count" not in st.session_state:
+        st.session_state.free_upload_count = 0
+    if "last_counted_upload" not in st.session_state:
+        st.session_state.last_counted_upload = None
+    if st.session_state.last_counted_upload != uploaded_file_name:
+        st.session_state.free_upload_count += 1
+        st.session_state.last_counted_upload = uploaded_file_name
+    if st.session_state.free_upload_count > 1:
+        st.warning(plan_text(language)["free_limit"])
+        st.markdown(locked_feature_box(language, required_plan="Pro"), unsafe_allow_html=True)
+        return False
+    return True
+ 
 def get_pricing_copy(language):
     if language == "Português":
         return {
@@ -562,8 +650,8 @@ def get_pricing_copy(language):
             "pro": "Pro",
             "premium": "Premium",
             "free_price": "R$ 0",
-            "pro_price": "R$ 49/mês",
-            "premium_price": "R$ 97/mês",
+            "pro_price": "R$ 149,90/mês",
+            "premium_price": "R$ 249,90/mês",
             "free_desc": "Para testar a plataforma e validar os primeiros relatórios.",
             "pro_desc": "Para traders que querem acompanhar performance, risco e evolução.",
             "premium_desc": "Para traders sérios que querem AI Coach, DNA e radar institucional.",
@@ -599,8 +687,8 @@ def get_pricing_copy(language):
             "pro": "Pro",
             "premium": "Premium",
             "free_price": "$0",
-            "pro_price": "$9/mes",
-            "premium_price": "$19/mes",
+            "pro_price": "€29,90/mês",
+            "premium_price": "€49,90/mês",
             "free_desc": "Para probar la plataforma y validar los primeros reportes.",
             "pro_desc": "Para traders que quieren seguir rendimiento, riesgo y evolución.",
             "premium_desc": "Para traders serios que quieren AI Coach, DNA y radar institucional.",
@@ -635,8 +723,8 @@ def get_pricing_copy(language):
         "pro": "Pro",
         "premium": "Premium",
         "free_price": "$0",
-        "pro_price": "$9/mo",
-        "premium_price": "$19/mo",
+        "pro_price": "US$29.90/mo",
+        "premium_price": "US$49.90/mo",
         "free_desc": "For testing the platform and validating your first reports.",
         "pro_desc": "For traders who want to track performance, risk and evolution.",
         "premium_desc": "For serious traders who want AI Coach, DNA and institutional radar.",
@@ -707,6 +795,7 @@ def render_pricing_section(language):
     for feature, values in copy["features"].items():
         rows.append({"Feature": feature, copy["free"]: values[0], copy["pro"]: values[1], copy["premium"]: values[2]})
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    st.info(plan_text(language)["pricing_note"])
  
     st.markdown(f'<div class="section-title">{copy["faq_title"]}</div>', unsafe_allow_html=True)
     faq1, faq2, faq3 = st.columns(3, gap="large")
@@ -1891,23 +1980,26 @@ def render_full_dashboard(
     st.plotly_chart(make_drawdown_chart(normalized_df, t), use_container_width=True)
  
     section(t["institutional_radar"])
-    radar_scores = build_radar_scores(
-        risk_score=risk_score,
-        consistency_score=consistency_score,
-        behavior_score=behavior_score,
-        approval=approval,
-        metrics=metrics,
-        daily=daily,
-    )
+    if not has_plan("Premium"):
+        st.markdown(locked_feature_box(language, required_plan="Premium"), unsafe_allow_html=True)
+    else:
+        radar_scores = build_radar_scores(
+            risk_score=risk_score,
+            consistency_score=consistency_score,
+            behavior_score=behavior_score,
+            approval=approval,
+            metrics=metrics,
+            daily=daily,
+        )
  
-    radar_col, radar_metrics_col = st.columns([1.35, 1], gap="large")
-    with radar_col:
-        st.plotly_chart(make_radar_chart(radar_scores, t), use_container_width=True)
+        radar_col, radar_metrics_col = st.columns([1.35, 1], gap="large")
+        with radar_col:
+            st.plotly_chart(make_radar_chart(radar_scores, t), use_container_width=True)
  
-    with radar_metrics_col:
-        st.markdown(metric_card(t["radar_risk_control"], f'{radar_scores["Risk Control"]}/100', t["max_drawdown_limit"], score_class(radar_scores["Risk Control"])), unsafe_allow_html=True)
-        st.markdown(metric_card(t["radar_consistency"], f'{radar_scores["Consistency"]}/100', t["consistency_score_sub"], score_class(radar_scores["Consistency"])), unsafe_allow_html=True)
-        st.markdown(metric_card(t["radar_prop_compatibility"], f'{radar_scores["Prop Compatibility"]}/100', t["approval_probability"], score_class(radar_scores["Prop Compatibility"])), unsafe_allow_html=True)
+        with radar_metrics_col:
+            st.markdown(metric_card(t["radar_risk_control"], f'{radar_scores["Risk Control"]}/100', t["max_drawdown_limit"], score_class(radar_scores["Risk Control"])), unsafe_allow_html=True)
+            st.markdown(metric_card(t["radar_consistency"], f'{radar_scores["Consistency"]}/100', t["consistency_score_sub"], score_class(radar_scores["Consistency"])), unsafe_allow_html=True)
+            st.markdown(metric_card(t["radar_prop_compatibility"], f'{radar_scores["Prop Compatibility"]}/100', t["approval_probability"], score_class(radar_scores["Prop Compatibility"])), unsafe_allow_html=True)
  
     section(t["performance"])
     perf_1, perf_2, perf_3, perf_4 = st.columns(4, gap="large")
@@ -1945,127 +2037,133 @@ def render_full_dashboard(
     with insight_6:
         st.markdown(insight_card(t["worst_day"], str(worst_day), money(worst_day_pnl), value_class(worst_day_pnl)), unsafe_allow_html=True)
  
-    trader_dna = build_trader_dna(
-        language=language,
-        metrics=metrics,
-        daily=daily,
-        hourly=hourly,
-        weekday=weekday,
-        risk_score=risk_score,
-        consistency_score=consistency_score,
-        behavior_score=behavior_score,
-        approval=approval,
-    )
- 
     section(t["trader_dna"])
-    dna_color = score_class(trader_dna["dna_score"])
- 
-    dna_col1, dna_col2, dna_col3 = st.columns(3, gap="large")
-    with dna_col1:
-        st.markdown(metric_card(t["trader_profile"], trader_dna["profile"], t["profile_summary"], dna_color), unsafe_allow_html=True)
-    with dna_col2:
-        st.markdown(metric_card(t["dna_score"], f'{trader_dna["dna_score"]}/100', t["profile_confidence"] + ": " + trader_dna["confidence"], dna_color), unsafe_allow_html=True)
-    with dna_col3:
-        st.markdown(metric_card(t["prop_firm_fit"], trader_dna["prop_fit"], t["prop_firm_panel"], dna_color), unsafe_allow_html=True)
- 
-    dna_summary_col, dna_strength_col, dna_improve_col = st.columns(3, gap="large")
-    with dna_summary_col:
-        st.markdown(f"## {t['profile_summary']}")
-        for item in trader_dna["summary"][:3]:
-            st.markdown(f'<div class="diagnosis-box">🧬 {item}</div>', unsafe_allow_html=True)
-    with dna_strength_col:
-        st.markdown(f"## {t['strengths']}")
-        for item in trader_dna["strengths"][:3]:
-            st.markdown(f'<div class="diagnosis-box">✅ {item}</div>', unsafe_allow_html=True)
-    with dna_improve_col:
-        st.markdown(f"## {t['improvement_points']}")
-        for item in trader_dna["improvements"][:3]:
-            st.markdown(f'<div class="alert-box">📌 {item}</div>', unsafe_allow_html=True)
- 
-    section(t["ai_coach"])
-    loading_texts = {
-        "Português": [
-            "Mapeando padrões comportamentais...",
-            "Detectando risco de tilt e revenge trading...",
-            "Avaliando consistência para prop firm...",
-            "Calculando qualidade operacional...",
-            "Gerando diagnóstico institucional...",
-        ],
-        "Español": [
-            "Mapeando patrones conductuales...",
-            "Detectando riesgo de tilt y revenge trading...",
-            "Evaluando consistencia para prop firm...",
-            "Calculando calidad operativa...",
-            "Generando diagnóstico institucional...",
-        ],
-        "English": [
-            "Mapping behavioral patterns...",
-            "Detecting tilt and revenge trading risk...",
-            "Evaluating prop firm consistency...",
-            "Calculating execution quality...",
-            "Generating institutional diagnosis...",
-        ],
-    }
- 
-    ai_button_help = {
-        "Português": "Gera uma análise comportamental premium com plano de ação.",
-        "Español": "Genera un análisis conductual premium con plan de acción.",
-        "English": "Generates a premium behavioral analysis with an action plan.",
-    }.get(language, "Generates a premium behavioral analysis with an action plan.")
- 
-    if st.button(t["analyze_ai"], help=ai_button_help):
-        loading_box = st.empty()
-        progress_bar = st.progress(0)
-        steps = loading_texts.get(language, loading_texts["English"])
- 
-        for index, message in enumerate(steps):
-            percent_done = int(((index + 1) / len(steps)) * 100)
-            loading_box.markdown(
-                f'''<div class="diagnosis-box"><div class="diagnosis-title">AI TRADING COACH</div><div class="diagnosis-text">🧠 {message}</div></div>''',
-                unsafe_allow_html=True,
-            )
-            progress_bar.progress(percent_done)
-            time.sleep(0.35)
- 
-        loading_box.empty()
-        progress_bar.empty()
- 
-        ai_report = build_ai_coach_report(
+    if not has_plan("Premium"):
+        st.markdown(locked_feature_box(language, required_plan="Premium"), unsafe_allow_html=True)
+    else:
+        trader_dna = build_trader_dna(
             language=language,
             metrics=metrics,
             daily=daily,
             hourly=hourly,
+            weekday=weekday,
             risk_score=risk_score,
             consistency_score=consistency_score,
             behavior_score=behavior_score,
-            approval_probability=approval,
-            target_distance=target_distance,
-            daily_remaining=daily_remaining,
-            dd_remaining=dd_remaining,
+            approval=approval,
         )
  
-        st.markdown(score_ring_card(t["ai_score"], ai_report["score"], ai_report["status"], ai_report["profile"], ai_report["headline"]), unsafe_allow_html=True)
+        dna_color = score_class(trader_dna["dna_score"])
  
-        col_ai_1, col_ai_2 = st.columns(2, gap="large")
-        with col_ai_1:
-            st.markdown(f"## {t['executive_summary']}")
-            for item in ai_report["executive_summary"][:4]:
-                st.markdown(f'<div class="diagnosis-box">{item}</div>', unsafe_allow_html=True)
-            st.markdown(f"## {t['behavior_warnings']}")
-            if ai_report["warnings"]:
-                for item in ai_report["warnings"]:
-                    st.markdown(f'<div class="alert-box">⚠️ {item}</div>', unsafe_allow_html=True)
-            else:
-                no_warning_text = {"Português": "Nenhum alerta comportamental crítico detectado.", "Español": "No se detectaron alertas conductuales críticos.", "English": "No critical behavioral warnings detected."}.get(language, "No critical behavioral warnings detected.")
-                st.success(no_warning_text)
+        dna_col1, dna_col2, dna_col3 = st.columns(3, gap="large")
+        with dna_col1:
+            st.markdown(metric_card(t["trader_profile"], trader_dna["profile"], t["profile_summary"], dna_color), unsafe_allow_html=True)
+        with dna_col2:
+            st.markdown(metric_card(t["dna_score"], f'{trader_dna["dna_score"]}/100', t["profile_confidence"] + ": " + trader_dna["confidence"], dna_color), unsafe_allow_html=True)
+        with dna_col3:
+            st.markdown(metric_card(t["prop_firm_fit"], trader_dna["prop_fit"], t["prop_firm_panel"], dna_color), unsafe_allow_html=True)
  
-        with col_ai_2:
-            st.markdown(f"## {t['action_plan']}")
-            for item in ai_report["action_plan"][:5]:
+        dna_summary_col, dna_strength_col, dna_improve_col = st.columns(3, gap="large")
+        with dna_summary_col:
+            st.markdown(f"## {t['profile_summary']}")
+            for item in trader_dna["summary"][:3]:
+                st.markdown(f'<div class="diagnosis-box">🧬 {item}</div>', unsafe_allow_html=True)
+        with dna_strength_col:
+            st.markdown(f"## {t['strengths']}")
+            for item in trader_dna["strengths"][:3]:
                 st.markdown(f'<div class="diagnosis-box">✅ {item}</div>', unsafe_allow_html=True)
-            st.markdown(f"## {t['risk_rules']}")
-            for item in ai_report["rules"][:5]:
-                st.markdown(f'<div class="diagnosis-box">📌 {item}</div>', unsafe_allow_html=True)
+        with dna_improve_col:
+            st.markdown(f"## {t['improvement_points']}")
+            for item in trader_dna["improvements"][:3]:
+                st.markdown(f'<div class="alert-box">📌 {item}</div>', unsafe_allow_html=True)
+ 
+    section(t["ai_coach"])
+    if not has_plan("Premium"):
+        st.markdown(locked_feature_box(language, required_plan="Premium"), unsafe_allow_html=True)
+    else:
+        loading_texts = {
+            "Português": [
+                "Mapeando padrões comportamentais...",
+                "Detectando risco de tilt e revenge trading...",
+                "Avaliando consistência para prop firm...",
+                "Calculando qualidade operacional...",
+                "Gerando diagnóstico institucional...",
+            ],
+            "Español": [
+                "Mapeando patrones conductuales...",
+                "Detectando riesgo de tilt y revenge trading...",
+                "Evaluando consistencia para prop firm...",
+                "Calculando calidad operativa...",
+                "Generando diagnóstico institucional...",
+            ],
+            "English": [
+                "Mapping behavioral patterns...",
+                "Detecting tilt and revenge trading risk...",
+                "Evaluating prop firm consistency...",
+                "Calculating execution quality...",
+                "Generating institutional diagnosis...",
+            ],
+        }
+ 
+        ai_button_help = {
+            "Português": "Gera uma análise comportamental premium com plano de ação.",
+            "Español": "Genera un análisis conductual premium con plan de acción.",
+            "English": "Generates a premium behavioral analysis with an action plan.",
+        }.get(language, "Generates a premium behavioral analysis with an action plan.")
+ 
+        if st.button(t["analyze_ai"], help=ai_button_help):
+            loading_box = st.empty()
+            progress_bar = st.progress(0)
+            steps = loading_texts.get(language, loading_texts["English"])
+ 
+            for index, message in enumerate(steps):
+                percent_done = int(((index + 1) / len(steps)) * 100)
+                loading_box.markdown(
+                    f'<div class="diagnosis-box"><div class="diagnosis-title">AI TRADING COACH</div><div class="diagnosis-text">🧠 {message}</div></div>',
+                    unsafe_allow_html=True,
+                )
+                progress_bar.progress(percent_done)
+                time.sleep(0.35)
+ 
+            loading_box.empty()
+            progress_bar.empty()
+ 
+            ai_report = build_ai_coach_report(
+                language=language,
+                metrics=metrics,
+                daily=daily,
+                hourly=hourly,
+                risk_score=risk_score,
+                consistency_score=consistency_score,
+                behavior_score=behavior_score,
+                approval_probability=approval,
+                target_distance=target_distance,
+                daily_remaining=daily_remaining,
+                dd_remaining=dd_remaining,
+            )
+ 
+            st.markdown(score_ring_card(t["ai_score"], ai_report["score"], ai_report["status"], ai_report["profile"], ai_report["headline"]), unsafe_allow_html=True)
+ 
+            col_ai_1, col_ai_2 = st.columns(2, gap="large")
+            with col_ai_1:
+                st.markdown(f"## {t['executive_summary']}")
+                for item in ai_report["executive_summary"][:4]:
+                    st.markdown(f'<div class="diagnosis-box">{item}</div>', unsafe_allow_html=True)
+                st.markdown(f"## {t['behavior_warnings']}")
+                if ai_report["warnings"]:
+                    for item in ai_report["warnings"]:
+                        st.markdown(f'<div class="alert-box">⚠️ {item}</div>', unsafe_allow_html=True)
+                else:
+                    no_warning_text = {"Português": "Nenhum alerta comportamental crítico detectado.", "Español": "No se detectaron alertas conductuales críticos.", "English": "No critical behavioral warnings detected."}.get(language, "No critical behavioral warnings detected.")
+                    st.success(no_warning_text)
+ 
+            with col_ai_2:
+                st.markdown(f"## {t['action_plan']}")
+                for item in ai_report["action_plan"][:5]:
+                    st.markdown(f'<div class="diagnosis-box">✅ {item}</div>', unsafe_allow_html=True)
+                st.markdown(f"## {t['risk_rules']}")
+                for item in ai_report["rules"][:5]:
+                    st.markdown(f'<div class="diagnosis-box">📌 {item}</div>', unsafe_allow_html=True)
  
     section(t["risk_alerts"])
     for alert in alerts:
@@ -2085,30 +2183,35 @@ def render_full_dashboard(
         {"label": t["negative_days"], "value": str(negative_days), "result": t["days_below_zero"]},
     ]
  
-    pdf_bytes = build_pdf_report(
-        language=language,
-        title=t["terminal_title"],
-        subtitle=t["terminal_subtitle"],
-        file_name=uploaded_file_name,
-        prop_mode=prop_mode,
-        account_size=account_size,
-        metrics=metrics,
-        scores=(risk_score, consistency_score, account_health, behavior_score),
-        prop_status=(approval, daily_remaining, dd_remaining, target_distance, violation_score),
-        insights=insights_for_pdf,
-        diagnosis_items=diagnosis_items,
-        alerts=alerts,
-        trades_df=normalized_df,
-    )
+    if has_plan("Pro"):
+        pdf_bytes = build_pdf_report(
+            language=language,
+            title=t["terminal_title"],
+            subtitle=t["terminal_subtitle"],
+            file_name=uploaded_file_name,
+            prop_mode=prop_mode,
+            account_size=account_size,
+            metrics=metrics,
+            scores=(risk_score, consistency_score, account_health, behavior_score),
+            prop_status=(approval, daily_remaining, dd_remaining, target_distance, violation_score),
+            insights=insights_for_pdf,
+            diagnosis_items=diagnosis_items,
+            alerts=alerts,
+            trades_df=normalized_df,
+        )
  
-    st.download_button(t["download_pdf"], pdf_bytes, f"riskpilot_report_{uploaded_file_name.replace(' ', '_')}.pdf", "application/pdf")
+        st.download_button(t["download_pdf"], pdf_bytes, f"riskpilot_report_{uploaded_file_name.replace(' ', '_')}.pdf", "application/pdf")
+    else:
+        st.markdown(locked_feature_box(language, required_plan="Pro"), unsafe_allow_html=True)
  
     if read_only:
         st.info(t["loaded_from_history"])
-    elif allow_save and st.session_state.authenticated:
+    elif allow_save and st.session_state.authenticated and has_plan("Pro"):
         if st.button(t["save_analysis"]):
             save_upload(account_name=prop_mode, platform="Unknown", file_name=uploaded_file_name, trades_df=normalized_df, metrics=metrics, user_email=st.session_state.user_email)
             st.success(t["analysis_saved"])
+    elif allow_save and st.session_state.authenticated:
+        st.markdown(locked_feature_box(language, required_plan="Pro"), unsafe_allow_html=True)
     elif allow_save:
         st.warning(t["save_warning"])
  
@@ -2131,6 +2234,8 @@ if "demo_mode" not in st.session_state:
     st.session_state.demo_mode = False
 if "landing_language" not in st.session_state:
     st.session_state.landing_language = "English"
+if "user_plan" not in st.session_state:
+    st.session_state.user_plan = "Free"
  
  
 # =========================================================
@@ -2302,6 +2407,17 @@ else:
         st.session_state.show_login = True
         st.rerun()
  
+plan_map = plan_options(language)
+plan_labels = list(plan_map.keys())
+current_plan_label = next((label for label, value in plan_map.items() if value == st.session_state.get("user_plan", "Free")), plan_labels[0])
+selected_plan_label = st.sidebar.selectbox(
+    plan_text(language)["current_plan"],
+    plan_labels,
+    index=plan_labels.index(current_plan_label),
+)
+st.session_state.user_plan = plan_map[selected_plan_label]
+st.sidebar.markdown(sidebar_kpi(plan_text(language)["current_plan"], st.session_state.user_plan), unsafe_allow_html=True)
+ 
 account_size = st.sidebar.number_input(t["account_size"], value=50000.0, step=5000.0)
 prop_mode = st.sidebar.selectbox(t["prop_firm_mode"], ["FTMO", "Apex", "TopStep", "MyFundedFX", "MyFundedFutures", "FundingPips", "TakeProfit", "E8", "Custom", "Personalizado"])
  
@@ -2343,6 +2459,10 @@ if page == t["history"]:
  
     if not st.session_state.authenticated:
         st.info(t["history_account_required"])
+        st.stop()
+ 
+    if not has_plan("Pro"):
+        st.markdown(locked_feature_box(language, required_plan="Pro"), unsafe_allow_html=True)
         st.stop()
  
     history = load_upload_history(st.session_state.user_email)
@@ -2415,6 +2535,9 @@ else:
  
     if not uploaded_file:
         st.info(t["upload_to_begin"])
+        st.stop()
+ 
+    if not enforce_free_upload_limit(language, uploaded_file.name):
         st.stop()
  
     try:
