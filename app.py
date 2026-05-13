@@ -6,6 +6,13 @@ import bcrypt
 import time
 import io
 import unicodedata
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.graphics.shapes import Drawing, Circle, String
  
  
 from core.loader import load_trading_file
@@ -970,6 +977,267 @@ def score_ring_card(title, score, status, profile, hint=""):
     """
  
  
+
+
+# =========================================================
+# V28 PREMIUM PDF REPORT
+# =========================================================
+
+def _pdf_money(value):
+    try:
+        return f"${float(value):,.2f}"
+    except Exception:
+        return "$0.00"
+
+
+def _pdf_percent(value):
+    try:
+        return f"{float(value):.2f}%"
+    except Exception:
+        return "0.00%"
+
+
+def _pdf_clean(value):
+    if value is None:
+        return "-"
+    text = str(value)
+    replacements = {
+        "📊": "", "🧠": "", "⚠️": "", "✅": "", "📌": "", "🧬": "", "🚀": "", "💾": "", "📄": "", "⬇️": "",
+        "—": "-", "–": "-", "•": "-",
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    return text
+
+
+def _pdf_table_style(header_bg="#0F172A"):
+    return TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor(header_bg)),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTNAME", (0, 1), (-1, -1), "Helvetica"),
+        ("FONTSIZE", (0, 0), (-1, -1), 8),
+        ("GRID", (0, 0), (-1, -1), 0.35, colors.HexColor("#CBD5E1")),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F8FAFC")]),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("PADDING", (0, 0), (-1, -1), 7),
+    ])
+
+
+def _pdf_score_circle(score, label="AI Score"):
+    try:
+        score = int(float(score))
+    except Exception:
+        score = 0
+    score = max(0, min(100, score))
+    if score >= 75:
+        color = colors.HexColor("#16A34A")
+    elif score >= 50:
+        color = colors.HexColor("#D97706")
+    else:
+        color = colors.HexColor("#E11D48")
+    d = Drawing(180, 120)
+    d.add(Circle(90, 65, 46, strokeColor=color, strokeWidth=5, fillColor=colors.HexColor("#F8FAFC")))
+    d.add(String(90, 72, str(score), textAnchor="middle", fontName="Helvetica-Bold", fontSize=26, fillColor=color))
+    d.add(String(90, 52, "/100", textAnchor="middle", fontName="Helvetica", fontSize=10, fillColor=colors.HexColor("#475569")))
+    d.add(String(90, 12, label, textAnchor="middle", fontName="Helvetica-Bold", fontSize=11, fillColor=colors.HexColor("#0F172A")))
+    return d
+
+
+def build_premium_pdf_report(
+    language,
+    uploaded_file_name,
+    prop_mode,
+    account_size,
+    metrics,
+    risk_score,
+    consistency_score,
+    account_health,
+    behavior_score,
+    approval,
+    daily_remaining,
+    dd_remaining,
+    target_distance,
+    violation_score,
+    radar_scores,
+    trader_dna,
+    ai_report,
+    insights_for_pdf,
+    diagnosis_items,
+    alerts,
+    trades_df,
+):
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        rightMargin=1.35 * cm,
+        leftMargin=1.35 * cm,
+        topMargin=1.2 * cm,
+        bottomMargin=1.2 * cm,
+    )
+
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name="RPTitle", parent=styles["Title"], fontSize=26, leading=31, textColor=colors.HexColor("#0F172A"), spaceAfter=8))
+    styles.add(ParagraphStyle(name="RPSubtitle", parent=styles["BodyText"], fontSize=10, leading=14, textColor=colors.HexColor("#475569"), spaceAfter=12))
+    styles.add(ParagraphStyle(name="RPSection", parent=styles["Heading2"], fontSize=14, leading=18, textColor=colors.HexColor("#0F172A"), spaceBefore=14, spaceAfter=8))
+    styles.add(ParagraphStyle(name="RPSmall", parent=styles["BodyText"], fontSize=8, leading=11, textColor=colors.HexColor("#334155")))
+    styles.add(ParagraphStyle(name="RPBox", parent=styles["BodyText"], fontSize=9, leading=13, textColor=colors.HexColor("#0F172A"), backColor=colors.HexColor("#F8FAFC"), borderColor=colors.HexColor("#CBD5E1"), borderWidth=0.4, borderPadding=7, spaceAfter=6))
+
+    story = []
+
+    if language == "Português":
+        title = "RiskPilot Institutional Report"
+        subtitle = "Relatorio profissional de risco, consistencia, prop firm readiness e comportamento operacional."
+        executive_title = "Resumo Executivo"
+        score_label = "AI Score"
+        core_metrics_title = "Metricas Principais"
+        prop_title = "Prop Firm Readiness"
+        radar_title = "Radar Institucional"
+        dna_title = "Trader DNA"
+        coach_title = "AI Coach - Plano de Acao"
+        alerts_title = "Alertas de Risco"
+        sample_title = "Amostra de Trades"
+    elif language == "Español":
+        title = "RiskPilot Institutional Report"
+        subtitle = "Informe profesional de riesgo, consistencia, prop firm readiness y comportamiento operativo."
+        executive_title = "Resumen Ejecutivo"
+        score_label = "AI Score"
+        core_metrics_title = "Metricas Principales"
+        prop_title = "Prop Firm Readiness"
+        radar_title = "Radar Institucional"
+        dna_title = "Trader DNA"
+        coach_title = "AI Coach - Plan de Accion"
+        alerts_title = "Alertas de Riesgo"
+        sample_title = "Muestra de Trades"
+    else:
+        title = "RiskPilot Institutional Report"
+        subtitle = "Professional report for risk, consistency, prop firm readiness and trading behavior."
+        executive_title = "Executive Summary"
+        score_label = "AI Score"
+        core_metrics_title = "Core Metrics"
+        prop_title = "Prop Firm Readiness"
+        radar_title = "Institutional Radar"
+        dna_title = "Trader DNA"
+        coach_title = "AI Coach - Action Plan"
+        alerts_title = "Risk Alerts"
+        sample_title = "Trade Sample"
+
+    story.append(Paragraph("RiskPilot", styles["RPTitle"]))
+    story.append(Paragraph(subtitle, styles["RPSubtitle"]))
+
+    cover_data = [
+        ["File", _pdf_clean(uploaded_file_name)],
+        ["Prop Firm Mode", _pdf_clean(prop_mode)],
+        ["Account Size", _pdf_money(account_size)],
+        ["Report Type", "Premium Institutional PDF"],
+    ]
+    cover_table = Table(cover_data, colWidths=[4.2 * cm, 11.8 * cm])
+    cover_table.setStyle(_pdf_table_style("#0369A1"))
+    story.append(cover_table)
+    story.append(Spacer(1, 10))
+
+    score_table = Table([[_pdf_score_circle(ai_report.get("score", approval), score_label), Paragraph(_pdf_clean(ai_report.get("profile", "Institutional analysis")), styles["RPBox"])]], colWidths=[6.0 * cm, 10.0 * cm])
+    score_table.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"), ("BOX", (0, 0), (-1, -1), 0.4, colors.HexColor("#CBD5E1")), ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#F8FAFC")), ("PADDING", (0, 0), (-1, -1), 8)]))
+    story.append(score_table)
+
+    story.append(Paragraph(executive_title, styles["RPSection"]))
+    for item in (ai_report.get("executive_summary") or diagnosis_items or [])[:5]:
+        story.append(Paragraph("- " + _pdf_clean(item), styles["RPSmall"]))
+        story.append(Spacer(1, 3))
+
+    story.append(Paragraph(core_metrics_title, styles["RPSection"]))
+    perf_rows = [
+        ["Metric", "Value"],
+        ["Net P&L", _pdf_money(metrics.get("net_pnl", 0))],
+        ["Winrate", _pdf_percent(metrics.get("winrate", 0))],
+        ["Profit Factor", f"{float(metrics.get('profit_factor', 0)):.2f}"],
+        ["Max Drawdown", _pdf_money(metrics.get("max_drawdown", 0))],
+        ["Total Trades", str(metrics.get("total_trades", len(trades_df)))],
+    ]
+    perf_table = Table(perf_rows, colWidths=[8.0 * cm, 8.0 * cm])
+    perf_table.setStyle(_pdf_table_style())
+    story.append(perf_table)
+
+    story.append(Paragraph(prop_title, styles["RPSection"]))
+    prop_rows = [
+        ["Metric", "Value"],
+        ["Approval Probability", f"{approval}/100"],
+        ["Daily Loss Remaining", _pdf_money(daily_remaining)],
+        ["Drawdown Remaining", _pdf_money(dd_remaining)],
+        ["Target Distance", _pdf_money(target_distance)],
+        ["Violation Risk", f"{violation_score}/100"],
+    ]
+    prop_table = Table(prop_rows, colWidths=[8.0 * cm, 8.0 * cm])
+    prop_table.setStyle(_pdf_table_style("#1E3A8A"))
+    story.append(prop_table)
+
+    story.append(PageBreak())
+
+    story.append(Paragraph(radar_title, styles["RPSection"]))
+    radar_rows = [["Dimension", "Score"]]
+    for key, value in radar_scores.items():
+        radar_rows.append([_pdf_clean(key), f"{value}/100"])
+    radar_table = Table(radar_rows, colWidths=[8.0 * cm, 8.0 * cm])
+    radar_table.setStyle(_pdf_table_style("#0E7490"))
+    story.append(radar_table)
+
+    story.append(Paragraph(dna_title, styles["RPSection"]))
+    dna_rows = [
+        ["Dimension", "Result"],
+        ["Profile", _pdf_clean(trader_dna.get("profile", "-"))],
+        ["DNA Score", f"{trader_dna.get('dna_score', 0)}/100"],
+        ["Execution Style", _pdf_clean(trader_dna.get("execution_style", "-"))],
+        ["Risk Behavior", _pdf_clean(trader_dna.get("risk_behavior", "-"))],
+        ["Prop Firm Fit", _pdf_clean(trader_dna.get("prop_fit", "-"))],
+        ["Confidence", _pdf_clean(trader_dna.get("confidence", "-"))],
+    ]
+    dna_table = Table(dna_rows, colWidths=[6.0 * cm, 10.0 * cm])
+    dna_table.setStyle(_pdf_table_style("#312E81"))
+    story.append(dna_table)
+
+    story.append(Paragraph(coach_title, styles["RPSection"]))
+    for item in (ai_report.get("action_plan") or [])[:6]:
+        story.append(Paragraph("- " + _pdf_clean(item), styles["RPSmall"]))
+        story.append(Spacer(1, 3))
+
+    rules = ai_report.get("rules") or []
+    if rules:
+        story.append(Paragraph("Operational Rules", styles["RPSection"]))
+        for item in rules[:6]:
+            story.append(Paragraph("- " + _pdf_clean(item), styles["RPSmall"]))
+            story.append(Spacer(1, 3))
+
+    story.append(Paragraph(alerts_title, styles["RPSection"]))
+    if alerts:
+        for alert in alerts[:8]:
+            story.append(Paragraph("- " + _pdf_clean(alert), styles["RPSmall"]))
+            story.append(Spacer(1, 3))
+    else:
+        story.append(Paragraph("No critical alerts detected.", styles["RPSmall"]))
+
+    story.append(PageBreak())
+
+    story.append(Paragraph(sample_title, styles["RPSection"]))
+    sample = trades_df.copy().head(25)
+    preferred_cols = ["date", "asset", "side", "quantity", "net_pnl"]
+    cols = [col for col in preferred_cols if col in sample.columns]
+    if not cols:
+        cols = list(sample.columns[:5])
+    rows = [cols]
+    for _, row in sample.iterrows():
+        rows.append([_pdf_clean(row.get(col, "")) for col in cols])
+    trade_table = Table(rows, repeatRows=1)
+    trade_table.setStyle(_pdf_table_style("#0F172A"))
+    story.append(trade_table)
+    story.append(Spacer(1, 12))
+    story.append(Paragraph("Generated by RiskPilot - Institutional Trading Analytics", styles["RPSmall"]))
+
+    doc.build(story)
+    buffer.seek(0)
+    return buffer.getvalue()
+
+
 def insight_card(title, value, sub="", css_class="value-neutral"):
     return f"""
     <div class="insight-card">
@@ -2344,23 +2612,57 @@ def render_full_dashboard(
     ]
  
     if has_plan("Pro"):
-        pdf_bytes = build_pdf_report(
+        pdf_ai_report = build_ai_coach_report(
             language=language,
-            title=t["terminal_title"],
-            subtitle=t["terminal_subtitle"],
-            file_name=uploaded_file_name,
+            metrics=metrics,
+            daily=daily,
+            hourly=hourly,
+            risk_score=risk_score,
+            consistency_score=consistency_score,
+            behavior_score=behavior_score,
+            approval_probability=approval,
+            target_distance=target_distance,
+            daily_remaining=daily_remaining,
+            dd_remaining=dd_remaining,
+        )
+
+        pdf_trader_dna = build_trader_dna(
+            language=language,
+            metrics=metrics,
+            daily=daily,
+            hourly=hourly,
+            weekday=weekday,
+            risk_score=risk_score,
+            consistency_score=consistency_score,
+            behavior_score=behavior_score,
+            approval=approval,
+        )
+
+        pdf_bytes = build_premium_pdf_report(
+            language=language,
+            uploaded_file_name=uploaded_file_name,
             prop_mode=prop_mode,
             account_size=account_size,
             metrics=metrics,
-            scores=(risk_score, consistency_score, account_health, behavior_score),
-            prop_status=(approval, daily_remaining, dd_remaining, target_distance, violation_score),
-            insights=insights_for_pdf,
+            risk_score=risk_score,
+            consistency_score=consistency_score,
+            account_health=account_health,
+            behavior_score=behavior_score,
+            approval=approval,
+            daily_remaining=daily_remaining,
+            dd_remaining=dd_remaining,
+            target_distance=target_distance,
+            violation_score=violation_score,
+            radar_scores=radar_scores,
+            trader_dna=pdf_trader_dna,
+            ai_report=pdf_ai_report,
+            insights_for_pdf=insights_for_pdf,
             diagnosis_items=diagnosis_items,
             alerts=alerts,
             trades_df=normalized_df,
         )
- 
-        st.download_button(t["download_pdf"], pdf_bytes, f"riskpilot_report_{uploaded_file_name.replace(' ', '_')}.pdf", "application/pdf")
+
+        st.download_button(t["download_pdf"], pdf_bytes, f"riskpilot_premium_report_{uploaded_file_name.replace(' ', '_')}.pdf", "application/pdf")
     else:
         st.markdown(locked_feature_box(language, required_plan="Pro"), unsafe_allow_html=True)
  
