@@ -29,7 +29,7 @@ init_db()
  
 st.set_page_config(
     page_title="RiskPilot",
-    page_icon="📊",
+    page_icon="\U0001f4ca",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -63,7 +63,7 @@ def ui_text(language):
     texts = {
         "English": {
             "ai_coach": "AI Trading Coach",
-"analyze_ai": "🧠 Analyze with AI",
+"analyze_ai": "\U0001f9e0 Analyze with AI",
 "ai_score": "AI Score",
 "executive_summary": "Executive Summary",
 "action_plan": "Action Plan",
@@ -94,15 +94,15 @@ def ui_text(language):
             "hero_title": "Institutional trading analytics",
             "hero_subtitle": "Professional-grade trading analytics platform focused on risk, consistency, performance and prop firm approval.",
             "hero_badge": "Risk infrastructure for serious traders",
-            "start_free": "🚀 Start free",
-            "login": "🔐 Login",
-            "view_demo": "📊 View demo",
+            "start_free": "\U0001f680 Start free",
+            "login": "\U0001f510 Login",
+            "view_demo": "\U0001f4ca View demo",
             "why": "Why RiskPilot?",
-            "feature_1_title": "📉 Risk Intelligence",
+            "feature_1_title": "\U0001f4c9 Risk Intelligence",
             "feature_1_text": "Detect dangerous drawdowns, overtrading, revenge trading and losing streaks automatically.",
-            "feature_2_title": "🏆 Prop Firm Ready",
+            "feature_2_title": "\U0001f3c6 Prop Firm Ready",
             "feature_2_text": "Track daily loss, maximum drawdown, consistency and target distance.",
-            "feature_3_title": "🤖 Operational Insights",
+            "feature_3_title": "\U0001f916 Operational Insights",
             "feature_3_text": "Discover your best hours, worst patterns and operational weaknesses.",
             "choose": "Choose",
             "register": "Register",
@@ -113,7 +113,7 @@ def ui_text(language):
             "user_exists": "User already exists.",
             "account_created": "Account created successfully. You can now login.",
             "invalid_credentials": "Invalid credentials.",
-            "back_home": "← Back to homepage",
+            "back_home": "\u2190 Back to homepage",
             "professional_analytics": "Professional Trading Analytics",
             "authenticated_user": "Authenticated user",
             "current_mode": "Current mode",
@@ -194,7 +194,7 @@ def ui_text(language):
             "pnl_by_weekday": "P&L by Weekday",
             "pnl_by_asset": "P&L by Asset",
             "risk_alerts": "Risk Alerts",
-            "save_analysis": "💾 Save Analysis",
+            "save_analysis": "\U0001f4be Save Analysis",
             "analysis_saved": "Analysis saved.",
             "save_warning": "Create a free account to save your analysis history.",
             "trades": "Trades",
@@ -205,127 +205,127 @@ def ui_text(language):
             "low": "Low",
             "medium": "Medium",
             "high": "High",
-            "download_csv": "⬇️ Download normalized CSV",
-            "download_pdf": "📄 Download professional PDF report",
+            "download_csv": "\u2b07\ufe0f Download normalized CSV",
+            "download_pdf": "\U0001f4c4 Download professional PDF report",
             
         },
-        "Português": {
+        "Portugu\u00eas": {
             "ai_coach": "AI Trading Coach",
-"analyze_ai": "🧠 Analisar com IA",
+"analyze_ai": "\U0001f9e0 Analisar com IA",
 "ai_score": "AI Score",
 "executive_summary": "Resumo Executivo",
-"action_plan": "Plano de Ação",
+"action_plan": "Plano de A\u00e7\u00e3o",
 "risk_rules": "Regras de Risco",
 "behavior_warnings": "Alertas Comportamentais",
             "institutional_radar": "Radar Institucional",
             "radar_discipline": "Disciplina",
-            "radar_consistency": "Consistência",
+            "radar_consistency": "Consist\u00eancia",
             "radar_risk_control": "Controle de Risco",
-            "radar_execution": "Execução",
-            "radar_recovery": "Recuperação",
+            "radar_execution": "Execu\u00e7\u00e3o",
+            "radar_recovery": "Recupera\u00e7\u00e3o",
             "radar_prop_compatibility": "Compatibilidade Prop",
             "smart_prop_engine": "Motor Prop Firm Inteligente",
             "prop_rule_profile": "Perfil de Regras",
             "openai_ready": "OpenAI Ready",
-            "openai_ready_sub": "Preparado para integração com IA real",
+            "openai_ready_sub": "Preparado para integra\u00e7\u00e3o com IA real",
             "trader_dna": "Motor Trader DNA",
             "dna_score": "DNA Score",
             "trader_profile": "Perfil do Trader",
-            "execution_style": "Estilo de Execução",
+            "execution_style": "Estilo de Execu\u00e7\u00e3o",
             "risk_behavior": "Comportamento de Risco",
             "prop_firm_fit": "Compatibilidade Prop Firm",
-            "profile_confidence": "Confiança do Perfil",
+            "profile_confidence": "Confian\u00e7a do Perfil",
             "profile_summary": "Resumo do Perfil",
             "strengths": "Pontos Fortes",
             "improvement_points": "Pontos de Melhoria",
             "language": "Idioma",
             "hero_title": "Analytics institucional para traders",
-            "hero_subtitle": "Plataforma profissional de análise operacional focada em risco, consistência, performance e aprovação em prop firms.",
-            "hero_badge": "Infraestrutura de risco para traders sérios",
-            "start_free": "🚀 Criar conta grátis",
-            "login": "🔐 Entrar",
-            "view_demo": "📊 Ver demo",
+            "hero_subtitle": "Plataforma profissional de an\u00e1lise operacional focada em risco, consist\u00eancia, performance e aprova\u00e7\u00e3o em prop firms.",
+            "hero_badge": "Infraestrutura de risco para traders s\u00e9rios",
+            "start_free": "\U0001f680 Criar conta gr\u00e1tis",
+            "login": "\U0001f510 Entrar",
+            "view_demo": "\U0001f4ca Ver demo",
             "why": "Por que RiskPilot?",
-            "feature_1_title": "📉 Inteligência de Risco",
-            "feature_1_text": "Detecte drawdowns perigosos, overtrading, revenge trading e sequências ruins automaticamente.",
-            "feature_2_title": "🏆 Pronto para Prop Firms",
-            "feature_2_text": "Acompanhe perda diária, drawdown máximo, consistência e distância até a meta.",
-            "feature_3_title": "🤖 Insights Operacionais",
-            "feature_3_text": "Descubra seus melhores horários, piores padrões e fraquezas operacionais.",
+            "feature_1_title": "\U0001f4c9 Intelig\u00eancia de Risco",
+            "feature_1_text": "Detecte drawdowns perigosos, overtrading, revenge trading e sequ\u00eancias ruins automaticamente.",
+            "feature_2_title": "\U0001f3c6 Pronto para Prop Firms",
+            "feature_2_text": "Acompanhe perda di\u00e1ria, drawdown m\u00e1ximo, consist\u00eancia e dist\u00e2ncia at\u00e9 a meta.",
+            "feature_3_title": "\U0001f916 Insights Operacionais",
+            "feature_3_text": "Descubra seus melhores hor\u00e1rios, piores padr\u00f5es e fraquezas operacionais.",
             "choose": "Escolha",
             "register": "Cadastrar",
             "name": "Nome",
             "email": "E-mail",
             "password": "Senha",
             "create_account": "Criar conta",
-            "user_exists": "Usuário já existe.",
-            "account_created": "Conta criada com sucesso. Agora você já pode entrar.",
-            "invalid_credentials": "Credenciais inválidas.",
-            "back_home": "← Voltar para a página inicial",
+            "user_exists": "Usu\u00e1rio j\u00e1 existe.",
+            "account_created": "Conta criada com sucesso. Agora voc\u00ea j\u00e1 pode entrar.",
+            "invalid_credentials": "Credenciais inv\u00e1lidas.",
+            "back_home": "\u2190 Voltar para a p\u00e1gina inicial",
             "professional_analytics": "Analytics Profissional de Trading",
-            "authenticated_user": "Usuário autenticado",
+            "authenticated_user": "Usu\u00e1rio autenticado",
             "current_mode": "Modo atual",
             "demo_mode": "Modo Demo",
-            "create_free_account": "Criar conta grátis",
+            "create_free_account": "Criar conta gr\u00e1tis",
             "initial_capital": "Capital Inicial",
             "prop_firm_mode": "Modo Prop Firm",
             "account_size": "Tamanho da Conta",
-            "daily_loss_limit": "Limite de Perda Diária",
-            "max_drawdown_limit": "Limite Máximo de Drawdown",
+            "daily_loss_limit": "Limite de Perda Di\u00e1ria",
+            "max_drawdown_limit": "Limite M\u00e1ximo de Drawdown",
             "profit_target": "Meta de Lucro",
-            "navigation": "Navegação",
+            "navigation": "Navega\u00e7\u00e3o",
             "dashboard": "Dashboard",
-            "history": "Histórico",
+            "history": "Hist\u00f3rico",
             "logout": "Sair",
             "account_status": "Status da Conta",
             "active": "Ativa",
             "risk_mode": "Modo de Risco",
             "analytics": "Analytics",
             "enabled": "Ativado",
-            "sidebar_note": "O RiskPilot monitora performance, drawdown, comportamento e consistência operacional.",
-            "history_title": "Histórico de Uploads",
-            "history_account_required": "O histórico fica disponível após criar uma conta grátis.",
-            "no_uploads": "Ainda não há uploads salvos.",
+            "sidebar_note": "O RiskPilot monitora performance, drawdown, comportamento e consist\u00eancia operacional.",
+            "history_title": "Hist\u00f3rico de Uploads",
+            "history_account_required": "O hist\u00f3rico fica dispon\u00edvel ap\u00f3s criar uma conta gr\u00e1tis.",
+            "no_uploads": "Ainda n\u00e3o h\u00e1 uploads salvos.",
             "select_upload": "Selecione um upload para visualizar",
-            "loaded_from_history": "Carregado do histórico. Esta análise está em modo somente leitura.",
+            "loaded_from_history": "Carregado do hist\u00f3rico. Esta an\u00e1lise est\u00e1 em modo somente leitura.",
             "terminal_title": "Terminal RiskPilot",
-            "terminal_subtitle": "Inteligência institucional de risco e performance para traders.",
-            "live_engine": "MOTOR DE ANÁLISE ATIVO",
-            "demo_info": "Modo demo: dados de exemplo carregados. Crie uma conta grátis para enviar e salvar seus próprios relatórios.",
-            "upload_report": "Upload do relatório de trades",
-            "upload_to_begin": "Envie um arquivo CSV, XLSX, TXT ou HTML para começar.",
+            "terminal_subtitle": "Intelig\u00eancia institucional de risco e performance para traders.",
+            "live_engine": "MOTOR DE AN\u00c1LISE ATIVO",
+            "demo_info": "Modo demo: dados de exemplo carregados. Crie uma conta gr\u00e1tis para enviar e salvar seus pr\u00f3prios relat\u00f3rios.",
+            "upload_report": "Upload do relat\u00f3rio de trades",
+            "upload_to_begin": "Envie um arquivo CSV, XLSX, TXT ou HTML para come\u00e7ar.",
             "file_error": "Erro ao ler o arquivo",
             "performance": "Resumo de Performance",
-            "net_pnl": "Resultado Líquido",
-            "total_net_result": "Resultado líquido total",
+            "net_pnl": "Resultado L\u00edquido",
+            "total_net_result": "Resultado l\u00edquido total",
             "winrate": "Taxa de Acerto",
             "winning_trades": "Trades vencedores",
             "profit_factor": "Fator de Lucro",
             "gross_ratio": "Lucro bruto / perda bruta",
-            "max_drawdown": "Drawdown Máximo",
+            "max_drawdown": "Drawdown M\u00e1ximo",
             "largest_decline": "Maior queda da curva",
             "risk_score": "Score de Risco",
             "risk_score_sub": "Qualidade do risco operacional",
-            "consistency_score": "Score de Consistência",
+            "consistency_score": "Score de Consist\u00eancia",
             "consistency_score_sub": "Estabilidade dia a dia",
-            "account_health": "Saúde da Conta",
-            "account_health_sub": "Prontidão para prop firm",
+            "account_health": "Sa\u00fade da Conta",
+            "account_health_sub": "Prontid\u00e3o para prop firm",
             "behavior_score": "Score Comportamental",
             "behavior_score_sub": "Proxy de tilt e disciplina",
             "prop_firm_panel": "Painel de Controle Prop Firm",
-            "approval_probability": "Probabilidade de Aprovação",
-            "approval_probability_sub": "Estimativa de aprovação",
-            "daily_remaining": "Perda Diária Restante",
-            "daily_remaining_sub": "Margem antes da violação diária",
+            "approval_probability": "Probabilidade de Aprova\u00e7\u00e3o",
+            "approval_probability_sub": "Estimativa de aprova\u00e7\u00e3o",
+            "daily_remaining": "Perda Di\u00e1ria Restante",
+            "daily_remaining_sub": "Margem antes da viola\u00e7\u00e3o di\u00e1ria",
             "drawdown_remaining": "Drawdown Restante",
-            "drawdown_remaining_sub": "Margem antes da violação da conta",
-            "target_distance": "Distância da Meta",
+            "drawdown_remaining_sub": "Margem antes da viola\u00e7\u00e3o da conta",
+            "target_distance": "Dist\u00e2ncia da Meta",
             "target_distance_sub": "Faltante para a meta de lucro",
-            "violation_risk": "Risco de Violação",
-            "violation_risk_sub": "Risco de reprovação operacional",
-            "automatic_insights": "Insights Automáticos",
-            "best_hour": "Melhor Horário",
-            "worst_hour": "Pior Horário",
+            "violation_risk": "Risco de Viola\u00e7\u00e3o",
+            "violation_risk_sub": "Risco de reprova\u00e7\u00e3o operacional",
+            "automatic_insights": "Insights Autom\u00e1ticos",
+            "best_hour": "Melhor Hor\u00e1rio",
+            "worst_hour": "Pior Hor\u00e1rio",
             "best_day": "Melhor Dia",
             "worst_day": "Pior Dia",
             "best_weekday": "Melhor Dia da Semana",
@@ -334,51 +334,51 @@ def ui_text(language):
             "negative_days": "Dias Negativos",
             "days_above_zero": "Dias acima de zero",
             "days_below_zero": "Dias abaixo de zero",
-            "ai_diagnosis": "Diagnóstico Operacional",
+            "ai_diagnosis": "Diagn\u00f3stico Operacional",
             "equity_curve": "Curva de Capital",
             "drawdown": "Drawdown",
             "daily_pnl": "Resultado por Dia",
-            "pnl_by_hour": "Resultado por Horário",
+            "pnl_by_hour": "Resultado por Hor\u00e1rio",
             "pnl_by_weekday": "Resultado por Dia da Semana",
             "pnl_by_asset": "Resultado por Ativo",
             "risk_alerts": "Alertas de Risco",
-            "save_analysis": "💾 Salvar Análise",
-            "analysis_saved": "Análise salva.",
-            "save_warning": "Crie uma conta grátis para salvar seu histórico de análises.",
+            "save_analysis": "\U0001f4be Salvar An\u00e1lise",
+            "analysis_saved": "An\u00e1lise salva.",
+            "save_warning": "Crie uma conta gr\u00e1tis para salvar seu hist\u00f3rico de an\u00e1lises.",
             "trades": "Trades",
             "excellent": "Excelente",
-            "healthy": "Saudável",
-            "attention": "Atenção",
-            "critical": "Crítico",
+            "healthy": "Saud\u00e1vel",
+            "attention": "Aten\u00e7\u00e3o",
+            "critical": "Cr\u00edtico",
             "low": "Baixo",
-            "medium": "Médio",
+            "medium": "M\u00e9dio",
             "high": "Alto",
-            "download_csv": "⬇️ Baixar CSV normalizado",
-            "download_pdf": "📄 Baixar relatório profissional em PDF",
+            "download_csv": "\u2b07\ufe0f Baixar CSV normalizado",
+            "download_pdf": "\U0001f4c4 Baixar relat\u00f3rio profissional em PDF",
         },
-        "Español": {
+        "Espa\u00f1ol": {
             "ai_coach": "AI Trading Coach",
-"analyze_ai": "🧠 Analizar con IA",
+"analyze_ai": "\U0001f9e0 Analizar con IA",
 "ai_score": "AI Score",
 "executive_summary": "Resumen Ejecutivo",
-"action_plan": "Plan de Acción",
+"action_plan": "Plan de Acci\u00f3n",
 "risk_rules": "Reglas de Riesgo",
 "behavior_warnings": "Alertas Conductuales",
             "institutional_radar": "Radar Institucional",
             "radar_discipline": "Disciplina",
             "radar_consistency": "Consistencia",
             "radar_risk_control": "Control de Riesgo",
-            "radar_execution": "Ejecución",
-            "radar_recovery": "Recuperación",
+            "radar_execution": "Ejecuci\u00f3n",
+            "radar_recovery": "Recuperaci\u00f3n",
             "radar_prop_compatibility": "Compatibilidad Prop",
             "smart_prop_engine": "Motor Prop Firm Inteligente",
             "prop_rule_profile": "Perfil de Reglas",
             "openai_ready": "OpenAI Ready",
-            "openai_ready_sub": "Preparado para integración con IA real",
+            "openai_ready_sub": "Preparado para integraci\u00f3n con IA real",
             "trader_dna": "Motor Trader DNA",
             "dna_score": "DNA Score",
             "trader_profile": "Perfil del Trader",
-            "execution_style": "Estilo de Ejecución",
+            "execution_style": "Estilo de Ejecuci\u00f3n",
             "risk_behavior": "Comportamiento de Riesgo",
             "prop_firm_fit": "Compatibilidad Prop Firm",
             "profile_confidence": "Confianza del Perfil",
@@ -387,28 +387,28 @@ def ui_text(language):
             "improvement_points": "Puntos de Mejora",
             "language": "Idioma",
             "hero_title": "Analytics institucional para traders",
-            "hero_subtitle": "Plataforma profesional de análisis operativo enfocada en riesgo, consistencia, rendimiento y aprobación en prop firms.",
+            "hero_subtitle": "Plataforma profesional de an\u00e1lisis operativo enfocada en riesgo, consistencia, rendimiento y aprobaci\u00f3n en prop firms.",
             "hero_badge": "Infraestructura de riesgo para traders serios",
-            "start_free": "🚀 Crear cuenta gratis",
-            "login": "🔐 Entrar",
-            "view_demo": "📊 Ver demo",
-            "why": "¿Por qué RiskPilot?",
-            "feature_1_title": "📉 Inteligencia de Riesgo",
-            "feature_1_text": "Detecta drawdowns peligrosos, overtrading, revenge trading y secuencias negativas automáticamente.",
-            "feature_2_title": "🏆 Listo para Prop Firms",
-            "feature_2_text": "Monitorea pérdida diaria, drawdown máximo, consistencia y distancia a la meta.",
-            "feature_3_title": "🤖 Insights Operativos",
+            "start_free": "\U0001f680 Crear cuenta gratis",
+            "login": "\U0001f510 Entrar",
+            "view_demo": "\U0001f4ca Ver demo",
+            "why": "\u00bfPor qu\u00e9 RiskPilot?",
+            "feature_1_title": "\U0001f4c9 Inteligencia de Riesgo",
+            "feature_1_text": "Detecta drawdowns peligrosos, overtrading, revenge trading y secuencias negativas autom\u00e1ticamente.",
+            "feature_2_title": "\U0001f3c6 Listo para Prop Firms",
+            "feature_2_text": "Monitorea p\u00e9rdida diaria, drawdown m\u00e1ximo, consistencia y distancia a la meta.",
+            "feature_3_title": "\U0001f916 Insights Operativos",
             "feature_3_text": "Descubre tus mejores horarios, peores patrones y debilidades operativas.",
             "choose": "Elige",
             "register": "Registrar",
             "name": "Nombre",
             "email": "Email",
-            "password": "Contraseña",
+            "password": "Contrase\u00f1a",
             "create_account": "Crear cuenta",
             "user_exists": "El usuario ya existe.",
-            "account_created": "Cuenta creada con éxito. Ahora puedes entrar.",
-            "invalid_credentials": "Credenciales inválidas.",
-            "back_home": "← Volver al inicio",
+            "account_created": "Cuenta creada con \u00e9xito. Ahora puedes entrar.",
+            "invalid_credentials": "Credenciales inv\u00e1lidas.",
+            "back_home": "\u2190 Volver al inicio",
             "professional_analytics": "Analytics Profesional de Trading",
             "authenticated_user": "Usuario autenticado",
             "current_mode": "Modo actual",
@@ -416,11 +416,11 @@ def ui_text(language):
             "create_free_account": "Crear cuenta gratis",
             "initial_capital": "Capital Inicial",
             "prop_firm_mode": "Modo Prop Firm",
-            "account_size": "Tamaño de la Cuenta",
-            "daily_loss_limit": "Límite de Pérdida Diaria",
-            "max_drawdown_limit": "Límite Máximo de Drawdown",
+            "account_size": "Tama\u00f1o de la Cuenta",
+            "daily_loss_limit": "L\u00edmite de P\u00e9rdida Diaria",
+            "max_drawdown_limit": "L\u00edmite M\u00e1ximo de Drawdown",
             "profit_target": "Meta de Lucro",
-            "navigation": "Navegación",
+            "navigation": "Navegaci\u00f3n",
             "dashboard": "Dashboard",
             "history": "Historial",
             "logout": "Salir",
@@ -431,13 +431,13 @@ def ui_text(language):
             "enabled": "Activado",
             "sidebar_note": "RiskPilot monitorea rendimiento, drawdown, comportamiento y consistencia operativa.",
             "history_title": "Historial de Uploads",
-            "history_account_required": "El historial está disponible después de crear una cuenta gratis.",
-            "no_uploads": "Aún no hay uploads guardados.",
+            "history_account_required": "El historial est\u00e1 disponible despu\u00e9s de crear una cuenta gratis.",
+            "no_uploads": "A\u00fan no hay uploads guardados.",
             "select_upload": "Selecciona un upload para visualizar",
-            "loaded_from_history": "Cargado desde historial. Este análisis está en modo solo lectura.",
+            "loaded_from_history": "Cargado desde historial. Este an\u00e1lisis est\u00e1 en modo solo lectura.",
             "terminal_title": "Terminal RiskPilot",
             "terminal_subtitle": "Inteligencia institucional de riesgo y rendimiento para traders.",
-            "live_engine": "MOTOR DE ANÁLISIS ACTIVO",
+            "live_engine": "MOTOR DE AN\u00c1LISIS ACTIVO",
             "demo_info": "Modo demo: datos de ejemplo cargados. Crea una cuenta gratis para subir y guardar tus propios reportes.",
             "upload_report": "Subir reporte de trading",
             "upload_to_begin": "Sube un archivo CSV, XLSX, TXT o HTML para comenzar.",
@@ -448,60 +448,60 @@ def ui_text(language):
             "winrate": "Tasa de Acierto",
             "winning_trades": "Trades ganadores",
             "profit_factor": "Factor de Lucro",
-            "gross_ratio": "Lucro bruto / pérdida bruta",
-            "max_drawdown": "Drawdown Máximo",
-            "largest_decline": "Mayor caída de la curva",
+            "gross_ratio": "Lucro bruto / p\u00e9rdida bruta",
+            "max_drawdown": "Drawdown M\u00e1ximo",
+            "largest_decline": "Mayor ca\u00edda de la curva",
             "risk_score": "Score de Riesgo",
             "risk_score_sub": "Calidad del riesgo operativo",
             "consistency_score": "Score de Consistencia",
-            "consistency_score_sub": "Estabilidad día a día",
+            "consistency_score_sub": "Estabilidad d\u00eda a d\u00eda",
             "account_health": "Salud de la Cuenta",
-            "account_health_sub": "Preparación para prop firm",
+            "account_health_sub": "Preparaci\u00f3n para prop firm",
             "behavior_score": "Score Conductual",
             "behavior_score_sub": "Proxy de tilt y disciplina",
             "prop_firm_panel": "Panel de Control Prop Firm",
-            "approval_probability": "Probabilidad de Aprobación",
-            "approval_probability_sub": "Estimación de aprobación",
-            "daily_remaining": "Pérdida Diaria Restante",
-            "daily_remaining_sub": "Margen antes de violación diaria",
+            "approval_probability": "Probabilidad de Aprobaci\u00f3n",
+            "approval_probability_sub": "Estimaci\u00f3n de aprobaci\u00f3n",
+            "daily_remaining": "P\u00e9rdida Diaria Restante",
+            "daily_remaining_sub": "Margen antes de violaci\u00f3n diaria",
             "drawdown_remaining": "Drawdown Restante",
-            "drawdown_remaining_sub": "Margen antes de violación de cuenta",
+            "drawdown_remaining_sub": "Margen antes de violaci\u00f3n de cuenta",
             "target_distance": "Distancia a la Meta",
             "target_distance_sub": "Faltante para la meta de lucro",
-            "violation_risk": "Riesgo de Violación",
-            "violation_risk_sub": "Riesgo de reprobación operativa",
-            "automatic_insights": "Insights Automáticos",
+            "violation_risk": "Riesgo de Violaci\u00f3n",
+            "violation_risk_sub": "Riesgo de reprobaci\u00f3n operativa",
+            "automatic_insights": "Insights Autom\u00e1ticos",
             "best_hour": "Mejor Horario",
             "worst_hour": "Peor Horario",
-            "best_day": "Mejor Día",
-            "worst_day": "Peor Día",
-            "best_weekday": "Mejor Día de la Semana",
-            "worst_weekday": "Peor Día de la Semana",
-            "positive_days": "Días Positivos",
-            "negative_days": "Días Negativos",
-            "days_above_zero": "Días sobre cero",
-            "days_below_zero": "Días bajo cero",
-            "ai_diagnosis": "Diagnóstico Operativo",
+            "best_day": "Mejor D\u00eda",
+            "worst_day": "Peor D\u00eda",
+            "best_weekday": "Mejor D\u00eda de la Semana",
+            "worst_weekday": "Peor D\u00eda de la Semana",
+            "positive_days": "D\u00edas Positivos",
+            "negative_days": "D\u00edas Negativos",
+            "days_above_zero": "D\u00edas sobre cero",
+            "days_below_zero": "D\u00edas bajo cero",
+            "ai_diagnosis": "Diagn\u00f3stico Operativo",
             "equity_curve": "Curva de Capital",
             "drawdown": "Drawdown",
             "daily_pnl": "Resultado Diario",
             "pnl_by_hour": "Resultado por Horario",
-            "pnl_by_weekday": "Resultado por Día de la Semana",
+            "pnl_by_weekday": "Resultado por D\u00eda de la Semana",
             "pnl_by_asset": "Resultado por Activo",
             "risk_alerts": "Alertas de Riesgo",
-            "save_analysis": "💾 Guardar Análisis",
-            "analysis_saved": "Análisis guardado.",
-            "save_warning": "Crea una cuenta gratis para guardar tu historial de análisis.",
+            "save_analysis": "\U0001f4be Guardar An\u00e1lisis",
+            "analysis_saved": "An\u00e1lisis guardado.",
+            "save_warning": "Crea una cuenta gratis para guardar tu historial de an\u00e1lisis.",
             "trades": "Trades",
             "excellent": "Excelente",
             "healthy": "Saludable",
-            "attention": "Atención",
-            "critical": "Crítico",
+            "attention": "Atenci\u00f3n",
+            "critical": "Cr\u00edtico",
             "low": "Bajo",
             "medium": "Medio",
             "high": "Alto",
-            "download_csv": "⬇️ Descargar CSV normalizado",
-            "download_pdf": "📄 Descargar informe profesional en PDF",
+            "download_csv": "\u2b07\ufe0f Descargar CSV normalizado",
+            "download_pdf": "\U0001f4c4 Descargar informe profesional en PDF",
         },
     }
     return texts.get(language, texts["English"])
@@ -510,8 +510,8 @@ def ui_text(language):
 def language_options():
     return {
         "English - EN": "English",
-        "Spanish - ES": "Español",
-        "Portuguese - BR": "Português",
+        "Spanish - ES": "Espa\u00f1ol",
+        "Portuguese - BR": "Portugu\u00eas",
     }
  
  
@@ -525,33 +525,33 @@ def language_flag_pill(language):
  
  
 def upload_platform_label(language):
-    if language == "Português":
-        return "Plataforma / formato do relatório"
-    if language == "Español":
+    if language == "Portugu\u00eas":
+        return "Plataforma / formato do relat\u00f3rio"
+    if language == "Espa\u00f1ol":
         return "Plataforma / formato del reporte"
     return "Platform / report format"
  
  
 def platform_options(language):
-    if language == "Português":
+    if language == "Portugu\u00eas":
         return {
-            "Automático": "auto",
+            "Autom\u00e1tico": "auto",
             "MetaTrader 5": "mt5",
             "MetaTrader 4": "mt4",
             "ProfitChart / Nelogica": "profitchart",
             "TradingView": "tradingview",
-            "CSV Genérico": "generic_csv",
-            "Excel Genérico": "generic_excel",
+            "CSV Gen\u00e9rico": "generic_csv",
+            "Excel Gen\u00e9rico": "generic_excel",
         }
-    if language == "Español":
+    if language == "Espa\u00f1ol":
         return {
-            "Automático": "auto",
+            "Autom\u00e1tico": "auto",
             "MetaTrader 5": "mt5",
             "MetaTrader 4": "mt4",
             "ProfitChart / Nelogica": "profitchart",
             "TradingView": "tradingview",
-            "CSV Genérico": "generic_csv",
-            "Excel Genérico": "generic_excel",
+            "CSV Gen\u00e9rico": "generic_csv",
+            "Excel Gen\u00e9rico": "generic_excel",
         }
     return {
         "Automatic": "auto",
@@ -565,10 +565,10 @@ def platform_options(language):
  
  
 def platform_help_text(language):
-    if language == "Português":
+    if language == "Portugu\u00eas":
         return "Aceita CSV, XLSX, TXT e HTML. O RiskPilot tenta identificar automaticamente colunas de data, ativo, lado, quantidade e resultado."
-    if language == "Español":
-        return "Acepta CSV, XLSX, TXT y HTML. RiskPilot intenta identificar automáticamente columnas de fecha, activo, lado, cantidad y resultado."
+    if language == "Espa\u00f1ol":
+        return "Acepta CSV, XLSX, TXT y HTML. RiskPilot intenta identificar autom\u00e1ticamente columnas de fecha, activo, lado, cantidad y resultado."
     return "Supports CSV, XLSX, TXT and HTML. RiskPilot tries to identify date, symbol, side, quantity and result columns automatically."
  
  
@@ -579,31 +579,31 @@ def platform_help_text(language):
 # =========================================================
  
 def plan_text(language):
-    if language == "Português":
+    if language == "Portugu\u00eas":
         return {
             "current_plan": "Plano atual",
             "free": "Free",
             "pro": "Pro",
             "premium": "Premium",
             "upgrade_title": "Recurso bloqueado",
-            "upgrade_pro": "Este recurso está disponível a partir do plano Pro.",
-            "upgrade_premium": "Este recurso está disponível no plano Premium.",
+            "upgrade_pro": "Este recurso est\u00e1 dispon\u00edvel a partir do plano Pro.",
+            "upgrade_premium": "Este recurso est\u00e1 dispon\u00edvel no plano Premium.",
             "upgrade_cta": "Atualizar plano",
-            "free_limit": "Plano Free: limite de 1 upload por sessão nesta versão de testes.",
-            "pricing_note": "Checkout ainda não integrado. Esta tela já prepara a estrutura para Stripe ou Mercado Pago.",
+            "free_limit": "Plano Free: limite de 1 upload por sess\u00e3o nesta vers\u00e3o de testes.",
+            "pricing_note": "Checkout ainda n\u00e3o integrado. Esta tela j\u00e1 prepara a estrutura para Stripe ou Mercado Pago.",
         }
-    if language == "Español":
+    if language == "Espa\u00f1ol":
         return {
             "current_plan": "Plan actual",
             "free": "Free",
             "pro": "Pro",
             "premium": "Premium",
             "upgrade_title": "Recurso bloqueado",
-            "upgrade_pro": "Este recurso está disponible desde el plan Pro.",
-            "upgrade_premium": "Este recurso está disponible en el plan Premium.",
+            "upgrade_pro": "Este recurso est\u00e1 disponible desde el plan Pro.",
+            "upgrade_premium": "Este recurso est\u00e1 disponible en el plan Premium.",
             "upgrade_cta": "Actualizar plan",
-            "free_limit": "Plan Free: límite de 1 upload por sesión en esta versión de prueba.",
-            "pricing_note": "Checkout aún no integrado. Esta pantalla ya prepara la estructura para Stripe o Mercado Pago.",
+            "free_limit": "Plan Free: l\u00edmite de 1 upload por sesi\u00f3n en esta versi\u00f3n de prueba.",
+            "pricing_note": "Checkout a\u00fan no integrado. Esta pantalla ya prepara la estructura para Stripe o Mercado Pago.",
         }
     return {
         "current_plan": "Current plan",
@@ -639,7 +639,7 @@ def locked_feature_box(language, required_plan="Premium"):
     message = txt["upgrade_premium"] if required_plan == "Premium" else txt["upgrade_pro"]
     return (
         f'<div class="diagnosis-box">'
-        f'<div class="diagnosis-title">🔒 {txt["upgrade_title"]}</div>'
+        f'<div class="diagnosis-title">\U0001f512 {txt["upgrade_title"]}</div>'
         f'<div class="diagnosis-text">{message}</div>'
         f'<div style="margin-top:14px;display:inline-block;background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:10px 14px;border-radius:12px;color:white;font-weight:900;">{txt["upgrade_cta"]}</div>'
         f'</div>'
@@ -665,44 +665,44 @@ def enforce_free_upload_limit(language, uploaded_file_name):
     return True
  
 def get_pricing_copy(language):
-    if language == "Português":
+    if language == "Portugu\u00eas":
         return {
             "title": "Planos para cada fase do trader",
-            "subtitle": "Comece grátis, evolua com analytics profissional e desbloqueie inteligência comportamental premium.",
+            "subtitle": "Comece gr\u00e1tis, evolua com analytics profissional e desbloqueie intelig\u00eancia comportamental premium.",
             "badge": "SaaS Trading Analytics",
             "free": "Free",
             "pro": "Pro",
             "premium": "Premium",
             "free_price": "R$ 0",
-            "pro_price": "R$ 149,90/mês",
-            "premium_price": "R$ 249,90/mês",
-            "free_desc": "Para testar a plataforma e validar os primeiros relatórios.",
-            "pro_desc": "Para traders que querem acompanhar performance, risco e evolução.",
-            "premium_desc": "Para traders sérios que querem AI Coach, DNA e radar institucional.",
+            "pro_price": "R$ 149,90/m\u00eas",
+            "premium_price": "R$ 249,90/m\u00eas",
+            "free_desc": "Para testar a plataforma e validar os primeiros relat\u00f3rios.",
+            "pro_desc": "Para traders que querem acompanhar performance, risco e evolu\u00e7\u00e3o.",
+            "premium_desc": "Para traders s\u00e9rios que querem AI Coach, DNA e radar institucional.",
             "popular": "Mais recomendado",
-            "cta_free": "Começar grátis",
+            "cta_free": "Come\u00e7ar gr\u00e1tis",
             "cta_pro": "Plano profissional",
             "cta_premium": "Desbloquear Premium",
-            "comparison_title": "Comparação de recursos",
+            "comparison_title": "Compara\u00e7\u00e3o de recursos",
             "faq_title": "Perguntas frequentes",
             "faq_1_q": "O RiskPilot opera por mim?",
-            "faq_1_a": "Não. O RiskPilot analisa seus relatórios, performance, risco e comportamento operacional.",
+            "faq_1_a": "N\u00e3o. O RiskPilot analisa seus relat\u00f3rios, performance, risco e comportamento operacional.",
             "faq_2_q": "Funciona para prop firm?",
-            "faq_2_a": "Sim. O sistema calcula limites, drawdown, aprovação estimada e risco de violação.",
-            "faq_3_q": "A IA já é real?",
-            "faq_3_a": "A estrutura está pronta para OpenAI real. A versão atual usa regras inteligentes e análise comportamental baseada em métricas.",
+            "faq_2_a": "Sim. O sistema calcula limites, drawdown, aprova\u00e7\u00e3o estimada e risco de viola\u00e7\u00e3o.",
+            "faq_3_q": "A IA j\u00e1 \u00e9 real?",
+            "faq_3_a": "A estrutura est\u00e1 pronta para OpenAI real. A vers\u00e3o atual usa regras inteligentes e an\u00e1lise comportamental baseada em m\u00e9tricas.",
             "features": {
                 "Uploads": ["1 por dia", "Ilimitado", "Ilimitado"],
-                "Dashboard": ["Básico", "Completo", "Institucional"],
-                "Histórico": ["Limitado", "Completo", "Completo"],
-                "PDF": ["Não", "Sim", "Sim Premium"],
-                "AI Coach": ["Não", "Limitado", "Completo"],
-                "Trader DNA": ["Não", "Sim", "Avançado"],
-                "Radar Institucional": ["Não", "Sim", "Completo"],
-                "Prop Firm Engine": ["Básico", "Completo", "Completo"],
+                "Dashboard": ["B\u00e1sico", "Completo", "Institucional"],
+                "Hist\u00f3rico": ["Limitado", "Completo", "Completo"],
+                "PDF": ["N\u00e3o", "Sim", "Sim Premium"],
+                "AI Coach": ["N\u00e3o", "Limitado", "Completo"],
+                "Trader DNA": ["N\u00e3o", "Sim", "Avan\u00e7ado"],
+                "Radar Institucional": ["N\u00e3o", "Sim", "Completo"],
+                "Prop Firm Engine": ["B\u00e1sico", "Completo", "Completo"],
             },
         }
-    if language == "Español":
+    if language == "Espa\u00f1ol":
         return {
             "title": "Planes para cada etapa del trader",
             "subtitle": "Empieza gratis, evoluciona con analytics profesional y desbloquea inteligencia conductual premium.",
@@ -711,32 +711,32 @@ def get_pricing_copy(language):
             "pro": "Pro",
             "premium": "Premium",
             "free_price": "$0",
-            "pro_price": "€29,90/mês",
-            "premium_price": "€49,90/mês",
+            "pro_price": "\u20ac29,90/m\u00eas",
+            "premium_price": "\u20ac49,90/m\u00eas",
             "free_desc": "Para probar la plataforma y validar los primeros reportes.",
-            "pro_desc": "Para traders que quieren seguir rendimiento, riesgo y evolución.",
+            "pro_desc": "Para traders que quieren seguir rendimiento, riesgo y evoluci\u00f3n.",
             "premium_desc": "Para traders serios que quieren AI Coach, DNA y radar institucional.",
-            "popular": "Más recomendado",
+            "popular": "M\u00e1s recomendado",
             "cta_free": "Empezar gratis",
             "cta_pro": "Plan profesional",
             "cta_premium": "Desbloquear Premium",
-            "comparison_title": "Comparación de recursos",
+            "comparison_title": "Comparaci\u00f3n de recursos",
             "faq_title": "Preguntas frecuentes",
-            "faq_1_q": "¿RiskPilot opera por mí?",
+            "faq_1_q": "\u00bfRiskPilot opera por m\u00ed?",
             "faq_1_a": "No. RiskPilot analiza tus reportes, rendimiento, riesgo y comportamiento operativo.",
-            "faq_2_q": "¿Funciona para prop firms?",
-            "faq_2_a": "Sí. El sistema calcula límites, drawdown, aprobación estimada y riesgo de violación.",
-            "faq_3_q": "¿La IA ya es real?",
-            "faq_3_a": "La estructura está lista para OpenAI real. La versión actual usa reglas inteligentes y análisis basado en métricas.",
+            "faq_2_q": "\u00bfFunciona para prop firms?",
+            "faq_2_a": "S\u00ed. El sistema calcula l\u00edmites, drawdown, aprobaci\u00f3n estimada y riesgo de violaci\u00f3n.",
+            "faq_3_q": "\u00bfLa IA ya es real?",
+            "faq_3_a": "La estructura est\u00e1 lista para OpenAI real. La versi\u00f3n actual usa reglas inteligentes y an\u00e1lisis basado en m\u00e9tricas.",
             "features": {
-                "Uploads": ["1 por día", "Ilimitado", "Ilimitado"],
-                "Dashboard": ["Básico", "Completo", "Institucional"],
+                "Uploads": ["1 por d\u00eda", "Ilimitado", "Ilimitado"],
+                "Dashboard": ["B\u00e1sico", "Completo", "Institucional"],
                 "Historial": ["Limitado", "Completo", "Completo"],
-                "PDF": ["No", "Sí", "Sí Premium"],
+                "PDF": ["No", "S\u00ed", "S\u00ed Premium"],
                 "AI Coach": ["No", "Limitado", "Completo"],
-                "Trader DNA": ["No", "Sí", "Avanzado"],
-                "Radar Institucional": ["No", "Sí", "Completo"],
-                "Prop Firm Engine": ["Básico", "Completo", "Completo"],
+                "Trader DNA": ["No", "S\u00ed", "Avanzado"],
+                "Radar Institucional": ["No", "S\u00ed", "Completo"],
+                "Prop Firm Engine": ["B\u00e1sico", "Completo", "Completo"],
             },
         }
     return {
@@ -1150,16 +1150,16 @@ def make_radar_chart(radar_scores, t):
 def prop_firm_behavior(prop_mode):
     """Controls how strict each prop firm profile is in the scoring layer."""
     behaviors = {
-        "FTMO": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Balanced challenge / strict daily loss", "badge": "🏦"},
-        "Apex": {"strictness": 1.18, "consistency_weight": 1.12, "drawdown_weight": 1.20, "style": "Futures profile / trailing drawdown sensitivity", "badge": "⚡"},
-        "TopStep": {"strictness": 1.25, "consistency_weight": 1.15, "drawdown_weight": 1.25, "style": "Futures combine / very strict discipline", "badge": "🎯"},
-        "FundingPips": {"strictness": 0.95, "consistency_weight": 1.05, "drawdown_weight": 0.95, "style": "Flexible challenge / consistency focus", "badge": "💎"},
-        "MyFundedFX": {"strictness": 1.03, "consistency_weight": 1.05, "drawdown_weight": 1.02, "style": "Balanced FX challenge", "badge": "🌐"},
-        "MyFundedFutures": {"strictness": 1.15, "consistency_weight": 1.10, "drawdown_weight": 1.18, "style": "Futures evaluation / drawdown sensitive", "badge": "📈"},
-        "TakeProfit": {"strictness": 1.05, "consistency_weight": 1.08, "drawdown_weight": 1.05, "style": "Balanced target / consistency aware", "badge": "🚀"},
-        "E8": {"strictness": 1.08, "consistency_weight": 1.10, "drawdown_weight": 1.08, "style": "Institutional evaluation profile", "badge": "🏛️"},
-        "Custom": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Custom rule profile", "badge": "⚙️"},
-        "Personalizado": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Perfil personalizado", "badge": "⚙️"},
+        "FTMO": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Balanced challenge / strict daily loss", "badge": "\U0001f3e6"},
+        "Apex": {"strictness": 1.18, "consistency_weight": 1.12, "drawdown_weight": 1.20, "style": "Futures profile / trailing drawdown sensitivity", "badge": "\u26a1"},
+        "TopStep": {"strictness": 1.25, "consistency_weight": 1.15, "drawdown_weight": 1.25, "style": "Futures combine / very strict discipline", "badge": "\U0001f3af"},
+        "FundingPips": {"strictness": 0.95, "consistency_weight": 1.05, "drawdown_weight": 0.95, "style": "Flexible challenge / consistency focus", "badge": "\U0001f48e"},
+        "MyFundedFX": {"strictness": 1.03, "consistency_weight": 1.05, "drawdown_weight": 1.02, "style": "Balanced FX challenge", "badge": "\U0001f310"},
+        "MyFundedFutures": {"strictness": 1.15, "consistency_weight": 1.10, "drawdown_weight": 1.18, "style": "Futures evaluation / drawdown sensitive", "badge": "\U0001f4c8"},
+        "TakeProfit": {"strictness": 1.05, "consistency_weight": 1.08, "drawdown_weight": 1.05, "style": "Balanced target / consistency aware", "badge": "\U0001f680"},
+        "E8": {"strictness": 1.08, "consistency_weight": 1.10, "drawdown_weight": 1.08, "style": "Institutional evaluation profile", "badge": "\U0001f3db\ufe0f"},
+        "Custom": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Custom rule profile", "badge": "\u2699\ufe0f"},
+        "Personalizado": {"strictness": 1.00, "consistency_weight": 1.00, "drawdown_weight": 1.00, "style": "Perfil personalizado", "badge": "\u2699\ufe0f"},
     }
     return behaviors.get(prop_mode, behaviors["Custom"])
  
@@ -1300,34 +1300,34 @@ def generate_diagnosis(language, metrics, daily, hourly, risk_score, consistency
     best_hour_value = hourly.max() if not hourly.empty else 0
     negative_days = int((daily < 0).sum()) if not daily.empty else 0
  
-    if language == "Português":
+    if language == "Portugu\u00eas":
         items = []
-        items.append("O Profit Factor está abaixo de 1, indicando que o operacional ainda perde mais do que ganha." if profit_factor < 1 else "O Profit Factor está acima de 1, indicando vantagem operacional inicial.")
+        items.append("O Profit Factor est\u00e1 abaixo de 1, indicando que o operacional ainda perde mais do que ganha." if profit_factor < 1 else "O Profit Factor est\u00e1 acima de 1, indicando vantagem operacional inicial.")
         if net_pnl < 0:
-            items.append("O resultado líquido está negativo. A prioridade agora é reduzir drawdown e filtrar horários ruins.")
+            items.append("O resultado l\u00edquido est\u00e1 negativo. A prioridade agora \u00e9 reduzir drawdown e filtrar hor\u00e1rios ruins.")
         if worst_hour != "N/A":
-            items.append(f"O pior horário foi {worst_hour}h, com resultado de {money(worst_hour_value)}. Esse período merece bloqueio, redução de lote ou revisão de setup.")
+            items.append(f"O pior hor\u00e1rio foi {worst_hour}h, com resultado de {money(worst_hour_value)}. Esse per\u00edodo merece bloqueio, redu\u00e7\u00e3o de lote ou revis\u00e3o de setup.")
         if best_hour != "N/A":
-            items.append(f"O melhor horário foi {best_hour}h, com resultado de {money(best_hour_value)}. Esse pode ser seu principal período operacional.")
+            items.append(f"O melhor hor\u00e1rio foi {best_hour}h, com resultado de {money(best_hour_value)}. Esse pode ser seu principal per\u00edodo operacional.")
         if loss_streak >= 4:
-            items.append(f"Foi detectada sequência de {loss_streak} perdas. Isso pode indicar tilt, insistência ou condição ruim de mercado.")
-        items.append(f"Probabilidade estimada de aprovação: {approval}/100. Faltam {money(target_distance)} para a meta, {money(daily_remaining)} de margem diária e {money(dd_remaining)} de margem no drawdown máximo.")
-        items.append(f"Score de risco: {risk_score}/100. Score de consistência: {consistency_score}/100. Score comportamental: {behavior_score}/100. Foram encontrados {negative_days} dias negativos.")
+            items.append(f"Foi detectada sequ\u00eancia de {loss_streak} perdas. Isso pode indicar tilt, insist\u00eancia ou condi\u00e7\u00e3o ruim de mercado.")
+        items.append(f"Probabilidade estimada de aprova\u00e7\u00e3o: {approval}/100. Faltam {money(target_distance)} para a meta, {money(daily_remaining)} de margem di\u00e1ria e {money(dd_remaining)} de margem no drawdown m\u00e1ximo.")
+        items.append(f"Score de risco: {risk_score}/100. Score de consist\u00eancia: {consistency_score}/100. Score comportamental: {behavior_score}/100. Foram encontrados {negative_days} dias negativos.")
         return items
  
-    if language == "Español":
+    if language == "Espa\u00f1ol":
         items = []
-        items.append("El Profit Factor está por debajo de 1, indicando que el sistema aún pierde más de lo que gana." if profit_factor < 1 else "El Profit Factor está por encima de 1, indicando una ventaja operativa inicial.")
+        items.append("El Profit Factor est\u00e1 por debajo de 1, indicando que el sistema a\u00fan pierde m\u00e1s de lo que gana." if profit_factor < 1 else "El Profit Factor est\u00e1 por encima de 1, indicando una ventaja operativa inicial.")
         if net_pnl < 0:
-            items.append("El resultado neto está negativo. La prioridad ahora es reducir drawdown y filtrar horarios débiles.")
+            items.append("El resultado neto est\u00e1 negativo. La prioridad ahora es reducir drawdown y filtrar horarios d\u00e9biles.")
         if worst_hour != "N/A":
-            items.append(f"El peor horario fue {worst_hour}h, con resultado de {money(worst_hour_value)}. Ese periodo merece bloqueo, reducción de lote o revisión de setup.")
+            items.append(f"El peor horario fue {worst_hour}h, con resultado de {money(worst_hour_value)}. Ese periodo merece bloqueo, reducci\u00f3n de lote o revisi\u00f3n de setup.")
         if best_hour != "N/A":
             items.append(f"El mejor horario fue {best_hour}h, con resultado de {money(best_hour_value)}. Puede ser tu principal ventana operativa.")
         if loss_streak >= 4:
-            items.append(f"Se detectó una secuencia de {loss_streak} pérdidas. Esto puede indicar tilt, insistencia o malas condiciones de mercado.")
-        items.append(f"Probabilidad estimada de aprobación: {approval}/100. Faltan {money(target_distance)} para la meta, {money(daily_remaining)} de margen diario y {money(dd_remaining)} de margen en drawdown máximo.")
-        items.append(f"Score de riesgo: {risk_score}/100. Score de consistencia: {consistency_score}/100. Score conductual: {behavior_score}/100. Se encontraron {negative_days} días negativos.")
+            items.append(f"Se detect\u00f3 una secuencia de {loss_streak} p\u00e9rdidas. Esto puede indicar tilt, insistencia o malas condiciones de mercado.")
+        items.append(f"Probabilidad estimada de aprobaci\u00f3n: {approval}/100. Faltan {money(target_distance)} para la meta, {money(daily_remaining)} de margen diario y {money(dd_remaining)} de margen en drawdown m\u00e1ximo.")
+        items.append(f"Score de riesgo: {risk_score}/100. Score de consistencia: {consistency_score}/100. Score conductual: {behavior_score}/100. Se encontraron {negative_days} d\u00edas negativos.")
         return items
  
     items = []
@@ -1390,7 +1390,7 @@ def build_trader_dna(
     else:
         execution_density = "low"
  
-    if language == "Português":
+    if language == "Portugu\u00eas":
         if dna_score >= 80 and profit_factor >= 1.2 and behavior_score >= 75:
             profile = "Trader Institucional"
         elif total_trades >= 120 and loss_streak >= 4:
@@ -1398,20 +1398,20 @@ def build_trader_dna(
         elif approval >= 70 and consistency_score >= 65:
             profile = "Prop Firm Ready"
         elif profit_factor < 1 and negative_days >= positive_days:
-            profile = "Trader Defensivo em Recuperação"
+            profile = "Trader Defensivo em Recupera\u00e7\u00e3o"
         elif winrate >= 65 and profit_factor >= 1:
             profile = "Trader de Alta Assertividade"
         else:
             profile = "Trader em Desenvolvimento"
  
         execution_style = {
-            "high": "Alta frequência operacional",
-            "medium": "Frequência moderada",
-            "low": "Baixa frequência / amostra pequena",
+            "high": "Alta frequ\u00eancia operacional",
+            "medium": "Frequ\u00eancia moderada",
+            "low": "Baixa frequ\u00eancia / amostra pequena",
         }[execution_density]
  
         if behavior_score >= 75:
-            risk_behavior = "Disciplina saudável"
+            risk_behavior = "Disciplina saud\u00e1vel"
         elif behavior_score >= 50:
             risk_behavior = "Risco comportamental moderado"
         else:
@@ -1426,9 +1426,9 @@ def build_trader_dna(
  
         summary = [
             f"O perfil dominante identificado foi: {profile}.",
-            f"O melhor horário operacional foi {best_hour}h e o pior horário foi {worst_hour}h.",
-            f"O melhor dia da semana foi {best_weekday}; o ponto de atenção foi {worst_weekday}.",
-            f"A análise encontrou {positive_days} dias positivos e {negative_days} dias negativos.",
+            f"O melhor hor\u00e1rio operacional foi {best_hour}h e o pior hor\u00e1rio foi {worst_hour}h.",
+            f"O melhor dia da semana foi {best_weekday}; o ponto de aten\u00e7\u00e3o foi {worst_weekday}.",
+            f"A an\u00e1lise encontrou {positive_days} dias positivos e {negative_days} dias negativos.",
         ]
  
         strengths = []
@@ -1437,29 +1437,29 @@ def build_trader_dna(
         if profit_factor >= 1:
             strengths.append("Existe vantagem operacional inicial pelo Profit Factor acima de 1.")
         else:
-            improvements.append("Aumentar seletividade de entrada até o Profit Factor superar 1.20.")
+            improvements.append("Aumentar seletividade de entrada at\u00e9 o Profit Factor superar 1.20.")
  
         if consistency_score >= 65:
-            strengths.append("A consistência diária está em nível aceitável para evolução.")
+            strengths.append("A consist\u00eancia di\u00e1ria est\u00e1 em n\u00edvel aceit\u00e1vel para evolu\u00e7\u00e3o.")
         else:
-            improvements.append("Reduzir dispersão dos resultados diários e evitar dias muito negativos.")
+            improvements.append("Reduzir dispers\u00e3o dos resultados di\u00e1rios e evitar dias muito negativos.")
  
         if behavior_score >= 70:
-            strengths.append("O comportamento de risco está relativamente controlado.")
+            strengths.append("O comportamento de risco est\u00e1 relativamente controlado.")
         else:
-            improvements.append("Criar trava operacional após perdas consecutivas para reduzir tilt.")
+            improvements.append("Criar trava operacional ap\u00f3s perdas consecutivas para reduzir tilt.")
  
         if approval >= 70:
-            strengths.append("O perfil atual tem boa aderência ao ambiente de prop firm.")
+            strengths.append("O perfil atual tem boa ader\u00eancia ao ambiente de prop firm.")
         else:
-            improvements.append("Melhorar controle de drawdown antes de buscar aprovação em prop firm.")
+            improvements.append("Melhorar controle de drawdown antes de buscar aprova\u00e7\u00e3o em prop firm.")
  
         if not strengths:
-            strengths.append("Há dados suficientes para iniciar uma evolução guiada por métricas.")
+            strengths.append("H\u00e1 dados suficientes para iniciar uma evolu\u00e7\u00e3o guiada por m\u00e9tricas.")
         if not improvements:
-            improvements.append("Manter o mesmo padrão de risco e evitar aumentar lote cedo demais.")
+            improvements.append("Manter o mesmo padr\u00e3o de risco e evitar aumentar lote cedo demais.")
  
-    elif language == "Español":
+    elif language == "Espa\u00f1ol":
         if dna_score >= 80 and profit_factor >= 1.2 and behavior_score >= 75:
             profile = "Trader Institucional"
         elif total_trades >= 120 and loss_streak >= 4:
@@ -1467,7 +1467,7 @@ def build_trader_dna(
         elif approval >= 70 and consistency_score >= 65:
             profile = "Prop Firm Ready"
         elif profit_factor < 1 and negative_days >= positive_days:
-            profile = "Trader Defensivo en Recuperación"
+            profile = "Trader Defensivo en Recuperaci\u00f3n"
         elif winrate >= 65 and profit_factor >= 1:
             profile = "Trader de Alta Asertividad"
         else:
@@ -1476,7 +1476,7 @@ def build_trader_dna(
         execution_style = {
             "high": "Alta frecuencia operativa",
             "medium": "Frecuencia moderada",
-            "low": "Baja frecuencia / muestra pequeña",
+            "low": "Baja frecuencia / muestra peque\u00f1a",
         }[execution_density]
  
         if behavior_score >= 75:
@@ -1496,8 +1496,8 @@ def build_trader_dna(
         summary = [
             f"El perfil dominante identificado fue: {profile}.",
             f"El mejor horario operativo fue {best_hour}h y el peor horario fue {worst_hour}h.",
-            f"El mejor día de la semana fue {best_weekday}; el punto de atención fue {worst_weekday}.",
-            f"El análisis encontró {positive_days} días positivos y {negative_days} días negativos.",
+            f"El mejor d\u00eda de la semana fue {best_weekday}; el punto de atenci\u00f3n fue {worst_weekday}.",
+            f"El an\u00e1lisis encontr\u00f3 {positive_days} d\u00edas positivos y {negative_days} d\u00edas negativos.",
         ]
  
         strengths = []
@@ -1509,24 +1509,24 @@ def build_trader_dna(
             improvements.append("Aumentar la selectividad de entrada hasta superar Profit Factor 1.20.")
  
         if consistency_score >= 65:
-            strengths.append("La consistencia diaria está en un nivel aceptable para evolucionar.")
+            strengths.append("La consistencia diaria est\u00e1 en un nivel aceptable para evolucionar.")
         else:
-            improvements.append("Reducir dispersión de resultados diarios y evitar días muy negativos.")
+            improvements.append("Reducir dispersi\u00f3n de resultados diarios y evitar d\u00edas muy negativos.")
  
         if behavior_score >= 70:
-            strengths.append("El comportamiento de riesgo está relativamente controlado.")
+            strengths.append("El comportamiento de riesgo est\u00e1 relativamente controlado.")
         else:
-            improvements.append("Crear bloqueo operativo después de pérdidas consecutivas para reducir tilt.")
+            improvements.append("Crear bloqueo operativo despu\u00e9s de p\u00e9rdidas consecutivas para reducir tilt.")
  
         if approval >= 70:
             strengths.append("El perfil actual tiene buena compatibilidad con prop firms.")
         else:
-            improvements.append("Mejorar control de drawdown antes de buscar aprobación en prop firm.")
+            improvements.append("Mejorar control de drawdown antes de buscar aprobaci\u00f3n en prop firm.")
  
         if not strengths:
-            strengths.append("Hay datos suficientes para iniciar una evolución guiada por métricas.")
+            strengths.append("Hay datos suficientes para iniciar una evoluci\u00f3n guiada por m\u00e9tricas.")
         if not improvements:
-            improvements.append("Mantener el mismo patrón de riesgo y evitar aumentar lote demasiado pronto.")
+            improvements.append("Mantener el mismo patr\u00f3n de riesgo y evitar aumentar lote demasiado pronto.")
  
     else:
         if dna_score >= 80 and profit_factor >= 1.2 and behavior_score >= 75:
@@ -1643,7 +1643,7 @@ def _to_number(series):
             return None
         text = str(value).strip()
         text = text.replace("\ufeff", "").replace("\x00", "")
-        text = text.replace("R$", "").replace("$", "").replace("€", "")
+        text = text.replace("R$", "").replace("$", "").replace("\u20ac", "")
         text = text.replace(" ", "").replace("\u00a0", "")
         text = text.replace("%", "")
         text = text.replace("+", "")
@@ -1716,15 +1716,138 @@ def _read_csv_safely(file_bytes):
     raise ValueError(f"Could not read CSV/TXT file. Last error: {last_error}")
  
  
+def _read_excel_safely(file_bytes):
+    """Read Excel reports from MetaTrader/ProfitChart/TradingView and generic XLSX files.
+ 
+    Some MetaTrader Strategy Tester exports are not simple tables: they contain
+    many metadata rows before the real deal table. This function scans every
+    sheet, detects the most likely header row, and returns a clean DataFrame.
+    """
+    excel_buffer = io.BytesIO(file_bytes)
+ 
+    try:
+        excel_file = pd.ExcelFile(excel_buffer)
+    except Exception as exc:
+        raise ValueError(f"Could not open Excel workbook. Details: {exc}")
+ 
+    best_df = None
+    best_score = -1
+ 
+    date_terms = {
+        "date", "time", "datetime", "date time", "open time", "close time",
+        "data", "hora", "horario", "data hora", "data/hora", "fecha",
+        "fecha hora", "fecha/hora", "tempo", "abertura", "fechamento"
+    }
+    pnl_terms = {
+        "profit", "pnl", "p&l", "lucro", "resultado", "net profit",
+        "gross profit", "profit loss", "profit/loss", "realized p/l",
+        "ganho", "pl"
+    }
+    trade_terms = {
+        "symbol", "asset", "ativo", "type", "tipo", "direcao", "dire\u00e7\u00e3o",
+        "volume", "preco", "pre\u00e7o", "price", "ordem", "order", "deal",
+        "oferta", "commission", "comissao", "comiss\u00e3o", "swap", "saldo",
+        "balance"
+    }
+ 
+    for sheet_name in excel_file.sheet_names:
+        try:
+            raw = pd.read_excel(
+                io.BytesIO(file_bytes),
+                sheet_name=sheet_name,
+                header=None,
+                dtype=object,
+            )
+        except Exception:
+            continue
+ 
+        raw = raw.dropna(how="all")
+        if raw.empty:
+            continue
+ 
+        # Try the first row as a normal table header.
+        try:
+            normal_df = pd.read_excel(
+                io.BytesIO(file_bytes),
+                sheet_name=sheet_name,
+                dtype=object,
+            )
+            normal_df = _clean_imported_columns(normal_df).dropna(how="all")
+            normal_cols = {_normalize_text(col) for col in normal_df.columns}
+            normal_score = len(normal_df) + 10 * len(normal_df.columns)
+            if normal_cols & date_terms:
+                normal_score += 200
+            if normal_cols & pnl_terms:
+                normal_score += 200
+            if normal_cols & trade_terms:
+                normal_score += 60
+            if normal_df.shape[0] > 0 and normal_df.shape[1] > 1 and normal_score > best_score:
+                best_df = normal_df
+                best_score = normal_score
+        except Exception:
+            pass
+ 
+        # Scan rows to find embedded table headers, common in MetaTrader reports.
+        for row_idx in range(len(raw)):
+            row_values = raw.iloc[row_idx].tolist()
+            headers = [str(value).replace("\x00", "").strip() if pd.notna(value) else "" for value in row_values]
+            normalized_headers = [_normalize_text(value) for value in headers]
+            non_empty = [value for value in normalized_headers if value]
+ 
+            if len(non_empty) < 3:
+                continue
+ 
+            has_date = any(value in date_terms for value in non_empty)
+            has_pnl = any(value in pnl_terms for value in non_empty)
+            trade_hits = sum(1 for value in non_empty if value in trade_terms)
+ 
+            score = 0
+            if has_date:
+                score += 300
+            if has_pnl:
+                score += 10000
+            score += trade_hits * 40
+            score += len(non_empty) * 5
+            score += max(0, len(raw) - row_idx)
+ 
+            # Require either date+pnl or a strong row with many known trade columns.
+            if not ((has_date and has_pnl) or (has_date and trade_hits >= 4)):
+                continue
+ 
+            candidate = raw.iloc[row_idx + 1:].copy()
+            if candidate.empty:
+                continue
+ 
+            # Make duplicate/blank headers safe.
+            safe_headers = []
+            seen = {}
+            for pos, header in enumerate(headers):
+                name = header if header else f"column_{pos}"
+                count = seen.get(name, 0)
+                seen[name] = count + 1
+                if count:
+                    name = f"{name}_{count}"
+                safe_headers.append(name)
+ 
+            candidate.columns = safe_headers[:candidate.shape[1]]
+            candidate = _clean_imported_columns(candidate).dropna(how="all")
+ 
+            if candidate.shape[0] > 0 and candidate.shape[1] > 1 and score > best_score:
+                best_df = candidate
+                best_score = score
+ 
+    if best_df is not None:
+        return best_df.reset_index(drop=True)
+ 
+    raise ValueError("Could not identify a valid table inside the Excel file. Export the report as XLSX or CSV with Date/Time and Profit columns.")
+ 
+ 
 def load_universal_trading_file(uploaded_file, platform="auto"):
     file_name = uploaded_file.name.lower()
     file_bytes = uploaded_file.getvalue()
  
     if file_name.endswith((".xlsx", ".xls")):
-        try:
-            return pd.read_excel(io.BytesIO(file_bytes))
-        except Exception as exc:
-            raise ValueError(f"Could not read Excel file. Save as .xlsx or CSV and try again. Details: {exc}")
+        return _read_excel_safely(file_bytes)
  
     if file_name.endswith((".html", ".htm")):
         try:
@@ -1761,37 +1884,37 @@ def universal_normalize_trades(raw_df, platform="auto"):
     df.columns = [str(col).strip() for col in df.columns]
  
     date_col = _find_column(df, [
-        "date", "time", "datetime", "date time", "open time", "close time", "data", "hora", "data/hora", "fecha", "fecha/hora",
+        "date", "time", "datetime", "date time", "open time", "close time", "data", "hora", "horario", "hor\u00e1rio", "tempo", "data/hora", "data hora", "fecha", "fecha/hora",
         "open date", "close date", "entry time", "exit time", "abertura", "fechamento"
     ])
     asset_col = _find_column(df, [
         "asset", "symbol", "ticker", "ativo", "instrument", "instrumento", "mercado", "produto", "contrato", "scrip", "security"
     ])
     side_col = _find_column(df, [
-        "side", "type", "operation", "operacao", "operação", "direcao", "direção", "buy/sell", "compra/venda", "action", "order type"
+        "side", "type", "operation", "operacao", "opera\u00e7\u00e3o", "direcao", "dire\u00e7\u00e3o", "buy/sell", "compra/venda", "action", "order type"
     ])
     qty_col = _find_column(df, [
         "quantity", "qty", "volume", "lots", "lot", "contracts", "contratos", "quantidade", "qtd", "size", "amount"
     ])
     entry_col = _find_column(df, [
-        "entry_price", "entry price", "open price", "price", "preco", "preço", "preco entrada", "preço entrada", "entrada", "open", "avg price"
+        "entry_price", "entry price", "open price", "price", "preco", "pre\u00e7o", "preco entrada", "pre\u00e7o entrada", "entrada", "open", "avg price"
     ])
     exit_col = _find_column(df, [
-        "exit_price", "exit price", "close price", "preco saida", "preço saída", "saida", "saída", "close", "closing price"
+        "exit_price", "exit price", "close price", "preco saida", "pre\u00e7o sa\u00edda", "saida", "sa\u00edda", "close", "closing price"
     ])
     fees_col = _find_column(df, [
         "fees", "fee", "commission", "commissions", "corretagem", "taxas", "custos", "costs", "swap", "charges"
     ])
     pnl_col = _find_column(df, [
         "net_pnl", "net pnl", "pnl", "p&l", "profit", "profit/loss", "profit loss", "lucro", "resultado", "resultado liquido",
-        "resultado líquido", "net profit", "gross profit", "close profit", "profit currency", "pl", "gain", "realized p/l"
+        "resultado l\u00edquido", "net profit", "gross profit", "close profit", "profit currency", "pl", "gain", "realized p/l"
     ])
  
     balance_col = _find_column(df, [
-        "balance", "saldo", "saldo conta", "account balance", "balanco", "balanço"
+        "balance", "saldo", "saldo conta", "account balance", "balanco", "balan\u00e7o"
     ])
     equity_col = _find_column(df, [
-        "equity", "patrimonio", "patrimônio", "saldo liquido", "saldo líquido", "account equity"
+        "equity", "patrimonio", "patrim\u00f4nio", "saldo liquido", "saldo l\u00edquido", "account equity"
     ])
  
     if date_col is None:
@@ -1844,6 +1967,19 @@ def universal_normalize_trades(raw_df, platform="auto"):
  
     normalized = normalized.dropna(subset=["date"])
     normalized = normalized[normalized["net_pnl"].notna()]
+ 
+    # MetaTrader deal tables usually include the initial balance row and entry rows
+    # with zero profit. These rows are useful in the platform report, but they
+    # distort RiskPilot metrics if counted as trades.
+    asset_clean = normalized["asset"].astype(str).str.lower().str.strip()
+    normalized = normalized[~asset_clean.isin(["", "nan", "none", "balance"])]
+ 
+    side_clean = normalized["side"].astype(str).str.lower().str.strip()
+    if side_clean.isin(["in", "entrada"]).any() and side_clean.isin(["out", "saida", "sa\u00edda"]).any():
+        normalized = normalized[~side_clean.isin(["in", "entrada"])]
+ 
+    # Remove zero-result operational rows generated by order/open-position exports.
+    normalized = normalized[normalized["net_pnl"].abs() > 0.0000001]
  
     if normalized.empty:
         raise ValueError("The file was read, but no valid trades were found after normalization.")
@@ -1991,8 +2127,8 @@ def render_full_dashboard(
  
     st.markdown(
         diagnosis_box(
-            f'{prop_behavior.get("badge", "🏦")} {prop_mode}',
-            f'{prop_description} · Strictness {prop_behavior.get("strictness", 1.0):.2f}x · Target {money(profit_target)} · Daily {money(max_daily_loss)} · Max DD {money(max_drawdown_limit)}',
+            f'{prop_behavior.get("badge", "\U0001f3e6")} {prop_mode}',
+            f'{prop_description} \u00b7 Strictness {prop_behavior.get("strictness", 1.0):.2f}x \u00b7 Target {money(profit_target)} \u00b7 Daily {money(max_daily_loss)} \u00b7 Max DD {money(max_drawdown_limit)}',
         ),
         unsafe_allow_html=True,
     )
@@ -2091,34 +2227,34 @@ def render_full_dashboard(
         with dna_summary_col:
             st.markdown(f"## {t['profile_summary']}")
             for item in trader_dna["summary"][:3]:
-                st.markdown(f'<div class="diagnosis-box">🧬 {item}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="diagnosis-box">\U0001f9ec {item}</div>', unsafe_allow_html=True)
         with dna_strength_col:
             st.markdown(f"## {t['strengths']}")
             for item in trader_dna["strengths"][:3]:
-                st.markdown(f'<div class="diagnosis-box">✅ {item}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="diagnosis-box">\u2705 {item}</div>', unsafe_allow_html=True)
         with dna_improve_col:
             st.markdown(f"## {t['improvement_points']}")
             for item in trader_dna["improvements"][:3]:
-                st.markdown(f'<div class="alert-box">📌 {item}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="alert-box">\U0001f4cc {item}</div>', unsafe_allow_html=True)
  
     section(t["ai_coach"])
     if not has_plan("Premium"):
         st.markdown(locked_feature_box(language, required_plan="Premium"), unsafe_allow_html=True)
     else:
         loading_texts = {
-            "Português": [
-                "Mapeando padrões comportamentais...",
+            "Portugu\u00eas": [
+                "Mapeando padr\u00f5es comportamentais...",
                 "Detectando risco de tilt e revenge trading...",
-                "Avaliando consistência para prop firm...",
+                "Avaliando consist\u00eancia para prop firm...",
                 "Calculando qualidade operacional...",
-                "Gerando diagnóstico institucional...",
+                "Gerando diagn\u00f3stico institucional...",
             ],
-            "Español": [
+            "Espa\u00f1ol": [
                 "Mapeando patrones conductuales...",
                 "Detectando riesgo de tilt y revenge trading...",
                 "Evaluando consistencia para prop firm...",
                 "Calculando calidad operativa...",
-                "Generando diagnóstico institucional...",
+                "Generando diagn\u00f3stico institucional...",
             ],
             "English": [
                 "Mapping behavioral patterns...",
@@ -2130,8 +2266,8 @@ def render_full_dashboard(
         }
  
         ai_button_help = {
-            "Português": "Gera uma análise comportamental premium com plano de ação.",
-            "Español": "Genera un análisis conductual premium con plan de acción.",
+            "Portugu\u00eas": "Gera uma an\u00e1lise comportamental premium com plano de a\u00e7\u00e3o.",
+            "Espa\u00f1ol": "Genera un an\u00e1lisis conductual premium con plan de acci\u00f3n.",
             "English": "Generates a premium behavioral analysis with an action plan.",
         }.get(language, "Generates a premium behavioral analysis with an action plan.")
  
@@ -2143,7 +2279,7 @@ def render_full_dashboard(
             for index, message in enumerate(steps):
                 percent_done = int(((index + 1) / len(steps)) * 100)
                 loading_box.markdown(
-                    f'<div class="diagnosis-box"><div class="diagnosis-title">AI TRADING COACH</div><div class="diagnosis-text">🧠 {message}</div></div>',
+                    f'<div class="diagnosis-box"><div class="diagnosis-title">AI TRADING COACH</div><div class="diagnosis-text">\U0001f9e0 {message}</div></div>',
                     unsafe_allow_html=True,
                 )
                 progress_bar.progress(percent_done)
@@ -2176,22 +2312,22 @@ def render_full_dashboard(
                 st.markdown(f"## {t['behavior_warnings']}")
                 if ai_report["warnings"]:
                     for item in ai_report["warnings"]:
-                        st.markdown(f'<div class="alert-box">⚠️ {item}</div>', unsafe_allow_html=True)
+                        st.markdown(f'<div class="alert-box">\u26a0\ufe0f {item}</div>', unsafe_allow_html=True)
                 else:
-                    no_warning_text = {"Português": "Nenhum alerta comportamental crítico detectado.", "Español": "No se detectaron alertas conductuales críticos.", "English": "No critical behavioral warnings detected."}.get(language, "No critical behavioral warnings detected.")
+                    no_warning_text = {"Portugu\u00eas": "Nenhum alerta comportamental cr\u00edtico detectado.", "Espa\u00f1ol": "No se detectaron alertas conductuales cr\u00edticos.", "English": "No critical behavioral warnings detected."}.get(language, "No critical behavioral warnings detected.")
                     st.success(no_warning_text)
  
             with col_ai_2:
                 st.markdown(f"## {t['action_plan']}")
                 for item in ai_report["action_plan"][:5]:
-                    st.markdown(f'<div class="diagnosis-box">✅ {item}</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="diagnosis-box">\u2705 {item}</div>', unsafe_allow_html=True)
                 st.markdown(f"## {t['risk_rules']}")
                 for item in ai_report["rules"][:5]:
-                    st.markdown(f'<div class="diagnosis-box">📌 {item}</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="diagnosis-box">\U0001f4cc {item}</div>', unsafe_allow_html=True)
  
     section(t["risk_alerts"])
     for alert in alerts:
-        st.markdown(f'<div class="alert-box">⚠️ {alert}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="alert-box">\u26a0\ufe0f {alert}</div>', unsafe_allow_html=True)
  
     csv = normalized_df.to_csv(index=False).encode("utf-8")
     st.download_button(t["download_csv"], csv, f"riskpilot_{uploaded_file_name.replace(' ', '_')}.csv", "text/csv")
@@ -2284,7 +2420,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
     col1, col2 = st.columns([1.25, 1])
  
     with col1:
-        st.markdown(f'<div class="hero-badge">⚡ {t["hero_badge"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="hero-badge">\u26a1 {t["hero_badge"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="hero-title">{t["hero_title"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="hero-subtitle">{t["hero_subtitle"]}</div>', unsafe_allow_html=True)
  
@@ -2335,12 +2471,12 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
 if not st.session_state.authenticated and st.session_state.show_login:
     t = ui_text(st.session_state.landing_language)
  
-    st.title("🔐 RiskPilot")
+    st.title("\U0001f510 RiskPilot")
     st.markdown(language_flag_pill(st.session_state.landing_language), unsafe_allow_html=True)
  
     auth_mode = st.radio(
         t["choose"],
-        [t["login"].replace("🔐 ", ""), t["register"]],
+        [t["login"].replace("\U0001f510 ", ""), t["register"]],
         index=0 if st.session_state.auth_mode == "Login" else 1,
     )
  
@@ -2405,7 +2541,7 @@ st.sidebar.markdown(language_flag_pill(language), unsafe_allow_html=True)
 t = ui_text(language)
  
 st.sidebar.markdown(
-    f'<div class="sidebar-brand"><div class="sidebar-logo">📊 RiskPilot</div><div class="sidebar-subtitle">{t["professional_analytics"]}</div></div>',
+    f'<div class="sidebar-brand"><div class="sidebar-logo">\U0001f4ca RiskPilot</div><div class="sidebar-subtitle">{t["professional_analytics"]}</div></div>',
     unsafe_allow_html=True,
 )
  
@@ -2485,7 +2621,7 @@ st.sidebar.markdown(f'<div class="sidebar-note">{t["sidebar_note"]}</div>', unsa
  
 if page == t["history"]:
     st.markdown(
-        f'<div class="terminal-header"><div class="terminal-title">📚 {t["history_title"]}</div><div class="terminal-subtitle">{t["loaded_from_history"]}</div><div class="terminal-pill">{prop_mode}</div></div>',
+        f'<div class="terminal-header"><div class="terminal-title">\U0001f4da {t["history_title"]}</div><div class="terminal-subtitle">{t["loaded_from_history"]}</div><div class="terminal-pill">{prop_mode}</div></div>',
         unsafe_allow_html=True,
     )
  
@@ -2506,12 +2642,12 @@ if page == t["history"]:
     st.dataframe(history, use_container_width=True)
  
     history_options = history.apply(
-        lambda row: f'{row["id"]} · {row["file_name"]} · {row["created_at"]}',
+        lambda row: f'{row["id"]} \u00b7 {row["file_name"]} \u00b7 {row["created_at"]}',
         axis=1,
     ).tolist()
  
     selected_label = st.selectbox(t["select_upload"], history_options)
-    selected_id = int(selected_label.split(" · ")[0])
+    selected_id = int(selected_label.split(" \u00b7 ")[0])
  
     selected_df = load_upload_by_id(selected_id)
  
@@ -2542,7 +2678,7 @@ if page == t["history"]:
 # =========================================================
  
 st.markdown(
-    f'<div class="terminal-header"><div class="terminal-title">{t["terminal_title"]}</div><div class="terminal-subtitle">{t["terminal_subtitle"]}</div><div class="terminal-pill">{t["live_engine"]} · {prop_mode}</div></div>',
+    f'<div class="terminal-header"><div class="terminal-title">{t["terminal_title"]}</div><div class="terminal-subtitle">{t["terminal_subtitle"]}</div><div class="terminal-pill">{t["live_engine"]} \u00b7 {prop_mode}</div></div>',
     unsafe_allow_html=True,
 )
  
