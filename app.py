@@ -6,6 +6,7 @@ import bcrypt
 import time
 import io
 import unicodedata
+import os
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -86,7 +87,7 @@ def ui_text(language):
             "smart_prop_engine": "Smart Prop Firm Engine",
             "prop_rule_profile": "Rule Profile",
             "openai_ready": "OpenAI Ready",
-            "openai_ready_sub": "Prepared for real AI integration",
+            "openai_ready_sub": "Real AI when OPENAI_API_KEY is configured",
             "trader_dna": "Trader DNA Engine",
             "dna_score": "DNA Score",
             "trader_profile": "Trader Profile",
@@ -234,7 +235,7 @@ def ui_text(language):
             "smart_prop_engine": "Motor Prop Firm Inteligente",
             "prop_rule_profile": "Perfil de Regras",
             "openai_ready": "OpenAI Ready",
-            "openai_ready_sub": "Preparado para integra\u00e7\u00e3o com IA real",
+            "openai_ready_sub": "IA real quando OPENAI_API_KEY estiver configurada",
             "trader_dna": "Motor Trader DNA",
             "dna_score": "DNA Score",
             "trader_profile": "Perfil do Trader",
@@ -381,7 +382,7 @@ def ui_text(language):
             "smart_prop_engine": "Motor Prop Firm Inteligente",
             "prop_rule_profile": "Perfil de Reglas",
             "openai_ready": "OpenAI Ready",
-            "openai_ready_sub": "Preparado para integraci\u00f3n con IA real",
+            "openai_ready_sub": "IA real cuando OPENAI_API_KEY est\u00e9 configurada",
             "trader_dna": "Motor Trader DNA",
             "dna_score": "DNA Score",
             "trader_profile": "Perfil del Trader",
@@ -697,7 +698,7 @@ def get_pricing_copy(language):
             "faq_2_q": "Funciona para prop firm?",
             "faq_2_a": "Sim. O sistema calcula limites, drawdown, aprova\u00e7\u00e3o estimada e risco de viola\u00e7\u00e3o.",
             "faq_3_q": "A IA j\u00e1 \u00e9 real?",
-            "faq_3_a": "A estrutura est\u00e1 pronta para OpenAI real. A vers\u00e3o atual usa regras inteligentes e an\u00e1lise comportamental baseada em m\u00e9tricas.",
+            "faq_3_a": "A IA real usa OpenAI quando a vari\u00e1vel OPENAI_API_KEY estiver configurada. Sem a chave, o RiskPilot usa o motor inteligente interno como fallback seguro.",
             "features": {
                 "Uploads": ["1 por dia", "Ilimitado", "Ilimitado"],
                 "Dashboard": ["B\u00e1sico", "Completo", "Institucional"],
@@ -734,7 +735,7 @@ def get_pricing_copy(language):
             "faq_2_q": "\u00bfFunciona para prop firms?",
             "faq_2_a": "S\u00ed. El sistema calcula l\u00edmites, drawdown, aprobaci\u00f3n estimada y riesgo de violaci\u00f3n.",
             "faq_3_q": "\u00bfLa IA ya es real?",
-            "faq_3_a": "La estructura est\u00e1 lista para OpenAI real. La versi\u00f3n actual usa reglas inteligentes y an\u00e1lisis basado en m\u00e9tricas.",
+            "faq_3_a": "La IA real usa OpenAI cuando la variable OPENAI_API_KEY est\u00e1 configurada. Sin la clave, RiskPilot usa el motor inteligente interno como fallback seguro.",
             "features": {
                 "Uploads": ["1 por d\u00eda", "Ilimitado", "Ilimitado"],
                 "Dashboard": ["B\u00e1sico", "Completo", "Institucional"],
@@ -770,7 +771,7 @@ def get_pricing_copy(language):
         "faq_2_q": "Does it work for prop firms?",
         "faq_2_a": "Yes. The system calculates limits, drawdown, estimated approval and violation risk.",
         "faq_3_q": "Is the AI already real?",
-        "faq_3_a": "The structure is ready for real OpenAI integration. The current version uses intelligent rules and metric-based behavior analysis.",
+        "faq_3_a": "Real AI uses OpenAI when OPENAI_API_KEY is configured. Without the key, RiskPilot uses the internal intelligent engine as a safe fallback.",
         "features": {
             "Uploads": ["1 per day", "Unlimited", "Unlimited"],
             "Dashboard": ["Basic", "Full", "Institutional"],
@@ -2538,6 +2539,20 @@ def render_full_dashboard(
             "Espa\u00f1ol": "Genera un an\u00e1lisis conductual premium con plan de acci\u00f3n.",
             "English": "Generates a premium behavioral analysis with an action plan.",
         }.get(language, "Generates a premium behavioral analysis with an action plan.")
+
+        ai_engine_message = {
+            "Portugu\u00eas": "OpenAI conectado" if os.getenv("OPENAI_API_KEY") else "Fallback inteligente ativo: configure OPENAI_API_KEY no Render para ativar IA real.",
+            "Espa\u00f1ol": "OpenAI conectado" if os.getenv("OPENAI_API_KEY") else "Fallback inteligente activo: configura OPENAI_API_KEY en Render para activar IA real.",
+            "English": "OpenAI connected" if os.getenv("OPENAI_API_KEY") else "Intelligent fallback active: configure OPENAI_API_KEY on Render to activate real AI.",
+        }.get(language, "OpenAI connected" if os.getenv("OPENAI_API_KEY") else "Intelligent fallback active: configure OPENAI_API_KEY on Render to activate real AI.")
+
+        ai_engine_title = {
+            "Portugu\u00eas": "Motor de IA",
+            "Espa\u00f1ol": "Motor de IA",
+            "English": "AI Engine",
+        }.get(language, "AI Engine")
+
+        st.markdown(diagnosis_box(ai_engine_title, ai_engine_message), unsafe_allow_html=True)
  
         if st.button(t["analyze_ai"], help=ai_button_help):
             loading_box = st.empty()
