@@ -6,7 +6,7 @@ import bcrypt
 import time
 import io
 import unicodedata
-
+ 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -844,6 +844,205 @@ def render_pricing_section(language):
             )
  
  
+ 
+ 
+# =========================================================
+# V30 BETA LAUNCH HELPERS
+# =========================================================
+ 
+APP_VERSION = "V30 Beta Launch Edition"
+BETA_WHATSAPP_URL = "https://wa.me/5511999999999?text=Tenho%20interesse%20em%20testar%20o%20RiskPilot"
+ 
+ 
+def beta_text(language):
+    if language == "Português":
+        return {
+            "beta_badge": "BETA PRIVADO",
+            "beta_title": "RiskPilot Beta Launch",
+            "beta_subtitle": "Ajude a validar a plataforma antes do lançamento oficial. Envie relatórios reais, teste o AI Coach, baixe o PDF e nos conte onde o produto pode melhorar.",
+            "beta_access": "Acesso beta ativo",
+            "version": "Versão",
+            "whatsapp": "Falar no WhatsApp",
+            "feedback": "Feedback",
+            "export_guide": "Como exportar relatórios",
+            "quick_start": "Checklist rápido",
+            "step_1": "1. Escolha a plataforma correta ou deixe em Automático.",
+            "step_2": "2. Envie um relatório CSV, XLSX, TXT ou HTML.",
+            "step_3": "3. Confira Curva de Capital, Drawdown, Radar e AI Coach.",
+            "step_4": "4. Baixe o PDF premium e salve a análise no histórico.",
+            "feedback_title": "Envie seu feedback do beta",
+            "feedback_name": "Seu nome",
+            "feedback_message": "O que você achou? O que faltou? O que ficou confuso?",
+            "feedback_rating": "Nota geral",
+            "feedback_sent": "Feedback registrado nesta sessão. Obrigado!",
+            "guide_title": "Como exportar seu relatório",
+            "guide_subtitle": "Use esta página para orientar traders que não sabem gerar o arquivo nas plataformas.",
+            "mt5_title": "MetaTrader 5",
+            "mt5_steps": ["Abra o histórico da conta", "Clique com o botão direito", "Escolha Relatório ou Exportar", "Prefira CSV, HTML ou XLSX", "Envie o arquivo no RiskPilot"],
+            "profitchart_title": "ProfitChart / Nelogica",
+            "profitchart_steps": ["Abra o relatório de performance", "Exporte o histórico de operações", "Use CSV ou XLSX quando disponível", "Confira se existe coluna de data e resultado", "Envie no RiskPilot"],
+            "tradingview_title": "TradingView",
+            "tradingview_steps": ["Abra Strategy Tester", "Clique em List of Trades", "Exporte os trades", "Use CSV", "Envie no RiskPilot"],
+            "footer": "RiskPilot Beta - Trading Risk Intelligence",
+        }
+    if language == "Español":
+        return {
+            "beta_badge": "BETA PRIVADO",
+            "beta_title": "RiskPilot Beta Launch",
+            "beta_subtitle": "Ayuda a validar la plataforma antes del lanzamiento oficial. Sube reportes reales, prueba AI Coach, descarga el PDF y dinos cómo mejorar.",
+            "beta_access": "Acceso beta activo",
+            "version": "Versión",
+            "whatsapp": "Hablar por WhatsApp",
+            "feedback": "Feedback",
+            "export_guide": "Cómo exportar reportes",
+            "quick_start": "Checklist rápido",
+            "step_1": "1. Elige la plataforma correcta o deja Automático.",
+            "step_2": "2. Sube un reporte CSV, XLSX, TXT o HTML.",
+            "step_3": "3. Revisa Curva de Capital, Drawdown, Radar y AI Coach.",
+            "step_4": "4. Descarga el PDF premium y guarda el análisis en historial.",
+            "feedback_title": "Envía tu feedback beta",
+            "feedback_name": "Tu nombre",
+            "feedback_message": "¿Qué opinas? ¿Qué faltó? ¿Qué fue confuso?",
+            "feedback_rating": "Nota general",
+            "feedback_sent": "Feedback registrado en esta sesión. ¡Gracias!",
+            "guide_title": "Cómo exportar tu reporte",
+            "guide_subtitle": "Usa esta página para orientar traders que no saben generar el archivo.",
+            "mt5_title": "MetaTrader 5",
+            "mt5_steps": ["Abre el historial de la cuenta", "Haz clic derecho", "Elige Reporte o Exportar", "Prefiere CSV, HTML o XLSX", "Sube el archivo en RiskPilot"],
+            "profitchart_title": "ProfitChart / Nelogica",
+            "profitchart_steps": ["Abre el reporte de performance", "Exporta el historial de operaciones", "Usa CSV o XLSX cuando esté disponible", "Confirma que exista fecha y resultado", "Sube en RiskPilot"],
+            "tradingview_title": "TradingView",
+            "tradingview_steps": ["Abre Strategy Tester", "Haz clic en List of Trades", "Exporta los trades", "Usa CSV", "Sube en RiskPilot"],
+            "footer": "RiskPilot Beta - Trading Risk Intelligence",
+        }
+    return {
+        "beta_badge": "PRIVATE BETA",
+        "beta_title": "RiskPilot Beta Launch",
+        "beta_subtitle": "Help validate the platform before public launch. Upload real reports, test AI Coach, download the PDF and tell us what can improve.",
+        "beta_access": "Beta access active",
+        "version": "Version",
+        "whatsapp": "Contact on WhatsApp",
+        "feedback": "Feedback",
+        "export_guide": "How to export reports",
+        "quick_start": "Quick checklist",
+        "step_1": "1. Choose the right platform or keep Automatic.",
+        "step_2": "2. Upload a CSV, XLSX, TXT or HTML report.",
+        "step_3": "3. Review Equity Curve, Drawdown, Radar and AI Coach.",
+        "step_4": "4. Download the premium PDF and save the analysis to history.",
+        "feedback_title": "Send beta feedback",
+        "feedback_name": "Your name",
+        "feedback_message": "What did you think? What was missing? What was confusing?",
+        "feedback_rating": "Overall rating",
+        "feedback_sent": "Feedback registered in this session. Thank you!",
+        "guide_title": "How to export your report",
+        "guide_subtitle": "Use this page to guide traders who do not know how to generate the file.",
+        "mt5_title": "MetaTrader 5",
+        "mt5_steps": ["Open account history", "Right click", "Choose Report or Export", "Prefer CSV, HTML or XLSX", "Upload the file to RiskPilot"],
+        "profitchart_title": "ProfitChart / Nelogica",
+        "profitchart_steps": ["Open performance report", "Export trade history", "Use CSV or XLSX when available", "Check date and result columns", "Upload to RiskPilot"],
+        "tradingview_title": "TradingView",
+        "tradingview_steps": ["Open Strategy Tester", "Click List of Trades", "Export trades", "Use CSV", "Upload to RiskPilot"],
+        "footer": "RiskPilot Beta - Trading Risk Intelligence",
+    }
+ 
+ 
+def beta_card(title, body, icon="⚡"):
+    return f"""
+    <div class="beta-card">
+        <div class="beta-card-icon">{icon}</div>
+        <div class="beta-card-title">{title}</div>
+        <div class="beta-card-body">{body}</div>
+    </div>
+    """
+ 
+ 
+def render_beta_banner(language):
+    b = beta_text(language)
+    st.markdown(
+        f"""
+        <div class="beta-banner">
+            <div>
+                <div class="beta-pill">{b['beta_badge']} · {APP_VERSION}</div>
+                <div class="beta-title">{b['beta_title']}</div>
+                <div class="beta-subtitle">{b['beta_subtitle']}</div>
+            </div>
+            <a class="beta-whatsapp" href="{BETA_WHATSAPP_URL}" target="_blank">{b['whatsapp']}</a>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+ 
+ 
+def render_quick_start(language):
+    b = beta_text(language)
+    st.markdown(f'<div class="section-title">{b["quick_start"]}</div>', unsafe_allow_html=True)
+    q1, q2, q3, q4 = st.columns(4, gap="large")
+    steps = [b["step_1"], b["step_2"], b["step_3"], b["step_4"]]
+    icons = ["①", "②", "③", "④"]
+    for col, step, icon in zip([q1, q2, q3, q4], steps, icons):
+        with col:
+            st.markdown(beta_card(icon, step, "✅"), unsafe_allow_html=True)
+ 
+ 
+def render_export_guide(language):
+    b = beta_text(language)
+    st.markdown(
+        f'<div class="terminal-header"><div class="terminal-title">{b["guide_title"]}</div><div class="terminal-subtitle">{b["guide_subtitle"]}</div><div class="terminal-pill">{APP_VERSION}</div></div>',
+        unsafe_allow_html=True,
+    )
+    cols = st.columns(3, gap="large")
+    guides = [
+        (b["mt5_title"], b["mt5_steps"], "📈"),
+        (b["profitchart_title"], b["profitchart_steps"], "📊"),
+        (b["tradingview_title"], b["tradingview_steps"], "🌐"),
+    ]
+    for col, (title, steps, icon) in zip(cols, guides):
+        with col:
+            html_steps = "".join([f"<li>{step}</li>" for step in steps])
+            st.markdown(
+                f"""
+                <div class="guide-card">
+                    <div class="guide-icon">{icon}</div>
+                    <div class="guide-title">{title}</div>
+                    <ul class="guide-list">{html_steps}</ul>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+    render_app_footer(language)
+ 
+ 
+def render_feedback_page(language):
+    b = beta_text(language)
+    st.markdown(
+        f'<div class="terminal-header"><div class="terminal-title">{b["feedback_title"]}</div><div class="terminal-subtitle">{b["beta_subtitle"]}</div><div class="terminal-pill">{APP_VERSION}</div></div>',
+        unsafe_allow_html=True,
+    )
+    with st.form("beta_feedback_form"):
+        name = st.text_input(b["feedback_name"])
+        rating = st.slider(b["feedback_rating"], 1, 10, 8)
+        message = st.text_area(b["feedback_message"], height=180)
+        submitted = st.form_submit_button(b["feedback"])
+    if submitted:
+        st.session_state["last_beta_feedback"] = {"name": name, "rating": rating, "message": message, "version": APP_VERSION}
+        st.success(b["feedback_sent"])
+        st.markdown(f'<a class="beta-whatsapp" href="{BETA_WHATSAPP_URL}" target="_blank">{b["whatsapp"]}</a>', unsafe_allow_html=True)
+    render_app_footer(language)
+ 
+ 
+def render_app_footer(language):
+    b = beta_text(language)
+    st.markdown(
+        f"""
+        <div class="app-footer">
+            <span>{b['footer']}</span>
+            <span>{b['version']}: {APP_VERSION}</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+ 
+ 
 # =========================================================
 # CSS
 # =========================================================
@@ -893,6 +1092,10 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .pricing-badge{display:inline-flex;padding:7px 12px;border-radius:999px;background:rgba(34,197,94,.11);border:1px solid rgba(34,197,94,.26);color:#86efac!important;font-size:.82rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}.pricing-title{font-size:2.55rem;font-weight:950;letter-spacing:-.055em;color:#fff!important}.pricing-subtitle{max-width:760px;margin:14px auto 0 auto;color:#94a3b8!important;font-size:1.08rem;line-height:1.65}
 .pricing-card{position:relative;min-height:255px;margin-top:24px;border-radius:26px;padding:28px;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(56,189,248,.18);box-shadow:0 20px 55px rgba(0,0,0,.28)}.pricing-card:hover{border-color:rgba(56,189,248,.55);box-shadow:0 25px 70px rgba(14,165,233,.15)}.plan-tag{display:inline-flex;padding:6px 10px;border-radius:999px;background:rgba(14,165,233,.16);border:1px solid rgba(14,165,233,.35);color:#7dd3fc!important;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.plan-tag-muted{background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.20);color:#cbd5e1!important}.plan-name{font-size:1.55rem;font-weight:950;color:#fff!important;margin-top:18px}.plan-price{font-size:2.15rem;font-weight:950;color:#22c55e!important;margin-top:10px}.plan-desc{color:#94a3b8!important;font-size:.95rem;line-height:1.55;margin-top:10px;min-height:52px}.plan-cta{margin-top:20px;background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff!important;border-radius:14px;padding:13px 16px;text-align:center;font-weight:900;box-shadow:0 12px 35px rgba(14,165,233,.18)}
 .faq-card{min-height:170px;border-radius:22px;padding:24px;background:rgba(15,23,42,.84);border:1px solid rgba(148,163,184,.14);box-shadow:0 14px 40px rgba(0,0,0,.20);margin-bottom:20px}.faq-question{font-size:1.05rem;font-weight:900;color:#fff!important;line-height:1.35}.faq-answer{font-size:.92rem;color:#94a3b8!important;line-height:1.6;margin-top:12px}
+ 
+ 
+.beta-banner{display:flex;align-items:center;justify-content:space-between;gap:28px;margin:22px 0 28px 0;padding:28px 30px;border-radius:28px;background:linear-gradient(135deg,rgba(14,165,233,.16),rgba(15,23,42,.92));border:1px solid rgba(56,189,248,.26);box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.beta-pill{display:inline-flex;padding:7px 12px;border-radius:999px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.30);color:#86efac!important;font-size:.78rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}.beta-title{font-size:2rem;font-weight:950;color:#fff!important;letter-spacing:-.04em}.beta-subtitle{color:#cbd5e1!important;font-size:1rem;line-height:1.62;max-width:850px;margin-top:8px}.beta-whatsapp{display:inline-flex;align-items:center;justify-content:center;text-decoration:none!important;color:#fff!important;background:linear-gradient(135deg,#16a34a,#22c55e);border-radius:15px;padding:13px 18px;font-weight:950;box-shadow:0 16px 40px rgba(34,197,94,.20);white-space:nowrap}.beta-card{min-height:145px;border-radius:22px;padding:22px;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(56,189,248,.18);box-shadow:0 16px 40px rgba(0,0,0,.22);margin-bottom:18px}.beta-card-icon{font-size:1.4rem;margin-bottom:10px}.beta-card-title{font-size:1rem;color:#7dd3fc!important;font-weight:950;margin-bottom:8px}.beta-card-body{color:#cbd5e1!important;font-size:.92rem;line-height:1.55}.guide-card{min-height:310px;border-radius:26px;padding:28px;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(56,189,248,.20);box-shadow:0 20px 55px rgba(0,0,0,.25);margin-bottom:24px}.guide-icon{font-size:2rem;margin-bottom:14px}.guide-title{font-size:1.45rem;font-weight:950;color:#fff!important;margin-bottom:14px}.guide-list{padding-left:19px;color:#cbd5e1!important;line-height:1.75;font-size:.96rem}.guide-list li{margin-bottom:8px}.app-footer{margin-top:54px;padding:18px 0;border-top:1px solid rgba(148,163,184,.14);display:flex;justify-content:space-between;gap:16px;color:#64748b!important;font-size:.82rem}.app-footer span{color:#64748b!important}@media(max-width:900px){.beta-banner{flex-direction:column;align-items:flex-start}.app-footer{flex-direction:column}.beta-title{font-size:1.6rem}}
  
 </style>
 """, unsafe_allow_html=True)
@@ -977,26 +1180,26 @@ def score_ring_card(title, score, status, profile, hint=""):
     """
  
  
-
-
+ 
+ 
 # =========================================================
 # V28 PREMIUM PDF REPORT
 # =========================================================
-
+ 
 def _pdf_money(value):
     try:
         return f"${float(value):,.2f}"
     except Exception:
         return "$0.00"
-
-
+ 
+ 
 def _pdf_percent(value):
     try:
         return f"{float(value):.2f}%"
     except Exception:
         return "0.00%"
-
-
+ 
+ 
 def _pdf_clean(value):
     if value is None:
         return "-"
@@ -1008,8 +1211,8 @@ def _pdf_clean(value):
     for old, new in replacements.items():
         text = text.replace(old, new)
     return text
-
-
+ 
+ 
 def _pdf_table_style(header_bg="#0F172A"):
     return TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor(header_bg)),
@@ -1022,8 +1225,8 @@ def _pdf_table_style(header_bg="#0F172A"):
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
         ("PADDING", (0, 0), (-1, -1), 7),
     ])
-
-
+ 
+ 
 def _pdf_score_circle(score, label="AI Score"):
     try:
         score = int(float(score))
@@ -1042,8 +1245,8 @@ def _pdf_score_circle(score, label="AI Score"):
     d.add(String(90, 52, "/100", textAnchor="middle", fontName="Helvetica", fontSize=10, fillColor=colors.HexColor("#475569")))
     d.add(String(90, 12, label, textAnchor="middle", fontName="Helvetica-Bold", fontSize=11, fillColor=colors.HexColor("#0F172A")))
     return d
-
-
+ 
+ 
 def build_premium_pdf_report(
     language,
     uploaded_file_name,
@@ -1076,16 +1279,16 @@ def build_premium_pdf_report(
         topMargin=1.2 * cm,
         bottomMargin=1.2 * cm,
     )
-
+ 
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name="RPTitle", parent=styles["Title"], fontSize=26, leading=31, textColor=colors.HexColor("#0F172A"), spaceAfter=8))
     styles.add(ParagraphStyle(name="RPSubtitle", parent=styles["BodyText"], fontSize=10, leading=14, textColor=colors.HexColor("#475569"), spaceAfter=12))
     styles.add(ParagraphStyle(name="RPSection", parent=styles["Heading2"], fontSize=14, leading=18, textColor=colors.HexColor("#0F172A"), spaceBefore=14, spaceAfter=8))
     styles.add(ParagraphStyle(name="RPSmall", parent=styles["BodyText"], fontSize=8, leading=11, textColor=colors.HexColor("#334155")))
     styles.add(ParagraphStyle(name="RPBox", parent=styles["BodyText"], fontSize=9, leading=13, textColor=colors.HexColor("#0F172A"), backColor=colors.HexColor("#F8FAFC"), borderColor=colors.HexColor("#CBD5E1"), borderWidth=0.4, borderPadding=7, spaceAfter=6))
-
+ 
     story = []
-
+ 
     if language == "Português":
         title = "RiskPilot Institutional Report"
         subtitle = "Relatorio profissional de risco, consistencia, prop firm readiness e comportamento operacional."
@@ -1122,10 +1325,10 @@ def build_premium_pdf_report(
         coach_title = "AI Coach - Action Plan"
         alerts_title = "Risk Alerts"
         sample_title = "Trade Sample"
-
+ 
     story.append(Paragraph("RiskPilot", styles["RPTitle"]))
     story.append(Paragraph(subtitle, styles["RPSubtitle"]))
-
+ 
     cover_data = [
         ["File", _pdf_clean(uploaded_file_name)],
         ["Prop Firm Mode", _pdf_clean(prop_mode)],
@@ -1136,16 +1339,16 @@ def build_premium_pdf_report(
     cover_table.setStyle(_pdf_table_style("#0369A1"))
     story.append(cover_table)
     story.append(Spacer(1, 10))
-
+ 
     score_table = Table([[_pdf_score_circle(ai_report.get("score", approval), score_label), Paragraph(_pdf_clean(ai_report.get("profile", "Institutional analysis")), styles["RPBox"])]], colWidths=[6.0 * cm, 10.0 * cm])
     score_table.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"), ("BOX", (0, 0), (-1, -1), 0.4, colors.HexColor("#CBD5E1")), ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#F8FAFC")), ("PADDING", (0, 0), (-1, -1), 8)]))
     story.append(score_table)
-
+ 
     story.append(Paragraph(executive_title, styles["RPSection"]))
     for item in (ai_report.get("executive_summary") or diagnosis_items or [])[:5]:
         story.append(Paragraph("- " + _pdf_clean(item), styles["RPSmall"]))
         story.append(Spacer(1, 3))
-
+ 
     story.append(Paragraph(core_metrics_title, styles["RPSection"]))
     perf_rows = [
         ["Metric", "Value"],
@@ -1158,7 +1361,7 @@ def build_premium_pdf_report(
     perf_table = Table(perf_rows, colWidths=[8.0 * cm, 8.0 * cm])
     perf_table.setStyle(_pdf_table_style())
     story.append(perf_table)
-
+ 
     story.append(Paragraph(prop_title, styles["RPSection"]))
     prop_rows = [
         ["Metric", "Value"],
@@ -1171,9 +1374,9 @@ def build_premium_pdf_report(
     prop_table = Table(prop_rows, colWidths=[8.0 * cm, 8.0 * cm])
     prop_table.setStyle(_pdf_table_style("#1E3A8A"))
     story.append(prop_table)
-
+ 
     story.append(PageBreak())
-
+ 
     story.append(Paragraph(radar_title, styles["RPSection"]))
     radar_rows = [["Dimension", "Score"]]
     for key, value in radar_scores.items():
@@ -1181,7 +1384,7 @@ def build_premium_pdf_report(
     radar_table = Table(radar_rows, colWidths=[8.0 * cm, 8.0 * cm])
     radar_table.setStyle(_pdf_table_style("#0E7490"))
     story.append(radar_table)
-
+ 
     story.append(Paragraph(dna_title, styles["RPSection"]))
     dna_rows = [
         ["Dimension", "Result"],
@@ -1195,19 +1398,19 @@ def build_premium_pdf_report(
     dna_table = Table(dna_rows, colWidths=[6.0 * cm, 10.0 * cm])
     dna_table.setStyle(_pdf_table_style("#312E81"))
     story.append(dna_table)
-
+ 
     story.append(Paragraph(coach_title, styles["RPSection"]))
     for item in (ai_report.get("action_plan") or [])[:6]:
         story.append(Paragraph("- " + _pdf_clean(item), styles["RPSmall"]))
         story.append(Spacer(1, 3))
-
+ 
     rules = ai_report.get("rules") or []
     if rules:
         story.append(Paragraph("Operational Rules", styles["RPSection"]))
         for item in rules[:6]:
             story.append(Paragraph("- " + _pdf_clean(item), styles["RPSmall"]))
             story.append(Spacer(1, 3))
-
+ 
     story.append(Paragraph(alerts_title, styles["RPSection"]))
     if alerts:
         for alert in alerts[:8]:
@@ -1215,9 +1418,9 @@ def build_premium_pdf_report(
             story.append(Spacer(1, 3))
     else:
         story.append(Paragraph("No critical alerts detected.", styles["RPSmall"]))
-
+ 
     story.append(PageBreak())
-
+ 
     story.append(Paragraph(sample_title, styles["RPSection"]))
     sample = trades_df.copy().head(25)
     preferred_cols = ["date", "asset", "side", "quantity", "net_pnl"]
@@ -1232,12 +1435,12 @@ def build_premium_pdf_report(
     story.append(trade_table)
     story.append(Spacer(1, 12))
     story.append(Paragraph("Generated by RiskPilot - Institutional Trading Analytics", styles["RPSmall"]))
-
+ 
     doc.build(story)
     buffer.seek(0)
     return buffer.getvalue()
-
-
+ 
+ 
 def insight_card(title, value, sub="", css_class="value-neutral"):
     return f"""
     <div class="insight-card">
@@ -2625,7 +2828,7 @@ def render_full_dashboard(
             daily_remaining=daily_remaining,
             dd_remaining=dd_remaining,
         )
-
+ 
         pdf_trader_dna = build_trader_dna(
             language=language,
             metrics=metrics,
@@ -2637,7 +2840,7 @@ def render_full_dashboard(
             behavior_score=behavior_score,
             approval=approval,
         )
-
+ 
         pdf_bytes = build_premium_pdf_report(
             language=language,
             uploaded_file_name=uploaded_file_name,
@@ -2661,7 +2864,7 @@ def render_full_dashboard(
             alerts=alerts,
             trades_df=normalized_df,
         )
-
+ 
         st.download_button(t["download_pdf"], pdf_bytes, f"riskpilot_premium_report_{uploaded_file_name.replace(' ', '_')}.pdf", "application/pdf")
     else:
         st.markdown(locked_feature_box(language, required_plan="Pro"), unsafe_allow_html=True)
@@ -2908,20 +3111,37 @@ else:
     st.sidebar.markdown(sidebar_kpi(t["max_drawdown_limit"], money(max_drawdown_limit)), unsafe_allow_html=True)
     st.sidebar.markdown(sidebar_kpi(t["profit_target"], money(profit_target)), unsafe_allow_html=True)
  
-page = st.sidebar.radio(t["navigation"], [t["dashboard"], t["history"]])
+beta_nav = beta_text(language)
+page_options = {
+    t["dashboard"]: "dashboard",
+    t["history"]: "history",
+    beta_nav["export_guide"]: "export_guide",
+    beta_nav["feedback"]: "feedback",
+}
+page = st.sidebar.radio(t["navigation"], list(page_options.keys()))
+page_key = page_options[page]
  
 st.sidebar.markdown("---")
 st.sidebar.markdown(sidebar_kpi(t["account_status"], t["active"]), unsafe_allow_html=True)
 st.sidebar.markdown(sidebar_kpi(t["risk_mode"], prop_mode), unsafe_allow_html=True)
 st.sidebar.markdown(sidebar_kpi(t["analytics"], t["enabled"]), unsafe_allow_html=True)
 st.sidebar.markdown(f'<div class="sidebar-note">{t["sidebar_note"]}</div>', unsafe_allow_html=True)
+st.sidebar.markdown(sidebar_kpi(beta_text(language)["version"], APP_VERSION), unsafe_allow_html=True)
+ 
+if page_key == "export_guide":
+    render_export_guide(language)
+    st.stop()
+ 
+if page_key == "feedback":
+    render_feedback_page(language)
+    st.stop()
  
  
 # =========================================================
 # HISTORY COM DASHBOARD COMPLETO
 # =========================================================
  
-if page == t["history"]:
+if page_key == "history":
     st.markdown(
         f'<div class="terminal-header"><div class="terminal-title">\U0001f4da {t["history_title"]}</div><div class="terminal-subtitle">{t["loaded_from_history"]}</div><div class="terminal-pill">{prop_mode}</div></div>',
         unsafe_allow_html=True,
@@ -2979,6 +3199,9 @@ if page == t["history"]:
 # DASHBOARD NORMAL
 # =========================================================
  
+render_beta_banner(language)
+render_quick_start(language)
+ 
 st.markdown(
     f'<div class="terminal-header"><div class="terminal-title">{t["terminal_title"]}</div><div class="terminal-subtitle">{t["terminal_subtitle"]}</div><div class="terminal-pill">{t["live_engine"]} \u00b7 {prop_mode}</div></div>',
     unsafe_allow_html=True,
@@ -3032,3 +3255,5 @@ render_full_dashboard(
     allow_save=True,
     read_only=False,
 )
+ 
+render_app_footer(language)
