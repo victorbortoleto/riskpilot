@@ -844,205 +844,6 @@ def render_pricing_section(language):
             )
  
  
- 
- 
-# =========================================================
-# V30 BETA LAUNCH HELPERS
-# =========================================================
- 
-APP_VERSION = "V30 Beta Launch Edition"
-BETA_WHATSAPP_URL = "https://wa.me/5511999999999?text=Tenho%20interesse%20em%20testar%20o%20RiskPilot"
- 
- 
-def beta_text(language):
-    if language == "Português":
-        return {
-            "beta_badge": "BETA PRIVADO",
-            "beta_title": "RiskPilot Beta Launch",
-            "beta_subtitle": "Ajude a validar a plataforma antes do lançamento oficial. Envie relatórios reais, teste o AI Coach, baixe o PDF e nos conte onde o produto pode melhorar.",
-            "beta_access": "Acesso beta ativo",
-            "version": "Versão",
-            "whatsapp": "Falar no WhatsApp",
-            "feedback": "Feedback",
-            "export_guide": "Como exportar relatórios",
-            "quick_start": "Checklist rápido",
-            "step_1": "1. Escolha a plataforma correta ou deixe em Automático.",
-            "step_2": "2. Envie um relatório CSV, XLSX, TXT ou HTML.",
-            "step_3": "3. Confira Curva de Capital, Drawdown, Radar e AI Coach.",
-            "step_4": "4. Baixe o PDF premium e salve a análise no histórico.",
-            "feedback_title": "Envie seu feedback do beta",
-            "feedback_name": "Seu nome",
-            "feedback_message": "O que você achou? O que faltou? O que ficou confuso?",
-            "feedback_rating": "Nota geral",
-            "feedback_sent": "Feedback registrado nesta sessão. Obrigado!",
-            "guide_title": "Como exportar seu relatório",
-            "guide_subtitle": "Use esta página para orientar traders que não sabem gerar o arquivo nas plataformas.",
-            "mt5_title": "MetaTrader 5",
-            "mt5_steps": ["Abra o histórico da conta", "Clique com o botão direito", "Escolha Relatório ou Exportar", "Prefira CSV, HTML ou XLSX", "Envie o arquivo no RiskPilot"],
-            "profitchart_title": "ProfitChart / Nelogica",
-            "profitchart_steps": ["Abra o relatório de performance", "Exporte o histórico de operações", "Use CSV ou XLSX quando disponível", "Confira se existe coluna de data e resultado", "Envie no RiskPilot"],
-            "tradingview_title": "TradingView",
-            "tradingview_steps": ["Abra Strategy Tester", "Clique em List of Trades", "Exporte os trades", "Use CSV", "Envie no RiskPilot"],
-            "footer": "RiskPilot Beta - Trading Risk Intelligence",
-        }
-    if language == "Español":
-        return {
-            "beta_badge": "BETA PRIVADO",
-            "beta_title": "RiskPilot Beta Launch",
-            "beta_subtitle": "Ayuda a validar la plataforma antes del lanzamiento oficial. Sube reportes reales, prueba AI Coach, descarga el PDF y dinos cómo mejorar.",
-            "beta_access": "Acceso beta activo",
-            "version": "Versión",
-            "whatsapp": "Hablar por WhatsApp",
-            "feedback": "Feedback",
-            "export_guide": "Cómo exportar reportes",
-            "quick_start": "Checklist rápido",
-            "step_1": "1. Elige la plataforma correcta o deja Automático.",
-            "step_2": "2. Sube un reporte CSV, XLSX, TXT o HTML.",
-            "step_3": "3. Revisa Curva de Capital, Drawdown, Radar y AI Coach.",
-            "step_4": "4. Descarga el PDF premium y guarda el análisis en historial.",
-            "feedback_title": "Envía tu feedback beta",
-            "feedback_name": "Tu nombre",
-            "feedback_message": "¿Qué opinas? ¿Qué faltó? ¿Qué fue confuso?",
-            "feedback_rating": "Nota general",
-            "feedback_sent": "Feedback registrado en esta sesión. ¡Gracias!",
-            "guide_title": "Cómo exportar tu reporte",
-            "guide_subtitle": "Usa esta página para orientar traders que no saben generar el archivo.",
-            "mt5_title": "MetaTrader 5",
-            "mt5_steps": ["Abre el historial de la cuenta", "Haz clic derecho", "Elige Reporte o Exportar", "Prefiere CSV, HTML o XLSX", "Sube el archivo en RiskPilot"],
-            "profitchart_title": "ProfitChart / Nelogica",
-            "profitchart_steps": ["Abre el reporte de performance", "Exporta el historial de operaciones", "Usa CSV o XLSX cuando esté disponible", "Confirma que exista fecha y resultado", "Sube en RiskPilot"],
-            "tradingview_title": "TradingView",
-            "tradingview_steps": ["Abre Strategy Tester", "Haz clic en List of Trades", "Exporta los trades", "Usa CSV", "Sube en RiskPilot"],
-            "footer": "RiskPilot Beta - Trading Risk Intelligence",
-        }
-    return {
-        "beta_badge": "PRIVATE BETA",
-        "beta_title": "RiskPilot Beta Launch",
-        "beta_subtitle": "Help validate the platform before public launch. Upload real reports, test AI Coach, download the PDF and tell us what can improve.",
-        "beta_access": "Beta access active",
-        "version": "Version",
-        "whatsapp": "Contact on WhatsApp",
-        "feedback": "Feedback",
-        "export_guide": "How to export reports",
-        "quick_start": "Quick checklist",
-        "step_1": "1. Choose the right platform or keep Automatic.",
-        "step_2": "2. Upload a CSV, XLSX, TXT or HTML report.",
-        "step_3": "3. Review Equity Curve, Drawdown, Radar and AI Coach.",
-        "step_4": "4. Download the premium PDF and save the analysis to history.",
-        "feedback_title": "Send beta feedback",
-        "feedback_name": "Your name",
-        "feedback_message": "What did you think? What was missing? What was confusing?",
-        "feedback_rating": "Overall rating",
-        "feedback_sent": "Feedback registered in this session. Thank you!",
-        "guide_title": "How to export your report",
-        "guide_subtitle": "Use this page to guide traders who do not know how to generate the file.",
-        "mt5_title": "MetaTrader 5",
-        "mt5_steps": ["Open account history", "Right click", "Choose Report or Export", "Prefer CSV, HTML or XLSX", "Upload the file to RiskPilot"],
-        "profitchart_title": "ProfitChart / Nelogica",
-        "profitchart_steps": ["Open performance report", "Export trade history", "Use CSV or XLSX when available", "Check date and result columns", "Upload to RiskPilot"],
-        "tradingview_title": "TradingView",
-        "tradingview_steps": ["Open Strategy Tester", "Click List of Trades", "Export trades", "Use CSV", "Upload to RiskPilot"],
-        "footer": "RiskPilot Beta - Trading Risk Intelligence",
-    }
- 
- 
-def beta_card(title, body, icon="⚡"):
-    return f"""
-    <div class="beta-card">
-        <div class="beta-card-icon">{icon}</div>
-        <div class="beta-card-title">{title}</div>
-        <div class="beta-card-body">{body}</div>
-    </div>
-    """
- 
- 
-def render_beta_banner(language):
-    b = beta_text(language)
-    st.markdown(
-        f"""
-        <div class="beta-banner">
-            <div>
-                <div class="beta-pill">{b['beta_badge']} · {APP_VERSION}</div>
-                <div class="beta-title">{b['beta_title']}</div>
-                <div class="beta-subtitle">{b['beta_subtitle']}</div>
-            </div>
-            <a class="beta-whatsapp" href="{BETA_WHATSAPP_URL}" target="_blank">{b['whatsapp']}</a>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
- 
- 
-def render_quick_start(language):
-    b = beta_text(language)
-    st.markdown(f'<div class="section-title">{b["quick_start"]}</div>', unsafe_allow_html=True)
-    q1, q2, q3, q4 = st.columns(4, gap="large")
-    steps = [b["step_1"], b["step_2"], b["step_3"], b["step_4"]]
-    icons = ["①", "②", "③", "④"]
-    for col, step, icon in zip([q1, q2, q3, q4], steps, icons):
-        with col:
-            st.markdown(beta_card(icon, step, "✅"), unsafe_allow_html=True)
- 
- 
-def render_export_guide(language):
-    b = beta_text(language)
-    st.markdown(
-        f'<div class="terminal-header"><div class="terminal-title">{b["guide_title"]}</div><div class="terminal-subtitle">{b["guide_subtitle"]}</div><div class="terminal-pill">{APP_VERSION}</div></div>',
-        unsafe_allow_html=True,
-    )
-    cols = st.columns(3, gap="large")
-    guides = [
-        (b["mt5_title"], b["mt5_steps"], "📈"),
-        (b["profitchart_title"], b["profitchart_steps"], "📊"),
-        (b["tradingview_title"], b["tradingview_steps"], "🌐"),
-    ]
-    for col, (title, steps, icon) in zip(cols, guides):
-        with col:
-            html_steps = "".join([f"<li>{step}</li>" for step in steps])
-            st.markdown(
-                f"""
-                <div class="guide-card">
-                    <div class="guide-icon">{icon}</div>
-                    <div class="guide-title">{title}</div>
-                    <ul class="guide-list">{html_steps}</ul>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-    render_app_footer(language)
- 
- 
-def render_feedback_page(language):
-    b = beta_text(language)
-    st.markdown(
-        f'<div class="terminal-header"><div class="terminal-title">{b["feedback_title"]}</div><div class="terminal-subtitle">{b["beta_subtitle"]}</div><div class="terminal-pill">{APP_VERSION}</div></div>',
-        unsafe_allow_html=True,
-    )
-    with st.form("beta_feedback_form"):
-        name = st.text_input(b["feedback_name"])
-        rating = st.slider(b["feedback_rating"], 1, 10, 8)
-        message = st.text_area(b["feedback_message"], height=180)
-        submitted = st.form_submit_button(b["feedback"])
-    if submitted:
-        st.session_state["last_beta_feedback"] = {"name": name, "rating": rating, "message": message, "version": APP_VERSION}
-        st.success(b["feedback_sent"])
-        st.markdown(f'<a class="beta-whatsapp" href="{BETA_WHATSAPP_URL}" target="_blank">{b["whatsapp"]}</a>', unsafe_allow_html=True)
-    render_app_footer(language)
- 
- 
-def render_app_footer(language):
-    b = beta_text(language)
-    st.markdown(
-        f"""
-        <div class="app-footer">
-            <span>{b['footer']}</span>
-            <span>{b['version']}: {APP_VERSION}</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
- 
- 
 # =========================================================
 # CSS
 # =========================================================
@@ -1094,8 +895,34 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .faq-card{min-height:170px;border-radius:22px;padding:24px;background:rgba(15,23,42,.84);border:1px solid rgba(148,163,184,.14);box-shadow:0 14px 40px rgba(0,0,0,.20);margin-bottom:20px}.faq-question{font-size:1.05rem;font-weight:900;color:#fff!important;line-height:1.35}.faq-answer{font-size:.92rem;color:#94a3b8!important;line-height:1.6;margin-top:12px}
  
  
-.beta-banner{display:flex;align-items:center;justify-content:space-between;gap:28px;margin:22px 0 28px 0;padding:28px 30px;border-radius:28px;background:linear-gradient(135deg,rgba(14,165,233,.16),rgba(15,23,42,.92));border:1px solid rgba(56,189,248,.26);box-shadow:0 24px 70px rgba(0,0,0,.28)}
-.beta-pill{display:inline-flex;padding:7px 12px;border-radius:999px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.30);color:#86efac!important;font-size:.78rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}.beta-title{font-size:2rem;font-weight:950;color:#fff!important;letter-spacing:-.04em}.beta-subtitle{color:#cbd5e1!important;font-size:1rem;line-height:1.62;max-width:850px;margin-top:8px}.beta-whatsapp{display:inline-flex;align-items:center;justify-content:center;text-decoration:none!important;color:#fff!important;background:linear-gradient(135deg,#16a34a,#22c55e);border-radius:15px;padding:13px 18px;font-weight:950;box-shadow:0 16px 40px rgba(34,197,94,.20);white-space:nowrap}.beta-card{min-height:145px;border-radius:22px;padding:22px;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(56,189,248,.18);box-shadow:0 16px 40px rgba(0,0,0,.22);margin-bottom:18px}.beta-card-icon{font-size:1.4rem;margin-bottom:10px}.beta-card-title{font-size:1rem;color:#7dd3fc!important;font-weight:950;margin-bottom:8px}.beta-card-body{color:#cbd5e1!important;font-size:.92rem;line-height:1.55}.guide-card{min-height:310px;border-radius:26px;padding:28px;background:linear-gradient(135deg,#101827 0%,#172033 100%);border:1px solid rgba(56,189,248,.20);box-shadow:0 20px 55px rgba(0,0,0,.25);margin-bottom:24px}.guide-icon{font-size:2rem;margin-bottom:14px}.guide-title{font-size:1.45rem;font-weight:950;color:#fff!important;margin-bottom:14px}.guide-list{padding-left:19px;color:#cbd5e1!important;line-height:1.75;font-size:.96rem}.guide-list li{margin-bottom:8px}.app-footer{margin-top:54px;padding:18px 0;border-top:1px solid rgba(148,163,184,.14);display:flex;justify-content:space-between;gap:16px;color:#64748b!important;font-size:.82rem}.app-footer span{color:#64748b!important}@media(max-width:900px){.beta-banner{flex-direction:column;align-items:flex-start}.app-footer{flex-direction:column}.beta-title{font-size:1.6rem}}
+/* V31 Landing Page Polish */
+.v31-hero-shell{display:grid;grid-template-columns:1.15fr .85fr;gap:34px;align-items:stretch;margin:34px 0 28px 0;}
+.v31-hero-left{padding:36px 0 22px 0;}
+.v31-eyebrow,.v31-section-kicker{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.34);color:#7dd3fc!important;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em;margin-bottom:18px;}
+.v31-hero-title{font-size:clamp(3.1rem,6.1vw,6.2rem);font-weight:950;line-height:.98;letter-spacing:-.075em;color:#fff!important;max-width:900px;}
+.v31-hero-subtitle{font-size:1.22rem;line-height:1.72;color:#b6c2d2!important;margin-top:24px;max-width:790px;}
+.v31-trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+.v31-trust-row span{background:rgba(15,23,42,.88);border:1px solid rgba(148,163,184,.18);border-radius:999px;padding:9px 12px;color:#cbd5e1!important;font-size:.86rem;font-weight:800;}
+.v31-hero-panel{position:relative;overflow:hidden;background:radial-gradient(circle at 50% 20%,rgba(56,189,248,.28),transparent 34%),linear-gradient(135deg,#0f172a,#111827 55%,#020617);border:1px solid rgba(56,189,248,.25);border-radius:34px;padding:28px;min-height:430px;box-shadow:0 28px 90px rgba(0,0,0,.34);}
+.v31-panel-top{color:#93c5fd!important;font-size:.82rem;text-transform:uppercase;letter-spacing:.16em;font-weight:950;}
+.v31-score-orbit{width:205px;height:205px;border-radius:50%;display:grid;place-items:center;margin:50px auto 42px auto;background:conic-gradient(#22c55e 0 78%,rgba(30,41,59,.85) 78%);box-shadow:0 0 80px rgba(34,197,94,.16), inset 0 0 0 1px rgba(255,255,255,.08);position:relative;}
+.v31-score-orbit:before{content:"";position:absolute;width:148px;height:148px;border-radius:50%;background:#07111f;border:1px solid rgba(148,163,184,.14);}
+.v31-score-number{position:relative;z-index:1;font-size:3.25rem;font-weight:950;color:#fff!important;letter-spacing:-.07em;}
+.v31-score-label{position:absolute;z-index:2;bottom:52px;color:#94a3b8!important;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;}
+.v31-panel-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+.v31-panel-grid div{background:rgba(15,23,42,.78);border:1px solid rgba(148,163,184,.16);border-radius:18px;padding:16px;}
+.v31-panel-grid b{display:block;color:#fff!important;font-size:1.02rem;}.v31-panel-grid small{display:block;color:#94a3b8!important;margin-top:5px;}
+.v31-problem-card,.v31-format-card,.v31-beta-card{margin-top:52px;background:linear-gradient(135deg,rgba(15,23,42,.92),rgba(30,41,59,.58));border:1px solid rgba(56,189,248,.18);border-radius:30px;padding:34px;box-shadow:0 22px 70px rgba(0,0,0,.22);}
+.v31-section-headline{font-size:2.15rem;font-weight:950;letter-spacing:-.055em;color:#fff!important;line-height:1.12;}
+.v31-section-text{color:#94a3b8!important;font-size:1.05rem;line-height:1.7;margin-top:14px;max-width:960px;}
+.v31-step-card{min-height:235px;background:linear-gradient(135deg,#101827,#172033);border:1px solid rgba(56,189,248,.16);border-radius:26px;padding:28px;box-shadow:0 18px 55px rgba(0,0,0,.22);}
+.v31-step-num{font-size:.86rem;font-weight:950;color:#38bdf8!important;letter-spacing:.14em;margin-bottom:24px;}
+.v31-step-card h3{color:#fff!important;font-size:1.45rem;line-height:1.2;margin-bottom:14px;}.v31-step-card p{color:#94a3b8!important;line-height:1.65;}
+.v31-audience-card{background:rgba(15,23,42,.88);border:1px solid rgba(148,163,184,.16);border-radius:22px;padding:24px;min-height:110px;color:#fff!important;font-size:1.05rem;font-weight:900;display:flex;align-items:center;box-shadow:0 14px 40px rgba(0,0,0,.18);}
+.v31-format-card{display:grid;grid-template-columns:1fr .9fr;gap:28px;align-items:center;}
+.v31-format-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;}.v31-format-tags span{background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.28);border-radius:999px;padding:9px 12px;color:#7dd3fc!important;font-weight:900;font-size:.86rem;}
+.v31-beta-card{text-align:center;margin-bottom:40px;}.v31-beta-card .v31-section-text{margin-left:auto;margin-right:auto;}
+@media(max-width:1000px){.v31-hero-shell,.v31-format-card{grid-template-columns:1fr}.v31-hero-panel{min-height:auto}.v31-format-tags{justify-content:flex-start}.v31-hero-title{font-size:3.2rem}}
  
 </style>
 """, unsafe_allow_html=True)
@@ -2921,50 +2748,179 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
  
     t = ui_text(st.session_state.landing_language)
  
-    st.markdown('<div class="hero-wrap">', unsafe_allow_html=True)
-    col1, col2 = st.columns([1.25, 1])
+    if st.session_state.landing_language == "Português":
+        lp = {
+            "eyebrow": "Private Beta • Trading Risk Intelligence",
+            "headline": "Transforme relatórios de trading em inteligência institucional de risco.",
+            "subheadline": "O RiskPilot analisa performance, drawdown, consistência, comportamento operacional e prontidão para prop firms em poucos segundos.",
+            "primary": "🚀 Começar análise grátis",
+            "demo": "📊 Ver demonstração",
+            "login": "🔐 Entrar",
+            "problem_title": "O problema não é só perder dinheiro. É não saber por quê.",
+            "problem_text": "A maioria dos traders olha apenas para lucro, prejuízo e winrate. O RiskPilot revela padrões escondidos: horários ruins, excesso de risco, drawdown perigoso, perda de disciplina e baixa compatibilidade com prop firms.",
+            "how": "Como funciona",
+            "step1": "Faça upload do relatório",
+            "step1_text": "Envie CSV, XLSX, TXT ou HTML das principais plataformas.",
+            "step2": "O RiskPilot normaliza os dados",
+            "step2_text": "O sistema identifica datas, ativos, lados, resultados, equity e drawdown.",
+            "step3": "Receba a leitura institucional",
+            "step3_text": "Dashboard executivo, radar, Trader DNA, AI Coach e PDF premium.",
+            "audience": "Feito para quem quer operar com processo, não com emoção.",
+            "format_title": "Compatível com os formatos mais usados",
+            "format_text": "MetaTrader 4/5, TesterGraph, ProfitChart/Nelogica, TradingView e CSVs genéricos.",
+            "beta_title": "Entre no beta privado do RiskPilot",
+            "beta_text": "Teste a plataforma, envie feedback e ajude a construir uma ferramenta realmente útil para traders sérios.",
+        }
+    elif st.session_state.landing_language == "Español":
+        lp = {
+            "eyebrow": "Private Beta • Trading Risk Intelligence",
+            "headline": "Convierte reportes de trading en inteligencia institucional de riesgo.",
+            "subheadline": "RiskPilot analiza rendimiento, drawdown, consistencia, comportamiento operativo y preparación para prop firms en segundos.",
+            "primary": "🚀 Empezar gratis",
+            "demo": "📊 Ver demo",
+            "login": "🔐 Entrar",
+            "problem_title": "El problema no es solo perder dinero. Es no saber por qué.",
+            "problem_text": "La mayoría de los traders mira solo lucro, pérdida y winrate. RiskPilot revela patrones ocultos: horarios débiles, exceso de riesgo, drawdown peligroso, pérdida de disciplina y baja compatibilidad con prop firms.",
+            "how": "Cómo funciona",
+            "step1": "Sube tu reporte",
+            "step1_text": "Envía CSV, XLSX, TXT o HTML de las principales plataformas.",
+            "step2": "RiskPilot normaliza los datos",
+            "step2_text": "El sistema identifica fechas, activos, lados, resultados, equity y drawdown.",
+            "step3": "Recibe lectura institucional",
+            "step3_text": "Dashboard ejecutivo, radar, Trader DNA, AI Coach y PDF premium.",
+            "audience": "Hecho para quienes quieren operar con proceso, no con emoción.",
+            "format_title": "Compatible con los formatos más usados",
+            "format_text": "MetaTrader 4/5, TesterGraph, ProfitChart/Nelogica, TradingView y CSVs genéricos.",
+            "beta_title": "Entra al beta privado de RiskPilot",
+            "beta_text": "Prueba la plataforma, envía feedback y ayuda a construir una herramienta realmente útil para traders serios.",
+        }
+    else:
+        lp = {
+            "eyebrow": "Private Beta • Trading Risk Intelligence",
+            "headline": "Turn trading reports into institutional risk intelligence.",
+            "subheadline": "RiskPilot analyzes performance, drawdown, consistency, operational behavior and prop firm readiness in seconds.",
+            "primary": "🚀 Start free analysis",
+            "demo": "📊 View demo",
+            "login": "🔐 Login",
+            "problem_title": "The problem is not just losing money. It is not knowing why.",
+            "problem_text": "Most traders only look at P&L and winrate. RiskPilot reveals hidden patterns: weak time windows, excessive risk, dangerous drawdown, discipline loss and low prop firm compatibility.",
+            "how": "How it works",
+            "step1": "Upload your report",
+            "step1_text": "Send CSV, XLSX, TXT or HTML from major trading platforms.",
+            "step2": "RiskPilot normalizes the data",
+            "step2_text": "The system identifies dates, symbols, sides, results, equity and drawdown.",
+            "step3": "Get institutional analysis",
+            "step3_text": "Executive dashboard, radar, Trader DNA, AI Coach and premium PDF.",
+            "audience": "Built for traders who want process, not emotion.",
+            "format_title": "Compatible with the most used formats",
+            "format_text": "MetaTrader 4/5, TesterGraph, ProfitChart/Nelogica, TradingView and generic CSVs.",
+            "beta_title": "Join the RiskPilot private beta",
+            "beta_text": "Test the platform, send feedback and help build a truly useful analytics tool for serious traders.",
+        }
  
-    with col1:
-        st.markdown(f'<div class="hero-badge">\u26a1 {t["hero_badge"]}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="hero-title">{t["hero_title"]}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="hero-subtitle">{t["hero_subtitle"]}</div>', unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="v31-hero-shell">
+            <div class="v31-hero-left">
+                <div class="v31-eyebrow">{lp['eyebrow']}</div>
+                <div class="v31-hero-title">{lp['headline']}</div>
+                <div class="v31-hero-subtitle">{lp['subheadline']}</div>
+                <div class="v31-trust-row">
+                    <span>CSV / XLSX / TXT / HTML</span>
+                    <span>MetaTrader • TradingView • ProfitChart</span>
+                    <span>AI Coach</span>
+                    <span>Premium PDF</span>
+                </div>
+            </div>
+            <div class="v31-hero-panel">
+                <div class="v31-panel-top">RiskPilot Intelligence</div>
+                <div class="v31-score-orbit">
+                    <div class="v31-score-number">87</div>
+                    <div class="v31-score-label">AI Score</div>
+                </div>
+                <div class="v31-panel-grid">
+                    <div><b>Prop Readiness</b><small>Estimated approval</small></div>
+                    <div><b>Trader DNA</b><small>Behavioral profile</small></div>
+                    <div><b>Risk Radar</b><small>Institutional view</small></div>
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
  
-        b1, b2, b3 = st.columns([1, 1, 1])
-        with b1:
-            if st.button(t["start_free"]):
-                st.session_state.auth_mode = "Register"
-                st.session_state.show_login = True
-                st.rerun()
-        with b2:
-            if st.button(t["login"]):
-                st.session_state.auth_mode = "Login"
-                st.session_state.show_login = True
-                st.rerun()
-        with b3:
-            if st.button(t["view_demo"]):
-                st.session_state.demo_mode = True
-                st.rerun()
+    cta1, cta2, cta3, _ = st.columns([1.25, 1.05, 0.9, 2.4])
+    with cta1:
+        if st.button(lp["primary"]):
+            st.session_state.auth_mode = "Register"
+            st.session_state.show_login = True
+            st.rerun()
+    with cta2:
+        if st.button(lp["demo"]):
+            st.session_state.demo_mode = True
+            st.rerun()
+    with cta3:
+        if st.button(lp["login"]):
+            st.session_state.auth_mode = "Login"
+            st.session_state.show_login = True
+            st.rerun()
  
-    with col2:
-        st.markdown('<div class="hero-image-card">', unsafe_allow_html=True)
-        st.image(
-            "https://images.unsplash.com/photo-1642790106117-e829e14a795f?q=80&w=1200&auto=format&fit=crop",
-            use_container_width=True,
-        )
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="v31-problem-card">
+            <div class="v31-section-kicker">Trading Reality</div>
+            <div class="v31-section-headline">{lp['problem_title']}</div>
+            <div class="v31-section-text">{lp['problem_text']}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
  
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">{lp["how"]}</div>', unsafe_allow_html=True)
+    h1, h2, h3 = st.columns(3, gap="large")
+    for col, num, title, body in [
+        (h1, "01", lp["step1"], lp["step1_text"]),
+        (h2, "02", lp["step2"], lp["step2_text"]),
+        (h3, "03", lp["step3"], lp["step3_text"]),
+    ]:
+        with col:
+            st.markdown(f'<div class="v31-step-card"><div class="v31-step-num">{num}</div><h3>{title}</h3><p>{body}</p></div>', unsafe_allow_html=True)
  
-    st.markdown(f'<div class="section-title">{t["why"]}</div>', unsafe_allow_html=True)
-    f1, f2, f3 = st.columns(3)
-    with f1:
-        st.markdown(f'<div class="feature-card"><h3>{t["feature_1_title"]}</h3><p>{t["feature_1_text"]}</p></div>', unsafe_allow_html=True)
-    with f2:
-        st.markdown(f'<div class="feature-card"><h3>{t["feature_2_title"]}</h3><p>{t["feature_2_text"]}</p></div>', unsafe_allow_html=True)
-    with f3:
-        st.markdown(f'<div class="feature-card"><h3>{t["feature_3_title"]}</h3><p>{t["feature_3_text"]}</p></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">{lp["audience"]}</div>', unsafe_allow_html=True)
+    a1, a2, a3, a4 = st.columns(4, gap="large")
+    audience_items = ["Prop firm traders", "Scalpers / day traders", "Mentors and desks", "Traders reducing tilt"]
+    for col, item in zip([a1, a2, a3, a4], audience_items):
+        with col:
+            st.markdown(f'<div class="v31-audience-card">{item}</div>', unsafe_allow_html=True)
+ 
+    st.markdown(
+        f"""
+        <div class="v31-format-card">
+            <div>
+                <div class="v31-section-kicker">Universal Import Engine</div>
+                <div class="v31-section-headline">{lp['format_title']}</div>
+                <div class="v31-section-text">{lp['format_text']}</div>
+            </div>
+            <div class="v31-format-tags">
+                <span>MetaTrader 5</span><span>MetaTrader 4</span><span>TesterGraph</span><span>ProfitChart</span><span>TradingView</span><span>CSV</span><span>XLSX</span>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
  
     render_pricing_section(st.session_state.landing_language)
+ 
+    st.markdown(
+        f"""
+        <div class="v31-beta-card">
+            <div class="v31-section-kicker">Beta Launch</div>
+            <div class="v31-section-headline">{lp['beta_title']}</div>
+            <div class="v31-section-text">{lp['beta_text']}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
  
     st.stop()
  
@@ -3111,37 +3067,20 @@ else:
     st.sidebar.markdown(sidebar_kpi(t["max_drawdown_limit"], money(max_drawdown_limit)), unsafe_allow_html=True)
     st.sidebar.markdown(sidebar_kpi(t["profit_target"], money(profit_target)), unsafe_allow_html=True)
  
-beta_nav = beta_text(language)
-page_options = {
-    t["dashboard"]: "dashboard",
-    t["history"]: "history",
-    beta_nav["export_guide"]: "export_guide",
-    beta_nav["feedback"]: "feedback",
-}
-page = st.sidebar.radio(t["navigation"], list(page_options.keys()))
-page_key = page_options[page]
+page = st.sidebar.radio(t["navigation"], [t["dashboard"], t["history"]])
  
 st.sidebar.markdown("---")
 st.sidebar.markdown(sidebar_kpi(t["account_status"], t["active"]), unsafe_allow_html=True)
 st.sidebar.markdown(sidebar_kpi(t["risk_mode"], prop_mode), unsafe_allow_html=True)
 st.sidebar.markdown(sidebar_kpi(t["analytics"], t["enabled"]), unsafe_allow_html=True)
 st.sidebar.markdown(f'<div class="sidebar-note">{t["sidebar_note"]}</div>', unsafe_allow_html=True)
-st.sidebar.markdown(sidebar_kpi(beta_text(language)["version"], APP_VERSION), unsafe_allow_html=True)
- 
-if page_key == "export_guide":
-    render_export_guide(language)
-    st.stop()
- 
-if page_key == "feedback":
-    render_feedback_page(language)
-    st.stop()
  
  
 # =========================================================
 # HISTORY COM DASHBOARD COMPLETO
 # =========================================================
  
-if page_key == "history":
+if page == t["history"]:
     st.markdown(
         f'<div class="terminal-header"><div class="terminal-title">\U0001f4da {t["history_title"]}</div><div class="terminal-subtitle">{t["loaded_from_history"]}</div><div class="terminal-pill">{prop_mode}</div></div>',
         unsafe_allow_html=True,
@@ -3199,9 +3138,6 @@ if page_key == "history":
 # DASHBOARD NORMAL
 # =========================================================
  
-render_beta_banner(language)
-render_quick_start(language)
- 
 st.markdown(
     f'<div class="terminal-header"><div class="terminal-title">{t["terminal_title"]}</div><div class="terminal-subtitle">{t["terminal_subtitle"]}</div><div class="terminal-pill">{t["live_engine"]} \u00b7 {prop_mode}</div></div>',
     unsafe_allow_html=True,
@@ -3255,5 +3191,3 @@ render_full_dashboard(
     allow_save=True,
     read_only=False,
 )
- 
-render_app_footer(language)
