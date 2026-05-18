@@ -32,11 +32,11 @@ from core.db import (
 )
  
  
-APP_VERSION = "V32 Production Ready"
+APP_VERSION = "V34 International Production Polish"
 PRODUCTION_DOMAIN = "riskpilotapp.com"
 PRODUCTION_URL = "https://riskpilotapp.com"
 SUPPORT_EMAIL = "victorbortoleto@yahoo.com.br"
-
+ 
 init_db()
  
 st.set_page_config(
@@ -84,13 +84,13 @@ def ui_text(language):
             "institutional_radar": "Institutional Radar",
             "radar_discipline": "Discipline",
             "radar_consistency": "Consistency",
-            "radar_risk_control": "Risk Control",
+            "radar_risk_control": "Risk",
             "radar_execution": "Execution",
             "radar_recovery": "Recovery",
-            "radar_prop_compatibility": "Prop Compatibility",
+            "radar_prop_compatibility": "Prop Fit",
             "smart_prop_engine": "Smart Prop Firm Engine",
             "prop_rule_profile": "Rule Profile",
-            "openai_ready": "OpenAI Ready",
+            "openai_ready": "IA Real Ready",
             "openai_ready_sub": "Prepared for real AI integration",
             "trader_dna": "Trader DNA Engine",
             "dna_score": "DNA Score",
@@ -230,29 +230,29 @@ def ui_text(language):
 "risk_rules": "Regras de Risco",
 "behavior_warnings": "Alertas Comportamentais",
             "institutional_radar": "Radar Institucional",
-            "radar_discipline": "Disciplina",
-            "radar_consistency": "Consist\u00eancia",
-            "radar_risk_control": "Controle de Risco",
-            "radar_execution": "Execu\u00e7\u00e3o",
-            "radar_recovery": "Recupera\u00e7\u00e3o",
-            "radar_prop_compatibility": "Compatibilidade Prop",
-            "smart_prop_engine": "Motor Prop Firm Inteligente",
+            "radar_discipline": "Discipl.",
+            "radar_consistency": "Consist.",
+            "radar_risk_control": "Risco",
+            "radar_execution": "Exec.",
+            "radar_recovery": "Recup.",
+            "radar_prop_compatibility": "Mesa",
+            "smart_prop_engine": "Motor de Mesa Proprietária",
             "prop_rule_profile": "Perfil de Regras",
-            "openai_ready": "OpenAI Ready",
-            "openai_ready_sub": "Preparado para integra\u00e7\u00e3o com IA real",
+            "openai_ready": "IA Real Ready",
+            "openai_ready_sub": "Preparado para integra\u00e7\u00e3o futura com IA real",
             "trader_dna": "Motor Trader DNA",
             "dna_score": "DNA Score",
             "trader_profile": "Perfil do Trader",
             "execution_style": "Estilo de Execu\u00e7\u00e3o",
             "risk_behavior": "Comportamento de Risco",
-            "prop_firm_fit": "Compatibilidade Prop Firm",
+            "prop_firm_fit": "Compatibilidade Mesa",
             "profile_confidence": "Confian\u00e7a do Perfil",
             "profile_summary": "Resumo do Perfil",
             "strengths": "Pontos Fortes",
             "improvement_points": "Pontos de Melhoria",
             "language": "Idioma",
             "hero_title": "Analytics institucional para traders",
-            "hero_subtitle": "Plataforma profissional de an\u00e1lise operacional focada em risco, consist\u00eancia, performance e aprova\u00e7\u00e3o em prop firms.",
+            "hero_subtitle": "Plataforma profissional de an\u00e1lise operacional focada em risco, consist\u00eancia, performance e aprova\u00e7\u00e3o em mesas propriet\u00e1rias.",
             "hero_badge": "Infraestrutura de risco para traders s\u00e9rios",
             "start_free": "\U0001f680 Criar conta gr\u00e1tis",
             "login": "\U0001f510 Entrar",
@@ -260,7 +260,7 @@ def ui_text(language):
             "why": "Por que RiskPilot?",
             "feature_1_title": "\U0001f4c9 Intelig\u00eancia de Risco",
             "feature_1_text": "Detecte drawdowns perigosos, overtrading, revenge trading e sequ\u00eancias ruins automaticamente.",
-            "feature_2_title": "\U0001f3c6 Pronto para Prop Firms",
+            "feature_2_title": "\U0001f3c6 Pronto para Mesa Proprietária",
             "feature_2_text": "Acompanhe perda di\u00e1ria, drawdown m\u00e1ximo, consist\u00eancia e dist\u00e2ncia at\u00e9 a meta.",
             "feature_3_title": "\U0001f916 Insights Operacionais",
             "feature_3_text": "Descubra seus melhores hor\u00e1rios, piores padr\u00f5es e fraquezas operacionais.",
@@ -280,7 +280,7 @@ def ui_text(language):
             "demo_mode": "Modo Demo",
             "create_free_account": "Criar conta gr\u00e1tis",
             "initial_capital": "Capital Inicial",
-            "prop_firm_mode": "Modo Prop Firm",
+            "prop_firm_mode": "Modo Mesa Proprietária",
             "account_size": "Tamanho da Conta",
             "daily_loss_limit": "Limite de Perda Di\u00e1ria",
             "max_drawdown_limit": "Limite M\u00e1ximo de Drawdown",
@@ -321,10 +321,10 @@ def ui_text(language):
             "consistency_score": "Score de Consist\u00eancia",
             "consistency_score_sub": "Estabilidade dia a dia",
             "account_health": "Sa\u00fade da Conta",
-            "account_health_sub": "Prontid\u00e3o para prop firm",
+            "account_health_sub": "Prontid\u00e3o para mesa propriet\u00e1ria",
             "behavior_score": "Score Comportamental",
             "behavior_score_sub": "Proxy de tilt e disciplina",
-            "prop_firm_panel": "Painel de Controle Prop Firm",
+            "prop_firm_panel": "Painel de Mesa Proprietária",
             "approval_probability": "Probabilidade de Aprova\u00e7\u00e3o",
             "approval_probability_sub": "Estimativa de aprova\u00e7\u00e3o",
             "daily_remaining": "Perda Di\u00e1ria Restante",
@@ -377,29 +377,29 @@ def ui_text(language):
 "risk_rules": "Reglas de Riesgo",
 "behavior_warnings": "Alertas Conductuales",
             "institutional_radar": "Radar Institucional",
-            "radar_discipline": "Disciplina",
-            "radar_consistency": "Consistencia",
-            "radar_risk_control": "Control de Riesgo",
-            "radar_execution": "Ejecuci\u00f3n",
-            "radar_recovery": "Recuperaci\u00f3n",
-            "radar_prop_compatibility": "Compatibilidad Prop",
-            "smart_prop_engine": "Motor Prop Firm Inteligente",
+            "radar_discipline": "Discipl.",
+            "radar_consistency": "Consist.",
+            "radar_risk_control": "Riesgo",
+            "radar_execution": "Ejec.",
+            "radar_recovery": "Recup.",
+            "radar_prop_compatibility": "Fondeo",
+            "smart_prop_engine": "Motor de Firma de Fondeo",
             "prop_rule_profile": "Perfil de Reglas",
-            "openai_ready": "OpenAI Ready",
+            "openai_ready": "IA Real Ready",
             "openai_ready_sub": "Preparado para integraci\u00f3n con IA real",
             "trader_dna": "Motor Trader DNA",
             "dna_score": "DNA Score",
             "trader_profile": "Perfil del Trader",
             "execution_style": "Estilo de Ejecuci\u00f3n",
             "risk_behavior": "Comportamiento de Riesgo",
-            "prop_firm_fit": "Compatibilidad Prop Firm",
+            "prop_firm_fit": "Compatibilidad Fondeo",
             "profile_confidence": "Confianza del Perfil",
             "profile_summary": "Resumen del Perfil",
             "strengths": "Fortalezas",
             "improvement_points": "Puntos de Mejora",
             "language": "Idioma",
             "hero_title": "Analytics institucional para traders",
-            "hero_subtitle": "Plataforma profesional de an\u00e1lisis operativo enfocada en riesgo, consistencia, rendimiento y aprobaci\u00f3n en prop firms.",
+            "hero_subtitle": "Plataforma profesional de an\u00e1lisis operativo enfocada en riesgo, consistencia, rendimiento y aprobaci\u00f3n en firmas de fondeo.",
             "hero_badge": "Infraestructura de riesgo para traders serios",
             "start_free": "\U0001f680 Crear cuenta gratis",
             "login": "\U0001f510 Entrar",
@@ -407,7 +407,7 @@ def ui_text(language):
             "why": "\u00bfPor qu\u00e9 RiskPilot?",
             "feature_1_title": "\U0001f4c9 Inteligencia de Riesgo",
             "feature_1_text": "Detecta drawdowns peligrosos, overtrading, revenge trading y secuencias negativas autom\u00e1ticamente.",
-            "feature_2_title": "\U0001f3c6 Listo para Prop Firms",
+            "feature_2_title": "\U0001f3c6 Listo para Firma de Fondeo",
             "feature_2_text": "Monitorea p\u00e9rdida diaria, drawdown m\u00e1ximo, consistencia y distancia a la meta.",
             "feature_3_title": "\U0001f916 Insights Operativos",
             "feature_3_text": "Descubre tus mejores horarios, peores patrones y debilidades operativas.",
@@ -427,7 +427,7 @@ def ui_text(language):
             "demo_mode": "Modo Demo",
             "create_free_account": "Crear cuenta gratis",
             "initial_capital": "Capital Inicial",
-            "prop_firm_mode": "Modo Prop Firm",
+            "prop_firm_mode": "Modo Firma de Fondeo",
             "account_size": "Tama\u00f1o de la Cuenta",
             "daily_loss_limit": "L\u00edmite de P\u00e9rdida Diaria",
             "max_drawdown_limit": "L\u00edmite M\u00e1ximo de Drawdown",
@@ -468,10 +468,10 @@ def ui_text(language):
             "consistency_score": "Score de Consistencia",
             "consistency_score_sub": "Estabilidad d\u00eda a d\u00eda",
             "account_health": "Salud de la Cuenta",
-            "account_health_sub": "Preparaci\u00f3n para prop firm",
+            "account_health_sub": "Preparaci\u00f3n para firma de fondeo",
             "behavior_score": "Score Conductual",
             "behavior_score_sub": "Proxy de tilt y disciplina",
-            "prop_firm_panel": "Panel de Control Prop Firm",
+            "prop_firm_panel": "Panel de Firma de Fondeo",
             "approval_probability": "Probabilidad de Aprobaci\u00f3n",
             "approval_probability_sub": "Estimaci\u00f3n de aprobaci\u00f3n",
             "daily_remaining": "P\u00e9rdida Diaria Restante",
@@ -699,7 +699,7 @@ def get_pricing_copy(language):
             "faq_title": "Perguntas frequentes",
             "faq_1_q": "O RiskPilot opera por mim?",
             "faq_1_a": "N\u00e3o. O RiskPilot analisa seus relat\u00f3rios, performance, risco e comportamento operacional.",
-            "faq_2_q": "Funciona para prop firm?",
+            "faq_2_q": "Funciona para mesa proprietária?",
             "faq_2_a": "Sim. O sistema calcula limites, drawdown, aprova\u00e7\u00e3o estimada e risco de viola\u00e7\u00e3o.",
             "faq_3_q": "A IA j\u00e1 \u00e9 real?",
             "faq_3_a": "A estrutura est\u00e1 pronta para OpenAI real. A vers\u00e3o atual usa regras inteligentes e an\u00e1lise comportamental baseada em m\u00e9tricas.",
@@ -711,7 +711,7 @@ def get_pricing_copy(language):
                 "AI Coach": ["N\u00e3o", "Limitado", "Completo"],
                 "Trader DNA": ["N\u00e3o", "Sim", "Avan\u00e7ado"],
                 "Radar Institucional": ["N\u00e3o", "Sim", "Completo"],
-                "Prop Firm Engine": ["B\u00e1sico", "Completo", "Completo"],
+                "Motor de Mesa Proprietária": ["B\u00e1sico", "Completo", "Completo"],
             },
         }
     if language == "Espa\u00f1ol":
@@ -748,7 +748,7 @@ def get_pricing_copy(language):
                 "AI Coach": ["No", "Limitado", "Completo"],
                 "Trader DNA": ["No", "S\u00ed", "Avanzado"],
                 "Radar Institucional": ["No", "S\u00ed", "Completo"],
-                "Prop Firm Engine": ["B\u00e1sico", "Completo", "Completo"],
+                "Motor de Firma de Fondeo": ["B\u00e1sico", "Completo", "Completo"],
             },
         }
     return {
@@ -932,11 +932,11 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .v32-domain-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(2,6,23,.72);border:1px solid rgba(34,197,94,.30);border-radius:999px;padding:9px 13px;color:#86efac!important;font-size:.86rem;font-weight:900;margin-top:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .v32-footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.14);padding:26px 0;color:#64748b!important;font-size:.86rem;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}.v32-footer b{color:#cbd5e1!important}.v32-production-card{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(14,165,233,.10));border:1px solid rgba(34,197,94,.22);border-radius:26px;padding:28px;margin:30px 0 12px 0;box-shadow:0 18px 55px rgba(0,0,0,.18)}
 .v32-production-card-title{color:#fff!important;font-size:1.45rem;font-weight:950;letter-spacing:-.035em}.v32-production-card-text{color:#94a3b8!important;margin-top:10px;line-height:1.65;font-size:.98rem}
-
-
+ 
+ 
 .guided-upload-shell{margin:24px 0 22px 0;padding:24px;border-radius:26px;background:linear-gradient(135deg,rgba(15,23,42,.92),rgba(2,6,23,.62));border:1px solid rgba(56,189,248,.18);box-shadow:0 18px 55px rgba(0,0,0,.24)}
 .guided-upload-title{font-size:1.35rem;font-weight:950;color:#fff!important;letter-spacing:-.035em;margin-bottom:8px}.guided-upload-sub{color:#94a3b8!important;font-size:.96rem;line-height:1.55;margin-bottom:18px}.guided-step-card{height:100%;min-height:138px;padding:20px;border-radius:20px;background:linear-gradient(135deg,#0f172a 0%,#111827 100%);border:1px solid rgba(148,163,184,.14);box-shadow:0 12px 35px rgba(0,0,0,.18)}.guided-step-number{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(14,165,233,.16);border:1px solid rgba(14,165,233,.32);color:#7dd3fc!important;font-weight:950;margin-bottom:14px}.guided-step-title{font-size:1rem;font-weight:900;color:#fff!important;margin-bottom:7px}.guided-step-text{font-size:.86rem;line-height:1.45;color:#94a3b8!important}.platform-chip-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.platform-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border-radius:999px;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.22);color:#bae6fd!important;font-size:.78rem;font-weight:850}.upload-tip-box{margin:14px 0 20px 0;padding:16px 18px;border-radius:18px;background:rgba(14,165,233,.10);border:1px solid rgba(14,165,233,.24);color:#bfdbfe!important;font-size:.9rem;line-height:1.5}.upload-tip-box strong{color:#fff!important}.beta-footer{margin-top:60px;padding:22px;border-radius:22px;background:rgba(15,23,42,.72);border:1px solid rgba(148,163,184,.12);color:#94a3b8!important;font-size:.86rem;text-align:center}.beta-footer b{color:#e5e7eb!important}
-
+ 
 </style>
 """, unsafe_allow_html=True)
  
@@ -1443,15 +1443,15 @@ def make_radar_chart(radar_scores, t):
     )
     fig.update_layout(
         template="plotly_dark",
-        height=470,
-        margin=dict(l=30, r=30, t=50, b=30),
+        height=540,
+        margin=dict(l=85, r=85, t=70, b=70),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         font=dict(color="#e5e7eb"),
         polar=dict(
             bgcolor="rgba(0,0,0,0)",
             radialaxis=dict(visible=True, range=[0, 100], gridcolor="rgba(148,163,184,0.22)"),
-            angularaxis=dict(gridcolor="rgba(148,163,184,0.18)"),
+            angularaxis=dict(gridcolor="rgba(148,163,184,0.18)", tickfont=dict(size=11)),
         ),
         showlegend=False,
     )
@@ -1830,7 +1830,7 @@ def build_trader_dna(
             improvements.append("Crear bloqueo operativo despu\u00e9s de p\u00e9rdidas consecutivas para reducir tilt.")
  
         if approval >= 70:
-            strengths.append("El perfil actual tiene buena compatibilidad con prop firms.")
+            strengths.append("El perfil actual tiene buena compatibilidad con firmas de fondeo.")
         else:
             improvements.append("Mejorar control de drawdown antes de buscar aprobaci\u00f3n en prop firm.")
  
@@ -2765,12 +2765,12 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         lp = {
             "eyebrow": "Production Beta • riskpilotapp.com",
             "headline": "Transforme relatórios de trading em inteligência institucional de risco.",
-            "subheadline": "O RiskPilot analisa performance, drawdown, consistência, comportamento operacional e prontidão para prop firms em poucos segundos.",
+            "subheadline": "O RiskPilot analisa performance, drawdown, consistência, comportamento operacional e prontidão para mesas proprietárias em poucos segundos.",
             "primary": "🚀 Começar análise grátis",
             "demo": "📊 Ver demonstração",
             "login": "🔐 Entrar",
             "problem_title": "O problema não é só perder dinheiro. É não saber por quê.",
-            "problem_text": "A maioria dos traders olha apenas para lucro, prejuízo e winrate. O RiskPilot revela padrões escondidos: horários ruins, excesso de risco, drawdown perigoso, perda de disciplina e baixa compatibilidade com prop firms.",
+            "problem_text": "A maioria dos traders olha apenas para lucro, prejuízo e winrate. O RiskPilot revela padrões escondidos: horários ruins, excesso de risco, drawdown perigoso, perda de disciplina e baixa compatibilidade com mesas proprietárias.",
             "how": "Como funciona",
             "step1": "Faça upload do relatório",
             "step1_text": "Envie CSV, XLSX, TXT ou HTML das principais plataformas.",
@@ -2788,12 +2788,12 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         lp = {
             "eyebrow": "Production Beta • riskpilotapp.com",
             "headline": "Convierte reportes de trading en inteligencia institucional de riesgo.",
-            "subheadline": "RiskPilot analiza rendimiento, drawdown, consistencia, comportamiento operativo y preparación para prop firms en segundos.",
+            "subheadline": "RiskPilot analiza rendimiento, drawdown, consistencia, comportamiento operativo y preparación para firmas de fondeo en segundos.",
             "primary": "🚀 Empezar gratis",
             "demo": "📊 Ver demo",
             "login": "🔐 Entrar",
             "problem_title": "El problema no es solo perder dinero. Es no saber por qué.",
-            "problem_text": "La mayoría de los traders mira solo lucro, pérdida y winrate. RiskPilot revela patrones ocultos: horarios débiles, exceso de riesgo, drawdown peligroso, pérdida de disciplina y baja compatibilidad con prop firms.",
+            "problem_text": "La mayoría de los traders mira solo lucro, pérdida y winrate. RiskPilot revela patrones ocultos: horarios débiles, exceso de riesgo, drawdown peligroso, pérdida de disciplina y baja compatibilidad con firmas de fondeo.",
             "how": "Cómo funciona",
             "step1": "Sube tu reporte",
             "step1_text": "Envía CSV, XLSX, TXT o HTML de las principales plataformas.",
@@ -2853,7 +2853,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
                     <div class="v31-score-label">AI Score</div>
                 </div>
                 <div class="v31-panel-grid">
-                    <div><b>Prop Readiness</b><small>Estimated approval</small></div>
+                    <div><b>{"Prontidão Mesa" if language == "Portugu\u00eas" else "Fondeo Ready" if language == "Espa\u00f1ol" else "Prop Readiness"}</b><small>{"Aprovação estimada" if language == "Portugu\u00eas" else "Aprobación estimada" if language == "Espa\u00f1ol" else "Estimated approval"}</small></div>
                     <div><b>Trader DNA</b><small>Behavioral profile</small></div>
                     <div><b>Risk Radar</b><small>Institutional view</small></div>
                 </div>
@@ -2902,7 +2902,13 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
  
     st.markdown(f'<div class="section-title">{lp["audience"]}</div>', unsafe_allow_html=True)
     a1, a2, a3, a4 = st.columns(4, gap="large")
-    audience_items = ["Prop firm traders", "Scalpers / day traders", "Mentors and desks", "Traders reducing tilt"]
+    
+    if language == "Portugu\u00eas":
+        audience_items = ["Traders de mesa proprietária", "Scalpers / day traders", "Mentores e mesas", "Traders reduzindo tilt"]
+    elif language == "Espa\u00f1ol":
+        audience_items = ["Traders de firma de fondeo", "Scalpers / day traders", "Mentores y mesas", "Traders reduciendo tilt"]
+    else:
+        audience_items = ["Prop firm traders", "Scalpers / day traders", "Mentors and desks", "Traders reducing tilt"]
     for col, item in zip([a1, a2, a3, a4], audience_items):
         with col:
             st.markdown(f'<div class="v31-audience-card">{item}</div>', unsafe_allow_html=True)
@@ -2926,13 +2932,13 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
     st.markdown(
         f"""
         <div class="v32-production-card">
-            <div class="v32-production-card-title">RiskPilot is moving to production branding.</div>
+            <div class="v32-production-card-title">RiskPilot está entrando em fase de produção.</div>
             <div class="v32-production-card-text">Official domain: <b>{PRODUCTION_DOMAIN}</b>. Built for traders, prop firm candidates, mentors and trading desks that need clearer risk intelligence before scaling.</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-
+ 
     render_pricing_section(st.session_state.landing_language)
  
     st.markdown(
@@ -2955,7 +2961,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         """,
         unsafe_allow_html=True,
     )
-
+ 
     st.stop()
  
  
@@ -3168,8 +3174,8 @@ if page == t["history"]:
     st.stop()
  
  
-
-
+ 
+ 
 def render_guided_upload_panel(language):
     if language == "Português":
         content = {
@@ -3207,7 +3213,7 @@ def render_guided_upload_panel(language):
             "tip": "Tip: if the file is not recognized, export it again with date/time, result, balance/equity or trade history columns.",
             "platforms": ["MetaTrader 4/5", "TesterGraph", "ProfitChart / Nelogica", "TradingView", "Generic CSV", "Generic Excel"],
         }
-
+ 
     st.markdown(
         f"""
         <div class="guided-upload-shell">
@@ -3217,7 +3223,7 @@ def render_guided_upload_panel(language):
         """,
         unsafe_allow_html=True,
     )
-
+ 
     cols = st.columns(3, gap="large")
     for col, step in zip(cols, content["steps"]):
         number, title, text = step
@@ -3232,12 +3238,12 @@ def render_guided_upload_panel(language):
                 """,
                 unsafe_allow_html=True,
             )
-
+ 
     chips = "".join([f'<span class="platform-chip">✓ {item}</span>' for item in content["platforms"]])
     st.markdown(f'<div class="platform-chip-row">{chips}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="upload-tip-box"><strong>RiskPilot:</strong> {content["tip"]}</div>', unsafe_allow_html=True)
-
-
+ 
+ 
 # =========================================================
 # DASHBOARD NORMAL
 # =========================================================
@@ -3253,7 +3259,7 @@ if st.session_state.demo_mode and not st.session_state.authenticated:
     uploaded_file_name = "demo_data.csv"
 else:
     render_guided_upload_panel(language)
-
+ 
     platform_map = platform_options(language)
     selected_platform_label = st.selectbox(
         upload_platform_label(language),
@@ -3297,8 +3303,8 @@ render_full_dashboard(
     allow_save=True,
     read_only=False,
 )
-
+ 
 st.markdown(
-    '<div class="beta-footer"><b>RiskPilot V33</b> · Institutional analytics with guided onboarding · riskpilotapp.com</div>',
+    '<div class="beta-footer"><b>RiskPilot V34</b> · International production polish · riskpilotapp.com</div>',
     unsafe_allow_html=True,
 )
