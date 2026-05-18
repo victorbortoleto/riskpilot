@@ -32,10 +32,15 @@ from core.db import (
 )
  
  
+APP_VERSION = "V32 Production Ready"
+PRODUCTION_DOMAIN = "riskpilotapp.com"
+PRODUCTION_URL = "https://riskpilotapp.com"
+SUPPORT_EMAIL = "victorbortoleto@yahoo.com.br"
+ 
 init_db()
  
 st.set_page_config(
-    page_title="RiskPilot",
+    page_title="RiskPilot | Trading Risk Intelligence",
     page_icon="\U0001f4ca",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -895,7 +900,7 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .faq-card{min-height:170px;border-radius:22px;padding:24px;background:rgba(15,23,42,.84);border:1px solid rgba(148,163,184,.14);box-shadow:0 14px 40px rgba(0,0,0,.20);margin-bottom:20px}.faq-question{font-size:1.05rem;font-weight:900;color:#fff!important;line-height:1.35}.faq-answer{font-size:.92rem;color:#94a3b8!important;line-height:1.6;margin-top:12px}
  
  
-/* V31 Landing Page Polish */
+/* V31/V32 Landing Page Polish */
 .v31-hero-shell{display:grid;grid-template-columns:1.15fr .85fr;gap:34px;align-items:stretch;margin:34px 0 28px 0;}
 .v31-hero-left{padding:36px 0 22px 0;}
 .v31-eyebrow,.v31-section-kicker{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.34);color:#7dd3fc!important;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em;margin-bottom:18px;}
@@ -923,6 +928,10 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .v31-format-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;}.v31-format-tags span{background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.28);border-radius:999px;padding:9px 12px;color:#7dd3fc!important;font-weight:900;font-size:.86rem;}
 .v31-beta-card{text-align:center;margin-bottom:40px;}.v31-beta-card .v31-section-text{margin-left:auto;margin-right:auto;}
 @media(max-width:1000px){.v31-hero-shell,.v31-format-card{grid-template-columns:1fr}.v31-hero-panel{min-height:auto}.v31-format-tags{justify-content:flex-start}.v31-hero-title{font-size:3.2rem}}
+ 
+.v32-domain-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(2,6,23,.72);border:1px solid rgba(34,197,94,.30);border-radius:999px;padding:9px 13px;color:#86efac!important;font-size:.86rem;font-weight:900;margin-top:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.v32-footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.14);padding:26px 0;color:#64748b!important;font-size:.86rem;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}.v32-footer b{color:#cbd5e1!important}.v32-production-card{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(14,165,233,.10));border:1px solid rgba(34,197,94,.22);border-radius:26px;padding:28px;margin:30px 0 12px 0;box-shadow:0 18px 55px rgba(0,0,0,.18)}
+.v32-production-card-title{color:#fff!important;font-size:1.45rem;font-weight:950;letter-spacing:-.035em}.v32-production-card-text{color:#94a3b8!important;margin-top:10px;line-height:1.65;font-size:.98rem}
  
 </style>
 """, unsafe_allow_html=True)
@@ -2750,7 +2759,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
  
     if st.session_state.landing_language == "Português":
         lp = {
-            "eyebrow": "Private Beta • Trading Risk Intelligence",
+            "eyebrow": "Production Beta • riskpilotapp.com",
             "headline": "Transforme relatórios de trading em inteligência institucional de risco.",
             "subheadline": "O RiskPilot analisa performance, drawdown, consistência, comportamento operacional e prontidão para prop firms em poucos segundos.",
             "primary": "🚀 Começar análise grátis",
@@ -2773,7 +2782,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         }
     elif st.session_state.landing_language == "Español":
         lp = {
-            "eyebrow": "Private Beta • Trading Risk Intelligence",
+            "eyebrow": "Production Beta • riskpilotapp.com",
             "headline": "Convierte reportes de trading en inteligencia institucional de riesgo.",
             "subheadline": "RiskPilot analiza rendimiento, drawdown, consistencia, comportamiento operativo y preparación para prop firms en segundos.",
             "primary": "🚀 Empezar gratis",
@@ -2796,7 +2805,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         }
     else:
         lp = {
-            "eyebrow": "Private Beta • Trading Risk Intelligence",
+            "eyebrow": "Production Beta • riskpilotapp.com",
             "headline": "Turn trading reports into institutional risk intelligence.",
             "subheadline": "RiskPilot analyzes performance, drawdown, consistency, operational behavior and prop firm readiness in seconds.",
             "primary": "🚀 Start free analysis",
@@ -2825,6 +2834,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
                 <div class="v31-eyebrow">{lp['eyebrow']}</div>
                 <div class="v31-hero-title">{lp['headline']}</div>
                 <div class="v31-hero-subtitle">{lp['subheadline']}</div>
+                <div class="v32-domain-pill">🌐 Official domain: {PRODUCTION_DOMAIN}</div>
                 <div class="v31-trust-row">
                     <span>CSV / XLSX / TXT / HTML</span>
                     <span>MetaTrader • TradingView • ProfitChart</span>
@@ -2909,6 +2919,16 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         unsafe_allow_html=True,
     )
  
+    st.markdown(
+        f"""
+        <div class="v32-production-card">
+            <div class="v32-production-card-title">RiskPilot is moving to production branding.</div>
+            <div class="v32-production-card-text">Official domain: <b>{PRODUCTION_DOMAIN}</b>. Built for traders, prop firm candidates, mentors and trading desks that need clearer risk intelligence before scaling.</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+ 
     render_pricing_section(st.session_state.landing_language)
  
     st.markdown(
@@ -2917,6 +2937,16 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
             <div class="v31-section-kicker">Beta Launch</div>
             <div class="v31-section-headline">{lp['beta_title']}</div>
             <div class="v31-section-text">{lp['beta_text']}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+ 
+    st.markdown(
+        f"""
+        <div class="v32-footer">
+            <div><b>RiskPilot</b> · {APP_VERSION}</div>
+            <div>{PRODUCTION_DOMAIN} · Trading Risk Intelligence</div>
         </div>
         """,
         unsafe_allow_html=True,
