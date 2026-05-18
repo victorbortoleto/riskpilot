@@ -36,7 +36,7 @@ APP_VERSION = "V32 Production Ready"
 PRODUCTION_DOMAIN = "riskpilotapp.com"
 PRODUCTION_URL = "https://riskpilotapp.com"
 SUPPORT_EMAIL = "victorbortoleto@yahoo.com.br"
- 
+
 init_db()
  
 st.set_page_config(
@@ -932,7 +932,11 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {backgrou
 .v32-domain-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(2,6,23,.72);border:1px solid rgba(34,197,94,.30);border-radius:999px;padding:9px 13px;color:#86efac!important;font-size:.86rem;font-weight:900;margin-top:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .v32-footer{margin-top:60px;border-top:1px solid rgba(148,163,184,.14);padding:26px 0;color:#64748b!important;font-size:.86rem;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}.v32-footer b{color:#cbd5e1!important}.v32-production-card{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(14,165,233,.10));border:1px solid rgba(34,197,94,.22);border-radius:26px;padding:28px;margin:30px 0 12px 0;box-shadow:0 18px 55px rgba(0,0,0,.18)}
 .v32-production-card-title{color:#fff!important;font-size:1.45rem;font-weight:950;letter-spacing:-.035em}.v32-production-card-text{color:#94a3b8!important;margin-top:10px;line-height:1.65;font-size:.98rem}
- 
+
+
+.guided-upload-shell{margin:24px 0 22px 0;padding:24px;border-radius:26px;background:linear-gradient(135deg,rgba(15,23,42,.92),rgba(2,6,23,.62));border:1px solid rgba(56,189,248,.18);box-shadow:0 18px 55px rgba(0,0,0,.24)}
+.guided-upload-title{font-size:1.35rem;font-weight:950;color:#fff!important;letter-spacing:-.035em;margin-bottom:8px}.guided-upload-sub{color:#94a3b8!important;font-size:.96rem;line-height:1.55;margin-bottom:18px}.guided-step-card{height:100%;min-height:138px;padding:20px;border-radius:20px;background:linear-gradient(135deg,#0f172a 0%,#111827 100%);border:1px solid rgba(148,163,184,.14);box-shadow:0 12px 35px rgba(0,0,0,.18)}.guided-step-number{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(14,165,233,.16);border:1px solid rgba(14,165,233,.32);color:#7dd3fc!important;font-weight:950;margin-bottom:14px}.guided-step-title{font-size:1rem;font-weight:900;color:#fff!important;margin-bottom:7px}.guided-step-text{font-size:.86rem;line-height:1.45;color:#94a3b8!important}.platform-chip-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.platform-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border-radius:999px;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.22);color:#bae6fd!important;font-size:.78rem;font-weight:850}.upload-tip-box{margin:14px 0 20px 0;padding:16px 18px;border-radius:18px;background:rgba(14,165,233,.10);border:1px solid rgba(14,165,233,.24);color:#bfdbfe!important;font-size:.9rem;line-height:1.5}.upload-tip-box strong{color:#fff!important}.beta-footer{margin-top:60px;padding:22px;border-radius:22px;background:rgba(15,23,42,.72);border:1px solid rgba(148,163,184,.12);color:#94a3b8!important;font-size:.86rem;text-align:center}.beta-footer b{color:#e5e7eb!important}
+
 </style>
 """, unsafe_allow_html=True)
  
@@ -2928,7 +2932,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         """,
         unsafe_allow_html=True,
     )
- 
+
     render_pricing_section(st.session_state.landing_language)
  
     st.markdown(
@@ -2951,7 +2955,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         """,
         unsafe_allow_html=True,
     )
- 
+
     st.stop()
  
  
@@ -3164,6 +3168,76 @@ if page == t["history"]:
     st.stop()
  
  
+
+
+def render_guided_upload_panel(language):
+    if language == "Português":
+        content = {
+            "title": "Comece pela exportação correta do relatório",
+            "sub": "Para uma análise precisa, envie o relatório completo da sua plataforma. O RiskPilot identifica automaticamente dados de trades, equity, drawdown, horários e resultados.",
+            "steps": [
+                ("1", "Exporte o relatório", "Na sua plataforma, gere o relatório em CSV, XLSX, TXT ou HTML."),
+                ("2", "Selecione o formato", "Use Automático quando não souber o padrão do arquivo."),
+                ("3", "Receba a análise", "Veja curva de capital, drawdown, radar, Trader DNA, AI Coach e PDF."),
+            ],
+            "tip": "Dica: se o arquivo não for lido, exporte novamente com colunas de data/hora, resultado, saldo/equity ou histórico de operações.",
+            "platforms": ["MetaTrader 4/5", "TesterGraph", "ProfitChart / Nelogica", "TradingView", "CSV Genérico", "Excel Genérico"],
+        }
+    elif language == "Español":
+        content = {
+            "title": "Empieza con la exportación correcta del reporte",
+            "sub": "Para un análisis preciso, sube el reporte completo de tu plataforma. RiskPilot identifica automáticamente trades, equity, drawdown, horarios y resultados.",
+            "steps": [
+                ("1", "Exporta el reporte", "En tu plataforma, genera el reporte en CSV, XLSX, TXT o HTML."),
+                ("2", "Selecciona el formato", "Usa Automático cuando no sepas el estándar del archivo."),
+                ("3", "Recibe el análisis", "Consulta curva de capital, drawdown, radar, Trader DNA, AI Coach y PDF."),
+            ],
+            "tip": "Consejo: si el archivo no se lee, exporta nuevamente con columnas de fecha/hora, resultado, balance/equity o historial de operaciones.",
+            "platforms": ["MetaTrader 4/5", "TesterGraph", "ProfitChart / Nelogica", "TradingView", "CSV Genérico", "Excel Genérico"],
+        }
+    else:
+        content = {
+            "title": "Start with the right report export",
+            "sub": "For accurate analytics, upload the complete report from your platform. RiskPilot automatically detects trades, equity, drawdown, time windows and results.",
+            "steps": [
+                ("1", "Export your report", "Generate a CSV, XLSX, TXT or HTML report from your trading platform."),
+                ("2", "Select the format", "Use Automatic when you are not sure about the file structure."),
+                ("3", "Receive the analysis", "View equity curve, drawdown, radar, Trader DNA, AI Coach and PDF."),
+            ],
+            "tip": "Tip: if the file is not recognized, export it again with date/time, result, balance/equity or trade history columns.",
+            "platforms": ["MetaTrader 4/5", "TesterGraph", "ProfitChart / Nelogica", "TradingView", "Generic CSV", "Generic Excel"],
+        }
+
+    st.markdown(
+        f"""
+        <div class="guided-upload-shell">
+            <div class="guided-upload-title">{content["title"]}</div>
+            <div class="guided-upload-sub">{content["sub"]}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    cols = st.columns(3, gap="large")
+    for col, step in zip(cols, content["steps"]):
+        number, title, text = step
+        with col:
+            st.markdown(
+                f"""
+                <div class="guided-step-card">
+                    <div class="guided-step-number">{number}</div>
+                    <div class="guided-step-title">{title}</div>
+                    <div class="guided-step-text">{text}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    chips = "".join([f'<span class="platform-chip">✓ {item}</span>' for item in content["platforms"]])
+    st.markdown(f'<div class="platform-chip-row">{chips}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="upload-tip-box"><strong>RiskPilot:</strong> {content["tip"]}</div>', unsafe_allow_html=True)
+
+
 # =========================================================
 # DASHBOARD NORMAL
 # =========================================================
@@ -3178,6 +3252,8 @@ if st.session_state.demo_mode and not st.session_state.authenticated:
     normalized_df = make_demo_dataframe()
     uploaded_file_name = "demo_data.csv"
 else:
+    render_guided_upload_panel(language)
+
     platform_map = platform_options(language)
     selected_platform_label = st.selectbox(
         upload_platform_label(language),
@@ -3220,4 +3296,9 @@ render_full_dashboard(
     uploaded_file_name=uploaded_file_name,
     allow_save=True,
     read_only=False,
+)
+
+st.markdown(
+    '<div class="beta-footer"><b>RiskPilot V33</b> · Institutional analytics with guided onboarding · riskpilotapp.com</div>',
+    unsafe_allow_html=True,
 )
