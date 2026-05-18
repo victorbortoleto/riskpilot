@@ -2760,6 +2760,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
         st.markdown(language_flag_pill(st.session_state.landing_language), unsafe_allow_html=True)
  
     t = ui_text(st.session_state.landing_language)
+    language = st.session_state.landing_language
  
     if st.session_state.landing_language == "Português":
         lp = {
@@ -2853,7 +2854,7 @@ if not st.session_state.authenticated and not st.session_state.show_login and no
                     <div class="v31-score-label">AI Score</div>
                 </div>
                 <div class="v31-panel-grid">
-                    <div><b>{"Prontidão Mesa" if language == "Portugu\u00eas" else "Fondeo Ready" if language == "Espa\u00f1ol" else "Prop Readiness"}</b><small>{"Aprovação estimada" if language == "Portugu\u00eas" else "Aprobación estimada" if language == "Espa\u00f1ol" else "Estimated approval"}</small></div>
+                    <div><b>{"Prontidão Mesa Proprietária" if language == "Portugu\u00eas" else "Fondeo Ready" if language == "Espa\u00f1ol" else "Prop Readiness"}</b><small>{"Aprovação estimada" if language == "Portugu\u00eas" else "Aprobación estimada" if language == "Espa\u00f1ol" else "Estimated approval"}</small></div>
                     <div><b>Trader DNA</b><small>Behavioral profile</small></div>
                     <div><b>Risk Radar</b><small>Institutional view</small></div>
                 </div>
